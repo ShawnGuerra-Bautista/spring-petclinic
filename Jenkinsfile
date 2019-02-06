@@ -9,6 +9,9 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'mvn -B -DskipTests clean package'
+                sh './jenkins_build.sh'
+                        junit '*/build/test-results/*.xml'
+                        step( [ $class: 'JacocoPublisher' ] )
             }
         }
         stage('Test') {
@@ -20,13 +23,6 @@ pipeline {
                     junit 'target/surefire-reports/*.xml'
                 }
             }
-        }
-        stage('Build') {
-             steps {
-                sh './jenkins_build.sh'
-                junit '*/build/test-results/*.xml'
-                step( [ $class: 'JacocoPublisher' ] )
-             }
         }
     }
 }
