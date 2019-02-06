@@ -9,9 +9,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'mvn -B -DskipTests clean package'
-                sh './jenkins_build.sh'
-                        junit '*/build/test-results/*.xml'
-                        step( [ $class: 'JacocoPublisher' ] )
+                step( [ $class: 'JacocoPublisher' ] )
             }
         }
         stage('Test') {
