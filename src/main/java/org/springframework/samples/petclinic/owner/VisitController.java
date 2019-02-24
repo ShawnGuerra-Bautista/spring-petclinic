@@ -60,10 +60,10 @@ class VisitController {
      * @return Pet
      */
     @ModelAttribute("visit")
-    public Visit loadPetWithVisit(@PathVariable("petId") int petId, Map<String, Object> model) {
+    public Visit loadPetWithVisit(@PathVariable("petId") int petId, Map<String, Object> model, Visit visit) {
         Pet pet = this.pets.findById(petId);
         model.put("pet", pet);
-        Visit visit = new Visit();
+        //Visit visit = new Visit(); // DEPEDENCY SPOTTED
         pet.addVisit(visit);
         return visit;
     }

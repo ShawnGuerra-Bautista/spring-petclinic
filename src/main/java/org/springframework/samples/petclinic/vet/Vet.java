@@ -51,7 +51,7 @@ public class Vet extends Person {
 
     protected Set<Specialty> getSpecialtiesInternal() {
         if (this.specialties == null) {
-            this.specialties = new HashSet<>();
+            this.specialties = new HashSet<>(); // DEPEDENCY SPOTTED
         }
         return this.specialties;
     }

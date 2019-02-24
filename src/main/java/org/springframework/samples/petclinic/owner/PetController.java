@@ -64,8 +64,8 @@ class PetController {
     }
 
     @GetMapping("/pets/new")
-    public String initCreationForm(Owner owner, ModelMap model) {
-        Pet pet = new Pet();
+    public String initCreationForm(Owner owner, ModelMap model, Pet pet) {
+        //Pet pet = new Pet(); // DEPEDENCY SPOTTED
         owner.addPet(pet);
         model.put("pet", pet);
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;

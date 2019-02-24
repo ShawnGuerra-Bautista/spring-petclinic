@@ -52,8 +52,8 @@ class OwnerController {
     }
 
     @GetMapping("/owners/new")
-    public String initCreationForm(Map<String, Object> model) {
-        Owner owner = new Owner();
+    public String initCreationForm(Map<String, Object> model, Owner owner) {
+        //Owner owner = new Owner();  //DEPENDENCY SPOTTED
         model.put("owner", owner);
         return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
     }
@@ -125,7 +125,7 @@ class OwnerController {
      */
     @GetMapping("/owners/{ownerId}")
     public ModelAndView showOwner(@PathVariable("ownerId") int ownerId) {
-        ModelAndView mav = new ModelAndView("owners/ownerDetails");
+        ModelAndView mav = new ModelAndView("owners/ownerDetails"); // DEPEDENCY SPOTTED
         mav.addObject(this.owners.findById(ownerId));
         return mav;
     }

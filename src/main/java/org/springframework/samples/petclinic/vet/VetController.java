@@ -37,20 +37,20 @@ class VetController {
     }
 
     @GetMapping("/vets.html")
-    public String showVetList(Map<String, Object> model) {
+    public String showVetList(Map<String, Object> model, Vets vets) {
         // Here we are returning an object of type 'Vets' rather than a collection of Vet
         // objects so it is simpler for Object-Xml mapping
-        Vets vets = new Vets();
+        //Vets vets = new Vets(); // DEPEDENCY SPOTTED
         vets.getVetList().addAll(this.vets.findAll());
         model.put("vets", vets);
         return "vets/vetList";
     }
 
     @GetMapping({ "/vets" })
-    public @ResponseBody Vets showResourcesVetList() {
+    public @ResponseBody Vets showResourcesVetList( Vets vets) {
         // Here we are returning an object of type 'Vets' rather than a collection of Vet
         // objects so it is simpler for JSon/Object mapping
-        Vets vets = new Vets();
+       // Vets vets = new Vets(); // DEPEDENCY SPOTTED
         vets.getVetList().addAll(this.vets.findAll());
         return vets;
     }
