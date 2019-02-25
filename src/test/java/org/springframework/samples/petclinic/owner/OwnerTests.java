@@ -24,11 +24,11 @@ public class OwnerTests{
     public void testGetPets()
     {
         Set<Pet> pets = new HashSet<>();
-        pets.add(new Pet(null, "Bella",LocalDate.now() , new PetType(null, "dog"), null));
-        pets.add(new Pet(null, "Lucy", LocalDate.now(), new PetType(null, "cat"), null));
-        pets.add(new Pet(null, "Daisy", LocalDate.now(), new PetType(null, "hamster"), null));
-        pets.add(new Pet(null, "Molly", LocalDate.now(), new PetType(null, "snake"), null));
-        pets.add(new Pet(null, "Charlie", LocalDate.now(), new PetType(null, "dog"), null));
+        pets.add(new Pet(null, "Bella",LocalDate.now() , new PetType("dog"), null));
+        pets.add(new Pet(null, "Lucy", LocalDate.now(), new PetType("cat"), null));
+        pets.add(new Pet(null, "Daisy", LocalDate.now(), new PetType("hamster"), null));
+        pets.add(new Pet(null, "Molly", LocalDate.now(), new PetType("snake"), null));
+        pets.add(new Pet(null, "Charlie", LocalDate.now(), new PetType("dog"), null));
 
         // mock propertycomparator class
         PropertyComparator propertyComparator = mock(PropertyComparator.class);
