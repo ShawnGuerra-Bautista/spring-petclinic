@@ -7,10 +7,12 @@ import org.mockito.Mockito;
 import org.springframework.validation.Errors;
 
 public class PetValidatorTest {
-
+	
+     /**
+      * validates when pets birthday is null
+     */
 	  @Test
 	    public void ValidatWhenBirthdayDateIsNull() {
-	    	//write a test when birthday is null
 	    	PetValidator petValidate=new PetValidator();
 	    	Pet pet=Mockito.mock(Pet.class);
 	    	PetType petType=Mockito.mock(PetType.class);
@@ -22,5 +24,20 @@ public class PetValidatorTest {
 	    	petValidate.validate(pet, error);
 	    	Mockito.verify(error).rejectValue("birthDate","required","required");
 	    }
+	  
+	  /**
+	   * validates when pets name is undefined (not set)
+	   */
+	  
+	  @Test
+	  public void ValidateWhenNameIsUndefined() {
+		  PetValidator petValidate=new PetValidator();
+	      Pet pet=Mockito.mock(Pet.class);
+	      Errors error=Mockito.mock(Errors.class);
+	      petValidate.validate(pet, error);
+	      Mockito.verify(pet).getName();
+	      Mockito.verify(error).rejectValue("name","required","required");   
+	      
+	  }
 
 }

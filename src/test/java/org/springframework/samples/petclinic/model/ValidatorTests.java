@@ -9,16 +9,11 @@ import javax.validation.Validator;
 import org.junit.Test;
 
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.samples.petclinic.owner.Pet;
-import org.springframework.samples.petclinic.owner.PetType;
-import org.springframework.samples.petclinic.owner.PetValidator;
-import org.springframework.validation.Errors;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertTrue;
+
 
 /**
  * @author Michael Isvy Simple test to make sure that Bean Validation is working (useful
