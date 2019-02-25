@@ -49,13 +49,6 @@ import org.springframework.samples.petclinic.visit.Visit;
 @Table(name = "pets")
 public class Pet extends NamedEntity {
 
-    public Pet(){
-        this(null, null);
-    }
-
-    public Pet(Integer id, String name){
-        super(id, name);
-    }
 
     @Column(name = "birth_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -68,6 +61,23 @@ public class Pet extends NamedEntity {
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private Owner owner;
+
+
+    public Pet(){
+        this(null, null,null,null,null);
+    }
+
+    public Pet(Integer id, String name){
+        super(id, name);
+    }
+
+    public Pet(Integer id, String name, LocalDate birthDate, PetType type, Owner owner)
+    {
+        super(id,name);
+        this.birthDate = birthDate;
+        this.type = type;
+        this.owner = owner; 
+    }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "petId", fetch = FetchType.EAGER)
     private Set<Visit> visits = new LinkedHashSet<>();

@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.*;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -45,6 +46,8 @@ import org.springframework.samples.petclinic.model.Person;
 @Entity
 @Table(name = "owners")
 public class Owner extends Person {
+
+
     @Column(name = "address")
     @NotEmpty
     private String address;
@@ -60,6 +63,34 @@ public class Owner extends Person {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private Set<Pet> pets;
+
+    private PropertyComparator comparator;
+
+    public Owner()
+    {
+        super(null,null,null);
+    }
+
+    public Owner(Set<Pet> pets, PropertyComparator comparator)
+    {
+        super(null,null,null);
+        this.city = "defaultCity";
+        this.address = "defaultAddress";
+        this.telephone = "xxx-xxxx";
+        this.pets = pets;
+        this.comparator = comparator;
+    }
+
+    public Owner(Integer id, String firstName, String lastName, String address, String city, String telephone, Set<Pet> pets, PropertyComparator comparator)
+    {
+        super(id, firstName, lastName);
+        this.address= address;
+        this.city = city;
+        this.telephone = telephone;
+        this.pets = pets;
+        this.comparator= comparator;
+    }
+
 
     public String getAddress() {
         return this.address;
@@ -98,7 +129,7 @@ public class Owner extends Person {
 
     public List<Pet> getPets() {
         List<Pet> sortedPets = new ArrayList<>(getPetsInternal());
-        PropertyComparator.sort(sortedPets,
+        this.comparator.sort(sortedPets,
                 new MutableSortDefinition("name", true, true));
         return Collections.unmodifiableList(sortedPets);
     }
