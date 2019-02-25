@@ -17,9 +17,18 @@ package org.springframework.samples.petclinic.vet;
 
 import org.junit.Test;
 
+import org.springframework.beans.support.MutableSortDefinition;
+import org.springframework.beans.support.PropertyComparator;
 import org.springframework.util.SerializationUtils;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author Dave Syer
@@ -28,13 +37,30 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class VetTests {
 
     @Test
+    public void testGetOrderedByNameSpecialty(){
+        Set<Specialty> specialties = new HashSet<>();
+        specialties.add(new Specialty(null, "Nurse"));
+        specialties.add(new Specialty(null, "Vice Doctor"));
+        specialties.add(new Specialty(null, "Vice Nurse"));
+        specialties.add(new Specialty(null, "Doctor"));
+        specialties.add(new Specialty(null, "Intern"));
+
+        PropertyComparator propertyComparator = mock(PropertyComparator.class);
+        Vet vet = new Vet(specialties, propertyComparator);
+
+        List<Specialty> sortedSpecialties = vet.getSpecialties();
+
+        verify(propertyComparator).sort(new ArrayList<>(specialties), new MutableSortDefinition("name", true, true));
+    }
+
+    @Test
     public void testSerialization() {
         Vet vet = new Vet();
         vet.setFirstName("Zaphod");
         vet.setLastName("Beeblebrox");
         vet.setId(123);
         Vet other = (Vet) SerializationUtils
-                .deserialize(SerializationUtils.serialize(vet));
+            .deserialize(SerializationUtils.serialize(vet));
         assertThat(other.getFirstName()).isEqualTo(vet.getFirstName());
         assertThat(other.getLastName()).isEqualTo(vet.getLastName());
         assertThat(other.getId()).isEqualTo(vet.getId());

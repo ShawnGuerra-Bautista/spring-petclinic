@@ -15,11 +15,7 @@
  */
 package org.springframework.samples.petclinic.vet;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -49,6 +45,22 @@ public class Vet extends Person {
     @JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"), inverseJoinColumns = @JoinColumn(name = "specialty_id"))
     private Set<Specialty> specialties;
 
+    private PropertyComparator comparator;
+
+    public Vet(){
+        this(null, null, null, null, null);
+    }
+
+    public Vet(Set<Specialty> specialties, PropertyComparator comparator){
+        this(null, null, null, specialties, comparator);
+    }
+
+    public Vet(Integer id, String firstName, String lastName, Set<Specialty> specialties, PropertyComparator comparator){
+        super(id, firstName, lastName);
+        this.specialties = specialties;
+        this.comparator = comparator;
+    }
+
     protected Set<Specialty> getSpecialtiesInternal() {
         if (this.specialties == null) {
             this.specialties = new HashSet<>();
@@ -63,8 +75,8 @@ public class Vet extends Person {
     @XmlElement
     public List<Specialty> getSpecialties() {
         List<Specialty> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
-        PropertyComparator.sort(sortedSpecs,
-                new MutableSortDefinition("name", true, true));
+        this.comparator.sort(sortedSpecs,
+            new MutableSortDefinition("name", true, true));
         return Collections.unmodifiableList(sortedSpecs);
     }
 
