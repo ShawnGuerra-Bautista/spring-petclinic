@@ -12,7 +12,7 @@ public class PetValidatorTest {
       * validates when pets birthday is null
      */
 	  @Test
-	    public void ValidatWhenBirthdayDateIsNull() {
+	    public void ValidateWhenBirthdayDateIsNull() {
 	    	PetValidator petValidate=new PetValidator();
 	    	Pet pet=mock(Pet.class);
 	    	PetType petType=mock(PetType.class);
