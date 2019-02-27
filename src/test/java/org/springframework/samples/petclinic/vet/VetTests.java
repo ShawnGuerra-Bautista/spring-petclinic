@@ -41,8 +41,6 @@ public class VetTests {
         specialties.add(new Specialty(null, "Doctor"));
         specialties.add(new Specialty(null, "Intern"));
 
-        //PropertyComparator propertyComparator = mock(PropertyComparator.class);
-        //Vet vet = new Vet(specialties, propertyComparator);
         Vet vet = new Vet(specialties);
 
         List<Specialty> sortedSpecialties = vet.getSpecialties();
