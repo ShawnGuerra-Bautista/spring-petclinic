@@ -40,21 +40,17 @@ public class Vet extends Person {
     @JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"), inverseJoinColumns = @JoinColumn(name = "specialty_id"))
     private Set<Specialty> specialties;
 
-    @Transient
-    private PropertyComparator comparator;
-
     public Vet(){
-        this(null, null, null, null, null);
+        this(null, null, null, null);
     }
 
-    public Vet(Set<Specialty> specialties, PropertyComparator comparator){
-        this(null, null, null, specialties, comparator);
+    public Vet(Set<Specialty> specialties){
+        this(null, null, null, specialties);
     }
 
-    public Vet(Integer id, String firstName, String lastName, Set<Specialty> specialties, PropertyComparator comparator){
+    public Vet(Integer id, String firstName, String lastName, Set<Specialty> specialties){
         super(id, firstName, lastName);
         this.specialties = specialties;
-        this.comparator = comparator;
     }
 
     protected Set<Specialty> getSpecialtiesInternal() {
@@ -71,7 +67,7 @@ public class Vet extends Person {
     @XmlElement
     public List<Specialty> getSpecialties() {
         List<Specialty> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
-        this.comparator.sort(sortedSpecs,
+        PropertyComparator.sort(sortedSpecs,
             new MutableSortDefinition("name", true, true));
         return Collections.unmodifiableList(sortedSpecs);
     }
