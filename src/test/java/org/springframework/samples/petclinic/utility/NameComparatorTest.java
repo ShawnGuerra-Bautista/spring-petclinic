@@ -34,6 +34,7 @@ public class NameComparatorTest {
         assertEquals("cc", namedEntities.get(3).getName());
     }
 
+    @Test
     public void testCaseDoeNotEffectOrdering() {
         NamedEntity lowerCaseName = new NamedEntity(null, "name");
         NamedEntity upperCaseName = new NamedEntity(null, "NAME");
