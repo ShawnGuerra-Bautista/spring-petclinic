@@ -17,17 +17,12 @@ package org.springframework.samples.petclinic.vet;
 
 import java.util.*;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 
-import org.springframework.beans.support.MutableSortDefinition;
-import org.springframework.beans.support.PropertyComparator;
+import org.springframework.samples.petclinic.model.NamedEntity;
 import org.springframework.samples.petclinic.model.Person;
+import org.springframework.samples.petclinic.utility.NameComparator;
 
 /**
  * Simple JavaBean domain object representing a veterinarian.
@@ -45,20 +40,20 @@ public class Vet extends Person {
     @JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"), inverseJoinColumns = @JoinColumn(name = "specialty_id"))
     private Set<Specialty> specialties;
 
-    private PropertyComparator comparator;
+    private transient Comparator<NamedEntity> specialtiesComparator;
 
     public Vet(){
-        this(null, null, null, null, null);
+        this(null, null, null, null, new NameComparator());
     }
 
-    public Vet(Set<Specialty> specialties, PropertyComparator comparator){
-        this(null, null, null, specialties, comparator);
+    public Vet(Set<Specialty> specialties){
+        this(null, null, null, specialties, new NameComparator());
     }
 
-    public Vet(Integer id, String firstName, String lastName, Set<Specialty> specialties, PropertyComparator comparator){
+    public Vet(Integer id, String firstName, String lastName, Set<Specialty> specialties, Comparator<NamedEntity> comparator){
         super(id, firstName, lastName);
         this.specialties = specialties;
-        this.comparator = comparator;
+        this.specialtiesComparator = comparator;
     }
 
     protected Set<Specialty> getSpecialtiesInternal() {
@@ -75,8 +70,7 @@ public class Vet extends Person {
     @XmlElement
     public List<Specialty> getSpecialties() {
         List<Specialty> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
-        this.comparator.sort(sortedSpecs,
-            new MutableSortDefinition("name", true, true));
+        sortedSpecs.sort(this.specialtiesComparator);
         return Collections.unmodifiableList(sortedSpecs);
     }
 
