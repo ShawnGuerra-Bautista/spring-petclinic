@@ -20,10 +20,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.*;
 
 public class OwnerTests{
 
-    @Test
+	@Test
     public void testGetPets()
     {
         Set<Pet> pets = new HashSet<>();
@@ -33,42 +35,48 @@ public class OwnerTests{
         pets.add(new Pet(null, "Molly", LocalDate.now(), new PetType("snake"), null));
         pets.add(new Pet(null, "Charlie", LocalDate.now(), new PetType("dog"), null));
 
-        // mock propertycomparator class
-        PropertyComparator propertyComparator = mock(PropertyComparator.class);
-
-        //create owner object with mocks
-        Owner owner = new Owner(pets, propertyComparator);
+        Owner owner = new Owner(pets);
 
         //create a list of pets that are sorted
-        List<Pet> findPets = owner.getPets();
+        List<Pet> sortedPets = owner.getPets();
 
         //verify that method was called 
-        verify(propertyComparator).sort(new ArrayList<>(pets), new MutableSortDefinition("name", true, true));
+        assertEquals("Bella", sortedPets.get(0).getName());
+        assertEquals("Charlie", sortedPets.get(1).getName());
+        assertEquals("Daisy", sortedPets.get(2).getName());
+        assertEquals("Lucy", sortedPets.get(3).getName());
+        assertEquals("Molly", sortedPets.get(4).getName());
 
 
     }
     
     @Test
-    public void testGetPetsSuccess() {
+    public void testGetPetFailIfPetDoesNotExist() {
     	
-    	String name = "Buster";
-    	PetType type = new PetType("dog");
-    	Pet other = new Pet(null, name , null, type, null);
-    	assertThat(other.getName()).isEqualTo("Buster");
+    	Pet pet = mock(Pet.class);
+    	pet.setName("Buster");
 
+    	assertThat(pet.getName()).isEqualTo(null);
     }
-
     
     @Test
-    public void testGetPetsFailure() {
-        	
-    	String name = "Buster";
-    	PetType type = new PetType("dog");
-    	Pet other = new Pet(null, name , null, type, null);
-    	assertThat(other.getName()).isEqualTo("Bella");
+    public void testGetPetPassIfPetAndIdMatch() {
+    	Pet pet = mock(Pet.class);
+    	pet.setName("Bella");
+    	pet.setId(0);
+
+    	assertThat(pet.getName()).isEqualTo(null);
+    	assertThat(pet.getId()).isEqualTo(0);
     }
     
-    
+    @Test
+    public void testGetPetTypeFailIfTypeDoesNotExis() {
+    	Pet pet = mock(Pet.class);
+    	PetType pettype = mock(PetType.class);
+    	pettype.setName("bird");
+    	
+    	assertThat(pettype.getName()).isEqualTo(null);
+    }   
 
 
 }
