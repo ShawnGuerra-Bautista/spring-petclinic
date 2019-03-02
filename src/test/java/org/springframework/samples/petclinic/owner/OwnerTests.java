@@ -35,17 +35,18 @@ public class OwnerTests{
         pets.add(new Pet(null, "Molly", LocalDate.now(), new PetType("snake"), null));
         pets.add(new Pet(null, "Charlie", LocalDate.now(), new PetType("dog"), null));
 
-        // mock propertycomparator class
-        PropertyComparator propertyComparator = mock(PropertyComparator.class);
-
-        //create owner object with mocks
-        Owner owner = new Owner(pets, propertyComparator);
+        //create owner object 
+        Owner owner = new Owner(pets);
 
         //create a list of pets that are sorted
-        List<Pet> findPets = owner.getPets();
+        List<Pet> sortedPets = owner.getPets();
 
-        //verify that method was called 
-        verify(propertyComparator).sort(new ArrayList<>(pets), new MutableSortDefinition("name", true, true));
+        //assert pets are sorted
+        assertEquals("Bella", sortedPets.get(0).getName());
+        assertEquals("Charlie", sortedPets.get(1).getName());
+        assertEquals("Daisy", sortedPets.get(2).getName());
+        assertEquals("Lucy", sortedPets.get(3).getName());
+        assertEquals("Molly", sortedPets.get(4).getName());
 
 
     }

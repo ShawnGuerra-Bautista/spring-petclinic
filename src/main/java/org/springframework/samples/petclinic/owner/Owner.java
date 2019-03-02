@@ -60,6 +60,10 @@ public class Owner extends Person {
         this(null, null, null, null, null, null, null, new NameComparator());
     }
     
+    public Owner(Set<Pet> pets) {
+        this(null, null, null, null, null, null, pets, new NameComparator());       
+    }
+    
     public Owner(Set<Pet> pets, Comparator<NamedEntity> comparator) {
         super(null, null, null);
         this.city = "defaultCity";
