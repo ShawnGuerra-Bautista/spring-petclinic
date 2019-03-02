@@ -17,18 +17,14 @@ package org.springframework.samples.petclinic.vet;
 
 import org.junit.Test;
 
-import org.springframework.beans.support.MutableSortDefinition;
-import org.springframework.beans.support.PropertyComparator;
 import org.springframework.util.SerializationUtils;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.*;
 
 /**
  * @author Dave Syer
@@ -37,7 +33,7 @@ import static org.mockito.Mockito.verify;
 public class VetTests {
 
     @Test
-    public void testGetOrderedByNameSpecialty(){
+    public void testCharacterizeOrderOfGetSpecialties(){
         Set<Specialty> specialties = new HashSet<>();
         specialties.add(new Specialty(null, "Nurse"));
         specialties.add(new Specialty(null, "Vice Doctor"));
@@ -45,13 +41,17 @@ public class VetTests {
         specialties.add(new Specialty(null, "Doctor"));
         specialties.add(new Specialty(null, "Intern"));
 
-        PropertyComparator propertyComparator = mock(PropertyComparator.class);
-        Vet vet = new Vet(specialties, propertyComparator);
+        Vet vet = new Vet(specialties);
 
         List<Specialty> sortedSpecialties = vet.getSpecialties();
 
-        verify(propertyComparator).sort(new ArrayList<>(specialties), new MutableSortDefinition("name", true, true));
+        assertEquals("Doctor", sortedSpecialties.get(0).getName());
+        assertEquals("Intern", sortedSpecialties.get(1).getName());
+        assertEquals("Nurse", sortedSpecialties.get(2).getName());
+        assertEquals("Vice Doctor", sortedSpecialties.get(3).getName());
+        assertEquals("Vice Nurse", sortedSpecialties.get(4).getName());
     }
+
 
     @Test
     public void testSerialization() {

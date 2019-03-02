@@ -1,10 +1,12 @@
 package org.springframework.samples.petclinic.owner;
 
 import org.junit.Test;
+import org.junit.Assert;
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
 import org.springframework.util.SerializationUtils;
+import org.springframework.validation.Errors;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,6 +18,7 @@ import java.time.LocalDate;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 public class OwnerTests{
@@ -44,6 +47,28 @@ public class OwnerTests{
 
 
     }
+    
+    @Test
+    public void testGetPetsSuccess() {
+    	
+    	String name = "Buster";
+    	PetType type = new PetType("dog");
+    	Pet other = new Pet(null, name , null, type, null);
+    	assertThat(other.getName()).isEqualTo("Buster");
+
+    }
+
+    
+    @Test
+    public void testGetPetsFailure() {
+        	
+    	String name = "Buster";
+    	PetType type = new PetType("dog");
+    	Pet other = new Pet(null, name , null, type, null);
+    	assertThat(other.getName()).isEqualTo("Bella");
+    }
+    
+    
 
 
 }
