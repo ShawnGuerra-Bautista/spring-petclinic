@@ -28,17 +28,17 @@ public class VisitComparatorTests {
 	        visits.add(new Visit());
 	        visits.add(new Visit());
 	        
-	        visits.get(0).setDate(LocalDate.of(2019, 01, 01));
-	        visits.get(1).setDate(LocalDate.of(2019, 01, 30));
-	        visits.get(2).setDate(LocalDate.of(2019, 02, 12));
-	        visits.get(3).setDate(LocalDate.of(2019, 01, 02));
+	        visits.get(0).setDate(LocalDate.of(2019, 04, 30));
+	        visits.get(1).setDate(LocalDate.of(2019, 01, 01));
+	        visits.get(2).setDate(LocalDate.of(2019, 03, 02));
+	        visits.get(3).setDate(LocalDate.of(2019, 02, 12));
 	        
 	        visits.sort(visitComparator);
 
 	        assertEquals(LocalDate.of(2019, 01, 01), visits.get(0).getDate());
-	        assertEquals(LocalDate.of(2019, 01, 02), visits.get(1).getDate());
-	        assertEquals(LocalDate.of(2019, 01, 30), visits.get(2).getDate());
-	        assertEquals(LocalDate.of(2019, 02, 12), visits.get(3).getDate());
+	        assertEquals(LocalDate.of(2019, 02, 12), visits.get(1).getDate());
+	        assertEquals(LocalDate.of(2019, 03, 02), visits.get(2).getDate());
+	        assertEquals(LocalDate.of(2019, 04, 30), visits.get(3).getDate());
 	    }
 	
 
