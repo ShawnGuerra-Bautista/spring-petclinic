@@ -5,10 +5,12 @@ import org.junit.Assert;
 
 import org.springframework.beans.support.MutableSortDefinition;
 import org.springframework.beans.support.PropertyComparator;
+import org.springframework.samples.petclinic.model.NamedEntity;
 import org.springframework.util.SerializationUtils;
 import org.springframework.validation.Errors;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -52,32 +54,69 @@ public class OwnerTests{
     }
 	
     @Test
-    public void testGetPetFailIfPetDoesNotExist() {
+    public void testGetPetFailIfNotOwnedbyOwner() {
     	
-    	Pet pet = mock(Pet.class);
-    	pet.setName("Buster");
+    	Set<Pet> pets = new HashSet<>();
+    	pets.add(new Pet(null, "Bella",LocalDate.now() , new PetType("dog"), null));
+        pets.add(new Pet(null, "Lucy", LocalDate.now(), new PetType("cat"), null));
 
-    	assertThat(pet.getName()).isEqualTo(null);
+    	Owner owner = new Owner(pets, (Comparator<NamedEntity>) mock(Comparator.class));
+    	
+    	Pet petShouldNotExist = owner.getPet("No pet has this name", false);
+    	assertEquals(null, petShouldNotExist);
     }
     
     @Test
-    public void testGetPetPassIfPetAndIdMatch() {
-    	Pet pet = mock(Pet.class);
-    	pet.setName("Bella");
-    	pet.setId(0);
-
-    	assertThat(pet.getName()).isEqualTo(null);
-    	assertThat(pet.getId()).isEqualTo(0);
+    public void testGetPetPassIfNewPetIsAdded() {
+    	
+    	Set<Pet> pets = new HashSet<>();
+    	Pet pet = new Pet(5, "Buster",LocalDate.now() , new PetType("dog"), null);
+        pets.add(pet);
+        Owner owner = new Owner(pets, (Comparator<NamedEntity>) mock(Comparator.class));
+    	
+    	Pet newPetIsAdded = owner.getPet("Buster", false);
+    	assertEquals(pet, newPetIsAdded);
+        
     }
     
     @Test
-    public void testGetPetTypeFailIfTypeDoesNotExis() {
-    	Pet pet = mock(Pet.class);
-    	PetType pettype = mock(PetType.class);
-    	pettype.setName("bird");
+    public void testGetPetPassIfTypeDoesNotExis() {
+    	Set<Pet> pets = new HashSet<>();
+    	Pet pet = new Pet(5, "Buster",LocalDate.now() , null, null);
+        pets.add(pet);
+        Owner owner = new Owner(pets, (Comparator<NamedEntity>) mock(Comparator.class));
     	
-    	assertThat(pettype.getName()).isEqualTo(null);
+    	Pet petPassIfNoType = owner.getPet("Buster", false);
+    	assertEquals(pet, petPassIfNoType);
     }   
 
+    @Test
+    public void testIgnoringNewPetWorks() {
+        
+        Set<Pet> pets = new HashSet<>();
+        Pet petWithNoId =  new Pet(null, "Buster",LocalDate.now() , new PetType("dog"), null);
+        pets.add(petWithNoId );
+        
+        Owner owner = new Owner(pets, (Comparator<NamedEntity>) mock(Comparator.class));
+        
+        Pet petGottenWithNoId = owner.getPet("Buster", false);
+        assertEquals(petWithNoId , petGottenWithNoId );
+        
+        Pet ignoredPet = owner.getPet("Buster", true);
+        assertEquals(null, ignoredPet );
+    }
+    
+    @Test
+    public void testNameCasingDoesNotEffectGettingPet() {
+        
+        Set<Pet> pets = new HashSet<>();
+        Pet pet =  new Pet(5, "Buster",LocalDate.now() , new PetType("dog"), null);
+        pets.add(pet);
+        
+        Owner owner = new Owner(pets, (Comparator<NamedEntity>) mock(Comparator.class));
+        
+        Pet gottenPet = owner.getPet("buStEr", false);
+        assertEquals(pet, gottenPet );
+    }
 
 }
