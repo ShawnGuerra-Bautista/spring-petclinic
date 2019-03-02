@@ -15,24 +15,15 @@
  */
 package org.springframework.samples.petclinic.owner;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import org.springframework.core.style.ToStringCreator;
+import org.springframework.samples.petclinic.model.NamedEntity;
+import org.springframework.samples.petclinic.model.Person;
+import org.springframework.samples.petclinic.utility.NameComparator;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
-
-import org.springframework.beans.support.MutableSortDefinition;
-import org.springframework.beans.support.PropertyComparator;
-import org.springframework.core.style.ToStringCreator;
-import org.springframework.samples.petclinic.model.Person;
+import java.util.*;
 
 /**
  * Simple JavaBean domain object representing an owner.
@@ -45,6 +36,8 @@ import org.springframework.samples.petclinic.model.Person;
 @Entity
 @Table(name = "owners")
 public class Owner extends Person {
+
+
     @Column(name = "address")
     @NotEmpty
     private String address;
@@ -60,6 +53,35 @@ public class Owner extends Person {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private Set<Pet> pets;
+
+    private transient Comparator<NamedEntity> petsComparator;
+
+    public Owner() {
+        this(null, null, null, null, null, null, null, new NameComparator());
+    }
+    
+    public Owner(Set<Pet> pets) {
+        this(null, null, null, null, null, null, pets, new NameComparator());       
+    }
+    
+    public Owner(Set<Pet> pets, Comparator<NamedEntity> comparator) {
+        super(null, null, null);
+        this.city = "defaultCity";
+        this.address = "defaultAddress";
+        this.telephone = "xxx-xxxx";
+        this.pets = pets;
+        this.petsComparator = comparator;
+    }
+
+    public Owner(Integer id, String firstName, String lastName, String address, String city, String telephone, Set<Pet> pets, Comparator<NamedEntity> comparator) {
+        super(id, firstName, lastName);
+        this.address = address;
+        this.city = city;
+        this.telephone = telephone;
+        this.pets = pets;
+        this.petsComparator = comparator;
+    }
+
 
     public String getAddress() {
         return this.address;
@@ -98,8 +120,7 @@ public class Owner extends Person {
 
     public List<Pet> getPets() {
         List<Pet> sortedPets = new ArrayList<>(getPetsInternal());
-        PropertyComparator.sort(sortedPets,
-                new MutableSortDefinition("name", true, true));
+        sortedPets.sort(this.petsComparator);
         return Collections.unmodifiableList(sortedPets);
     }
 
@@ -144,9 +165,9 @@ public class Owner extends Person {
     public String toString() {
         return new ToStringCreator(this)
 
-                .append("id", this.getId()).append("new", this.isNew())
-                .append("lastName", this.getLastName())
-                .append("firstName", this.getFirstName()).append("address", this.address)
-                .append("city", this.city).append("telephone", this.telephone).toString();
+            .append("id", this.getId()).append("new", this.isNew())
+            .append("lastName", this.getLastName())
+            .append("firstName", this.getFirstName()).append("address", this.address)
+            .append("city", this.city).append("telephone", this.telephone).toString();
     }
 }

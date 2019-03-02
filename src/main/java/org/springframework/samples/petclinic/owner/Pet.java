@@ -50,6 +50,7 @@ import org.springframework.samples.petclinic.visit.Visit;
 @Table(name = "pets")
 public class Pet extends NamedEntity {
 
+
     @Column(name = "birth_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
@@ -62,34 +63,49 @@ public class Pet extends NamedEntity {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "petId", fetch = FetchType.EAGER)
     private Set<Visit> visits = new LinkedHashSet<>();
-    
+
     private transient Comparator<Visit> visitsComparator;
-    
-    public Pet()
-    {
-    	this(new VisitComparator());
-    }
-    
-    public Pet(Comparator<Visit> visitsComparator)
-    {
-    	this.visitsComparator = new VisitComparator();
-    }
-    
-    public Comparator<Visit> getVisitsComparator() {
-		return visitsComparator;
+
+    public Pet() {
+        this(null, null, null, null, null, new VisitComparator());
     }
 
-	public void setVisitsComparator(Comparator<Visit> visitsComparator) {
-		this.visitsComparator = visitsComparator;
-	}
+    public Pet(Integer id, String name) {
+        this(id, name, null, null, null, new VisitComparator());
+    }
+
+    public Pet(Integer id, String name, LocalDate birthDate, PetType type, Owner owner) {
+        this(id, name, birthDate, type, owner, new VisitComparator());
+    }
+
+    public Pet(Integer id, String name, LocalDate birthDate, PetType type, Owner owner, Comparator<Visit> comparator) {
+        super(id, name);
+        this.birthDate = birthDate;
+        this.type = type;
+        this.owner = owner;
+        this.visitsComparator = comparator;
+    }
+
+    public Pet(Comparator<Visit> visitsComparator) {
+        this.visitsComparator = new VisitComparator();
+    }
+
+    public Comparator<Visit> getVisitsComparator() {
+        return visitsComparator;
+    }
+
+    public void setVisitsComparator(Comparator<Visit> visitsComparator) {
+        this.visitsComparator = visitsComparator;
+    }
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
-	public LocalDate getBirthDate() {
+    public LocalDate getBirthDate() {
         return this.birthDate;
     }
 
