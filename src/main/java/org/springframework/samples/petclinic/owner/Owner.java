@@ -59,7 +59,7 @@ public class Owner extends Person {
     public Owner() {
         this(null, null, null, null, null, null, null, new NameComparator());
     }
-
+    
     public Owner(Set<Pet> pets, Comparator<NamedEntity> comparator) {
         super(null, null, null);
         this.city = "defaultCity";
