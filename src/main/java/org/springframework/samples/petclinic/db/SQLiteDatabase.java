@@ -31,7 +31,7 @@ public class SQLiteDatabase {
 			
 			while(scan.hasNextLine())
 			{
-				statement.executeQuery(scan.nextLine());
+				statement.execute(scan.nextLine());
 			}
 			
 			scan.close();
