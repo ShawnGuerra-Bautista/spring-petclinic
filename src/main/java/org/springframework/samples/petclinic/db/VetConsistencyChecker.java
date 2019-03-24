@@ -3,13 +3,30 @@ package org.springframework.samples.petclinic.db;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.springframework.samples.petclinic.vet.Vet;
+import org.springframework.samples.petclinic.vet.VetRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class VetConsistencyChecker {
+	
+	private final VetRepository vetrepo;
 	
 	Connection conn =null;
 	
+	
+	public VetConsistencyChecker(VetRepository vetrepo) {
+		this.vetrepo=vetrepo;
+	}
+	
+	public Collection<Vet> getVetList(){
+		return this.vetrepo.findAll();
+	}
+	
+	/*
 	//gets all the values from the old database and stores it onto the arraylist
 	public ArrayList<Vet> getDataFromOldDb() {
 		String fileName="";
@@ -33,11 +50,12 @@ public class VetConsistencyChecker {
 		}
 		return vet;
 	}
+	*/
 	
 	//method which replace the value for each each inconsistent value
 	 public void inconsistentData(String LastName, String firstName, int Id) {
 		//update the value of the new db data to old db data
-		 String fileName= ""; //url to the sqlite db
+		 String fileName= "sqlite.db"; //url to the sqlite db
 		 String url = "jdbc:sqlite:" + fileName;
 		 Statement statement;
 		String query = "UPDATE vets SET last_name = " + "'" + LastName + "'" + " WHERE first_name = " + "" + firstName + "'" + " AND id = " + Id;
@@ -52,8 +70,8 @@ public class VetConsistencyChecker {
 	
 	//takes the arraylist pass from the connectDatabase
 	//method which takes the values from the other db and comparesit with the new one
-	public void compare(ArrayList<Vet> vets) {
-		String fileName= ""; //url to the sqlite db
+	public void compare(Collection<Vet> vets) {
+		String fileName= "sqlite.db";  //url to the sqlite db
 		String url = "jdbc:sqlite:" + fileName;
 		Statement statement;
 		ResultSet resultSet;

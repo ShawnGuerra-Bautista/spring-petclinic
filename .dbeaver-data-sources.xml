@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data-sources>
-	<data-source id="sqlite_jdbc-169b01b6879-710a312e54aa4f7e" provider="generic" driver="sqlite_jdbc" name="SQLite - sqlite.db" save-password="true" read-only="false">
+	<data-source id="sqlite_jdbc-169b07d7db1-5d59dee50037baf7" provider="generic" driver="sqlite_jdbc" name="SQLite - sqlite.db" save-password="true" read-only="false">
 		<connection server="" database="/Users/rezraveen/Documents/spring-petclinic/sqlite.db" url="jdbc:sqlite:/Users/rezraveen/Documents/spring-petclinic/sqlite.db" type="dev"/>
 	</data-source>
 	<filters/>
