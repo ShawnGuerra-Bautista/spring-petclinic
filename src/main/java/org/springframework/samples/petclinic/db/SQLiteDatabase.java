@@ -29,9 +29,22 @@ public class SQLiteDatabase {
 			
 			Scanner scan = new Scanner(new File("src/main/resources/db/SQLite/schema.sqlite"));
 			
+			String sql = "";
+			
 			while(scan.hasNextLine())
 			{
-				statement.execute(scan.nextLine());
+				String str = scan.nextLine();
+				
+				if (scan.hasNextLine())
+					str += "\n";
+				
+				sql += str;
+				
+				if(str.endsWith(";") || str.endsWith(";\n"))
+				{
+					statement.execute(sql);
+					sql = "";
+				}
 			}
 			
 			scan.close();
