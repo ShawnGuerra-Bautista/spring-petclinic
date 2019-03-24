@@ -25,7 +25,7 @@ public class VisitConsistencyChecker {
     public int checkConsistency() {
         int inconsistency = 0;
         Collection<Visit> visits = getVisitList();
-        String queryOfActual = "SELECT * FROM vets";
+        String queryOfActual = "SELECT * FROM visits";
         String url = "jdbc:sqlite:sqlite.db";
         Statement statement;
         ResultSet resultSet;
@@ -65,7 +65,7 @@ public class VisitConsistencyChecker {
     public void fixViolation(int id, Date visitDate, String description, int petId){
         String url = "jdbc:sqlite:sqlite.db";
         Statement statement;
-        String query = "UPDATE vets SET visit_date = " + "'" + visitDate + "'" +
+        String query = "UPDATE visits SET visit_date = " + "'" + visitDate + "'" +
             " AND description = " + "'" + description + "'" +
             " AND pet_id = " + "'" + petId + "'" +
             " WHERE id = " + id;
