@@ -1,21 +1,16 @@
 package org.springframework.samples.petclinic.db;
 
-import org.springframework.samples.petclinic.vet.Vet;
-import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.time.LocalDate;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class VisitConsistencyChecker {
 
     private VisitRepository visitRepository;
-    private Collection<Visit> newVisits;
+    private ArrayList<Visit> newVisits;
     private Connection connnection =null;
 
 
@@ -50,23 +45,36 @@ public class VisitConsistencyChecker {
 
         int index = 0;
         for(Visit expectedVisit: visits){
-
+            Visit actualVisit = newVisits.get(index);
+            if(!expectedVisit.equals(actualVisit)){
+                inconsistency+=1;
+                violation(expectedVisit, actualVisit);
+                fixViolation(actualVisit.getPetId(), Date.valueOf(actualVisit.getDate()), actualVisit.getDescription(), actualVisit.getPetId());
+            }
+            index+=1;
         }
-
-
         return inconsistency;
     }
 
-    //takes the arraylist pass from the connectDatabase
-    //method which takes the values from the other db and comparesit with the new one
-    public void compare(Collection<Vet> vets) {
+    public void violation(Visit expectedVisit, Visit actualVisit){
+        System.out.println("Violation: " +
+            "\n Expected: " + expectedVisit +
+            "\n Actual: " + actualVisit);
+    }
 
-
-        //ArrayList <String> lastName=new ArrayList<>();
-        for (Vet v : vets) { // data from the first DB (old db)
-
-
-
+    public void fixViolation(int id, Date visitDate, String description, int petId){
+        String url = "jdbc:sqlite:sqlite.db";
+        Statement statement;
+        String query = "UPDATE vets SET visit_date = " + "'" + visitDate + "'" +
+            " AND description = " + "'" + description + "'" +
+            " AND pet_id = " + "'" + petId + "'" +
+            " WHERE id = " + id;
+        try {
+            connnection = DriverManager.getConnection(url);
+            statement = connnection.createStatement();
+            statement.executeUpdate(query);
+        }catch(Exception e) {
+            e.printStackTrace();
         }
     }
 }
