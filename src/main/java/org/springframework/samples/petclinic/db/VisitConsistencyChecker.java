@@ -10,7 +10,7 @@ import java.util.Collection;
 public class VisitConsistencyChecker {
 
     private VisitRepository visitRepository;
-    private ArrayList<Visit> newVisits;
+    private ArrayList<Visit> newVisits = new ArrayList<>();
     private Connection connnection =null;
 
 
@@ -18,13 +18,13 @@ public class VisitConsistencyChecker {
         this.visitRepository = visitRepository;
     }
 
-    public Collection<Visit> getVetList(){
+    public Collection<Visit> getVisitList(){
         return this.visitRepository.findAll();
     }
 
     public int checkConsistency() {
         int inconsistency = 0;
-        Collection<Visit> visits = getVetList();
+        Collection<Visit> visits = getVisitList();
         String queryOfActual = "SELECT * FROM vets";
         String url = "jdbc:sqlite:sqlite.db";
         Statement statement;
