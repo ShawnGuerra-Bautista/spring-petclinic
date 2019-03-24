@@ -45,6 +45,10 @@ public class Vet extends Person {
     public Vet(){
         this(null, null, null, null, new NameComparator());
     }
+    
+    public Vet(Integer id, String firstName, String lastName) {
+    	super(id, firstName, lastName);
+    }
 
     public Vet(Set<Specialty> specialties){
         this(null, null, null, specialties, new NameComparator());

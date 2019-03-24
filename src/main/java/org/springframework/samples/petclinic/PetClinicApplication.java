@@ -37,5 +37,6 @@ public class PetClinicApplication {
         // TODO ConsistencyChecker.forklift();
         
         SQLiteDatabase.createNewDatabase("sqlite.db");
+        
     }
 }
