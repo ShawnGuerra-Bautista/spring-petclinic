@@ -60,6 +60,44 @@ public class SQLiteDatabase {
 		}
 	}
 	
+	public static void AddToDatabase(String fileName, String toAdd){
+String url = "jdbc:sqlite:" + fileName;
+		
+		try (Connection conn = DriverManager.getConnection(url))
+		{
+			if (conn != null)
+			{
+				DatabaseMetaData meta = conn.getMetaData();
+				System.out.println("Driver Name: " + meta.getDriverName());
+				
+				System.out.println("SQLite database created");
+			}
+			
+			Statement statement = conn.createStatement();
+			
+			Scanner scan = new Scanner(new File("src/main/resources/db/SQLite/schema.sqlite"));
+			
+			String sql = "";
+			
+			while(scan.hasNextLine())
+			{
+				//Query
+			}
+			
+			scan.close();
+			
+		}
+		catch(SQLException e1)
+		{
+			System.err.println(e1.getMessage());
+		}
+		catch(IOException e2)
+		{
+			System.err.println(e2.getMessage());
+		}
+	}
+	
+	
 	public static void main(String[] args)
 	{
 		createNewDatabase("sqlite.db");
