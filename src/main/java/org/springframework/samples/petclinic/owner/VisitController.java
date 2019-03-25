@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.samples.petclinic.db.SQLiteDatabase;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -37,6 +38,8 @@ class VisitController {
 
     private final VisitRepository visits;
     private final PetRepository pets;
+    boolean OldDb = true;
+    boolean NewDb = true;
 
 
     public VisitController(VisitRepository visits, PetRepository pets) {
@@ -64,7 +67,12 @@ class VisitController {
         Pet pet = this.pets.findById(petId);
         model.put("pet", pet);
         Visit visit = new Visit();
+        if(OldDb) {
         pet.addVisit(visit);
+        }
+        if(NewDb) {
+        SQLiteDatabase.AddVisits("sqlite.db", visit);
+        }
         return visit;
     }
 
