@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Scanner;
+import java.util.*;
 
 public class SQLiteDatabase {
 
@@ -61,7 +62,8 @@ public class SQLiteDatabase {
 	}
 	
 	public static void AddToDatabase(String fileName, String toAdd){
-String url = "jdbc:sqlite:" + fileName;
+
+		String url = "jdbc:sqlite:" + fileName;
 		
 		try (Connection conn = DriverManager.getConnection(url))
 		{
@@ -79,9 +81,16 @@ String url = "jdbc:sqlite:" + fileName;
 			
 			String sql = "";
 			
-			while(scan.hasNextLine())
+			//Shadow Write
+			
+			statement.executeUpdate("insert into owners values(11, 'George', 'Test', '110 W. Liberty St.', 'Madison', '6085551023')");
+			
+			ResultSet result = statement.executeQuery("select * from owners");
+			
+			while(result.next())
 			{
-				//Query
+				//Shadow Read
+				System.out.println("last_name = " + result.getString("last_name"));
 			}
 			
 			scan.close();
