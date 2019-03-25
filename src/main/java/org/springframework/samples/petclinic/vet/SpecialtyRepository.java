@@ -8,5 +8,5 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface SpecialtyRepository extends Repository<Vet, Integer> {
     @Transactional(readOnly = true)
-    Collection<Vet> findAll() throws DataAccessException;
+    Collection<Specialty> findAll() throws DataAccessException;
 }
