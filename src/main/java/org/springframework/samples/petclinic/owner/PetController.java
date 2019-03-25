@@ -38,6 +38,8 @@ class PetController {
     private static final String VIEWS_PETS_CREATE_OR_UPDATE_FORM = "pets/createOrUpdatePetForm";
     private final PetRepository pets;
     private final OwnerRepository owners;
+    boolean OldDb = true;
+	boolean NewDb = true;
 
     public PetController(PetRepository pets, OwnerRepository owners) {
         this.pets = pets;
@@ -67,8 +69,12 @@ class PetController {
     @GetMapping("/pets/new")
     public String initCreationForm(Owner owner, ModelMap model) {
         Pet pet = new Pet();
+        if(OldDb){
         owner.addPet(pet);
+        }
+        if(NewDb){
         SQLiteDatabase.AddPets("sqlite.db", pet);
+        }
         model.put("pet", pet);
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
     }
@@ -103,8 +109,12 @@ class PetController {
             model.put("pet", pet);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         } else {
+            if(OldDb){
             owner.addPet(pet);
+            }
+            if(NewDb){
             SQLiteDatabase.AddPets("sqlite.db", pet);
+            }
             this.pets.save(pet);
             return "redirect:/owners/{ownerId}";
         }
