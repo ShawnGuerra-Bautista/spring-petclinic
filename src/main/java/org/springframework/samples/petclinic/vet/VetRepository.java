@@ -41,6 +41,4 @@ public interface VetRepository extends Repository<Vet, Integer> {
     @Transactional(readOnly = true)
     @Cacheable("vets")
     Collection<Vet> findAll() throws DataAccessException;
-
-
 }

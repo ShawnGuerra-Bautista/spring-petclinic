@@ -20,7 +20,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.samples.petclinic.db.SQLiteDatabase;
 
-import java.sql.*;
+
+
 
 /**
  * PetClinic Spring Boot Application.
@@ -37,5 +38,7 @@ public class PetClinicApplication {
         // TODO ConsistencyChecker.forklift();
         
         SQLiteDatabase.createNewDatabase("sqlite.db");
+        
+        
     }
 }
