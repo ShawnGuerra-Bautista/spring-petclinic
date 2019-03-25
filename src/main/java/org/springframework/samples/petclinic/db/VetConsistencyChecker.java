@@ -17,6 +17,25 @@ public class VetConsistencyChecker {
 	
 	Connection conn =null;
 	
+	public VetConsistencyChecker() {
+		vetrepo=null;
+	}
+	/*
+	public void addData() {
+		 String fileName= "sqlite.db"; //url to the sqlite db
+		 String url = "jdbc:sqlite:" + fileName;
+		 Statement statement;
+		 String query="INSERT INTO vets (id, first_name, last_name) VALUES ( 1, 'Bob','Builder')";
+		 try {
+			 conn = DriverManager.getConnection(url); //connecting to the second db
+				statement = conn.createStatement();
+				statement.executeUpdate(query);
+				System.out.println(query);
+		 }catch(Exception e) {
+			 e.printStackTrace();
+		 }
+	}
+	*/
 	
 	public VetConsistencyChecker(VetRepository vetrepo) {
 		this.vetrepo=vetrepo;
@@ -101,3 +120,4 @@ public class VetConsistencyChecker {
 	
 
 }
+
