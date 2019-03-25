@@ -210,6 +210,52 @@ public static void AddVets(String fileName, Vet vet){
 			System.err.println(e2.getMessage());
 		}
 	}
+public static void AddVisits(String fileName, Visit visit){
+	int id = visit.getId();
+	Integer pet_id = visit.getPetId();
+    LocalDate visit_date = visit.getDate();
+    String description = visit.getDescription();
+    
+
+	String url = "jdbc:sqlite:" + fileName;
+			
+	try (Connection conn = DriverManager.getConnection(url))
+	{
+		if (conn != null)
+		{
+			DatabaseMetaData meta = conn.getMetaData();
+			System.out.println("Driver Name: " + meta.getDriverName());
+			
+			System.out.println("SQLite database created");
+		}
+		
+		Statement statement = conn.createStatement();
+		
+		Scanner scan = new Scanner(new File("src/main/resources/db/SQLite/schema.sqlite"));
+
+        //Shadow Write
+
+        statement.executeUpdate("INSERT INTO visits VALUES ('"+id+"','"+pet_id+"','"+visit_date+"','"+description+"')");
+        ResultSet result = statement.executeQuery("select * from visits");
+
+        while(result.next())
+        {
+            //Shadow Read
+            System.out.println("name = " + result.getString("pet_id"));
+        }
+
+        scan.close();
+		
+	}
+	catch(SQLException e1)
+	{
+		System.err.println(e1.getMessage());
+	}
+	catch(IOException e2)
+	{
+		System.err.println(e2.getMessage());
+	}
+}
 	public static void main(String[] args)
 	{
 		createNewDatabase("sqlite.db");
