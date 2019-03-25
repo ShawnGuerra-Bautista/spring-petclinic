@@ -9,8 +9,9 @@ import java.util.Collection;
 
 import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.owner.PetRepository;
+import org.springframework.stereotype.Service;
 
-
+@Service
 public class PetConsistencyChecker {
 
 	private final PetRepository petRepo;
