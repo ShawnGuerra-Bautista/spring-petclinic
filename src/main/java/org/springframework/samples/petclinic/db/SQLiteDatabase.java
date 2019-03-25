@@ -7,9 +7,12 @@ import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import org.springframework.samples.petclinic.owner.Owner;
+import org.springframework.samples.petclinic.owner.Pet;
+import org.springframework.samples.petclinic.owner.PetType;
 
 import java.sql.ResultSet;
 
@@ -88,8 +91,6 @@ public class SQLiteDatabase {
 			
 			Scanner scan = new Scanner(new File("src/main/resources/db/SQLite/schema.sqlite"));
 
-            String sql = "";
-
             //Shadow Write
 
             statement.executeUpdate("INSERT INTO owners VALUES ('"+id+"','"+first_name+"','"+last_name+"','"+address+"','"+city+"','"+telephone+"')");
@@ -114,11 +115,58 @@ public class SQLiteDatabase {
 		}
 	}
 	
+	public static void AddPets(String fileName, Pet pet){
+		int id = pet.getId();
+        String name = pet.getName();
+        LocalDate birthDate = pet.getBirthDate();
+        PetType type= pet.getType();
+        Owner owner = pet.getOwner();
+
+		String url = "jdbc:sqlite:" + fileName;
+				
+		try (Connection conn = DriverManager.getConnection(url))
+		{
+			if (conn != null)
+			{
+				DatabaseMetaData meta = conn.getMetaData();
+				System.out.println("Driver Name: " + meta.getDriverName());
+				
+				System.out.println("SQLite database created");
+			}
+			
+			Statement statement = conn.createStatement();
+			
+			Scanner scan = new Scanner(new File("src/main/resources/db/SQLite/schema.sqlite"));
+
+            //Shadow Write
+
+            statement.executeUpdate("INSERT INTO pets VALUES ('"+id+"','"+name+"','"+birthDate+"','"+type+"','"+owner+"')");
+            ResultSet result = statement.executeQuery("select * from pets");
+
+            while(result.next())
+            {
+                //Shadow Read
+                System.out.println("name = " + result.getString("name"));
+            }
+
+            scan.close();
+			
+		}
+		catch(SQLException e1)
+		{
+			System.err.println(e1.getMessage());
+		}
+		catch(IOException e2)
+		{
+			System.err.println(e2.getMessage());
+		}
+	}
+	
+	
 	
 	public static void main(String[] args)
 	{
 		createNewDatabase("sqlite.db");
-        //AddToDatabase("sqlite.db");
-
+		//AddPets("sqlite.db");
 	}
 }
