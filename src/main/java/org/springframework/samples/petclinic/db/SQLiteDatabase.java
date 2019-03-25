@@ -181,19 +181,19 @@ public class SQLiteDatabase {
         Owner owner = pet.getOwner();
 
 		String url = "jdbc:sqlite:" + fileName;
-				
+
 		try (Connection conn = DriverManager.getConnection(url))
 		{
 			if (conn != null)
 			{
 				DatabaseMetaData meta = conn.getMetaData();
 				System.out.println("Driver Name: " + meta.getDriverName());
-				
+
 				System.out.println("SQLite database created");
 			}
-			
+
 			Statement statement = conn.createStatement();
-			
+
 			Scanner scan = new Scanner(new File("src/main/resources/db/SQLite/schema.sqlite"));
 
             //Shadow Write
@@ -201,7 +201,7 @@ public class SQLiteDatabase {
             statement.executeUpdate("INSERT INTO pets VALUES ('"+id+"','"+name+"','"+birthDate+"','"+type+"','"+owner+"')");
 
             scan.close();
-			
+
 		}
 		catch(SQLException e1)
 		{

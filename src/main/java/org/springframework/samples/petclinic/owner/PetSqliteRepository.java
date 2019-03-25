@@ -6,19 +6,18 @@ import org.springframework.samples.petclinic.db.helper.SqliteRepositoryHelper;
 import org.springframework.samples.petclinic.db.helper.SqliteValuesBuilder;
 import org.springframework.stereotype.Repository;
 
-
 @Repository
-public class OwnerSqliteRepository extends SqliteRepository<Owner> {
+public class PetSqliteRepository extends SqliteRepository<Pet> {
 
-    public final String TABLE_NAME = "owners";
+    public final String TABLE_NAME = "pets";
+    public final String TYPE_TABLE_NAME = "types";
 
     enum Column implements ColumnProvider {
         id,
-        first_name,
-        last_name,
-        address,
-        city,
-        telephone
+        name,
+        birth_date,
+        type_id,
+        owner_id
     }
 
     @Override
@@ -32,14 +31,13 @@ public class OwnerSqliteRepository extends SqliteRepository<Owner> {
     }
 
     @Override
-    public String toValues(Owner owner) {
+    public String toValues(Pet pet) {
         return new SqliteValuesBuilder()
-            .withInt(owner.getId())
-            .withVarchar(owner.getFirstName())
-            .withVarchar(owner.getLastName())
-            .withVarchar(owner.getAddress())
-            .withVarchar(owner.getCity())
-            .withVarchar(owner.getTelephone())
+            .withInt(pet.getId())
+            .withVarchar(pet.getName())
+            .withDate(pet.getBirthDate())
+            .withInt(pet.getType().getId())
+            .withInt(pet.getOwner().getId())
             .build();
     }
 }

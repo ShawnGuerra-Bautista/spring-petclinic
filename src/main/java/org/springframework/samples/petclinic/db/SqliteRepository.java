@@ -1,17 +1,15 @@
 package org.springframework.samples.petclinic.db;
 
 import org.springframework.samples.petclinic.model.BaseEntity;
+import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+@Repository
 public abstract class SqliteRepository<T extends BaseEntity> {
-
-    public static String asSqlString(String string) {
-        return "\"" + string + "\"";
-    }
 
     public abstract String getTableName();
     public abstract String getAllColumns();

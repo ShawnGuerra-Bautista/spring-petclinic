@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.owner;
+package org.springframework.samples.petclinic.model;
 
 import org.springframework.samples.petclinic.db.SqliteRepository;
 import org.springframework.samples.petclinic.db.helper.ColumnProvider;
@@ -6,24 +6,23 @@ import org.springframework.samples.petclinic.db.helper.SqliteRepositoryHelper;
 import org.springframework.samples.petclinic.db.helper.SqliteValuesBuilder;
 import org.springframework.stereotype.Repository;
 
-
 @Repository
-public class OwnerSqliteRepository extends SqliteRepository<Owner> {
+public class NamedEntitySqliteRepository extends SqliteRepository<NamedEntity> {
 
-    public final String TABLE_NAME = "owners";
+    public String tableName;
 
     enum Column implements ColumnProvider {
         id,
-        first_name,
-        last_name,
-        address,
-        city,
-        telephone
+        name
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
     }
 
     @Override
     public String getTableName() {
-        return TABLE_NAME;
+        return tableName;
     }
 
     @Override
@@ -32,14 +31,10 @@ public class OwnerSqliteRepository extends SqliteRepository<Owner> {
     }
 
     @Override
-    public String toValues(Owner owner) {
+    public String toValues(NamedEntity entity) {
         return new SqliteValuesBuilder()
-            .withInt(owner.getId())
-            .withVarchar(owner.getFirstName())
-            .withVarchar(owner.getLastName())
-            .withVarchar(owner.getAddress())
-            .withVarchar(owner.getCity())
-            .withVarchar(owner.getTelephone())
+            .withInt(entity.getId())
+            .withVarchar(entity.getName())
             .build();
     }
 }

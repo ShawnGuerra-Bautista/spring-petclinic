@@ -54,9 +54,9 @@ class OwnerController {
         this.owners = clinicService;
         this.forklift = forklift;
 
-        // TODO since will end up with one forklift, should be removed later
+        // TODO since will end up with one forklift, should be moved later
         ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
-        Runnable doForkLift = forklift::forkliftOwners;
+        Runnable doForkLift = forklift::forklift;
         ses.schedule(doForkLift, 5, TimeUnit.SECONDS);
 
     }
