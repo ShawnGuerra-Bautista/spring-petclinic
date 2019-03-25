@@ -59,5 +59,8 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
      */
     void save(Owner owner);
 
+    @Transactional(readOnly = true)
+    Collection<Owner> findAll();
+
 
 }

@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.springframework.samples.petclinic.db.DatabaseForklift;
 import org.springframework.samples.petclinic.db.SQLiteDatabase;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +30,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Juergen Hoeller
@@ -41,12 +45,20 @@ class OwnerController {
 
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
     private final OwnerRepository owners;
+    private final DatabaseForklift forklift;
     boolean OldDb = true;
     boolean NewDb = true;
 
 
-    public OwnerController(OwnerRepository clinicService) {
+    public OwnerController(OwnerRepository clinicService, DatabaseForklift forklift) {
         this.owners = clinicService;
+        this.forklift = forklift;
+
+        // TODO since will end up with one forklift, should be removed later
+        ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
+        Runnable doForkLift = forklift::forkliftOwners;
+        ses.schedule(doForkLift, 5, TimeUnit.SECONDS);
+
     }
 
     @InitBinder

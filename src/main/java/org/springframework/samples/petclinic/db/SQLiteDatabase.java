@@ -14,15 +14,35 @@ import java.util.Scanner;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.owner.PetType;
-import org.springframework.samples.petclinic.vet.Specialty;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.visit.Visit;
-
-import antlr.collections.List;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 
 public class SQLiteDatabase {
+
+    public static final String preUrl = "jdbc:sqlite:";
+    public static final String defaultFileName = "sqlite.db";
+    public static final String defaultUrl = preUrl + defaultFileName;
+
+    public static Connection getConnection(String fileName) {
+
+        Connection connection = null;
+
+        try {
+            connection = DriverManager.getConnection(preUrl + fileName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return connection;
+    }
+
+    public static Connection getConnection() {
+        return getConnection(defaultFileName);
+    }
+
 
 	public static void createNewDatabase(String fileName)
 	{
