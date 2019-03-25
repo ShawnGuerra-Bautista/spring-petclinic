@@ -76,6 +76,7 @@ public class Pet extends NamedEntity {
     public Pet(Integer id, String name) {
         this(id, name, null, null, null, new VisitComparator());
     }
+    
 
     public Pet(Integer id, String name, LocalDate birthDate, PetType type, Owner owner) {
         this(id, name, birthDate, type, owner, new VisitComparator());
