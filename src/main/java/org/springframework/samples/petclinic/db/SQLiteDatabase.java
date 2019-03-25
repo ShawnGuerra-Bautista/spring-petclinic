@@ -8,6 +8,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.springframework.samples.petclinic.owner.Owner;
@@ -16,6 +17,8 @@ import org.springframework.samples.petclinic.owner.PetType;
 import org.springframework.samples.petclinic.vet.Specialty;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.visit.Visit;
+
+import antlr.collections.List;
 
 import java.sql.ResultSet;
 
@@ -190,8 +193,9 @@ public class SQLiteDatabase {
 		}
 	}
 	
-	public static void ReadPets(String fileName, Pet pet){
-
+	public static ArrayList<Pet> GetPetsByType(String fileName, Pet pet){
+		ArrayList<Pet> Pets = new ArrayList<>();
+		
 		String url = "jdbc:sqlite:" + fileName;
 				
 		try (Connection conn = DriverManager.getConnection(url))
@@ -208,16 +212,13 @@ public class SQLiteDatabase {
 			
 			Scanner scan = new Scanner(new File("src/main/resources/db/SQLite/schema.sqlite"));
 
-            ResultSet result = statement.executeQuery("select * from pets");
+            ResultSet result = statement.executeQuery("select types from pets");
 
             while(result.next())
             {
-                //Shadow Read
-                System.out.println("name = " + result.getString("name"));
+                
             }
-
             scan.close();
-			
 		}
 		catch(SQLException e1)
 		{
@@ -227,6 +228,8 @@ public class SQLiteDatabase {
 		{
 			System.err.println(e2.getMessage());
 		}
+		
+		return Pets;
 	}
 
 	public static void AddVets(String fileName, Vet vet){
