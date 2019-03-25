@@ -268,6 +268,45 @@ public class SQLiteDatabase {
 			System.err.println(e2.getMessage());
 		}
 	}
+	
+	public static void ReadVets(String fileName, Vet vet){
+
+		String url = "jdbc:sqlite:" + fileName;
+				
+		try (Connection conn = DriverManager.getConnection(url))
+		{
+			if (conn != null)
+			{
+				DatabaseMetaData meta = conn.getMetaData();
+				System.out.println("Driver Name: " + meta.getDriverName());
+				
+				System.out.println("SQLite database created");
+			}
+			
+			Statement statement = conn.createStatement();
+			
+			Scanner scan = new Scanner(new File("src/main/resources/db/SQLite/schema.sqlite"));
+
+            ResultSet result = statement.executeQuery("select * from vets");
+
+            while(result.next())
+            {
+                //Shadow Read
+                System.out.println("last_name = " + result.getString("last_name"));
+            }
+
+            scan.close();
+			
+		}
+		catch(SQLException e1)
+		{
+			System.err.println(e1.getMessage());
+		}
+		catch(IOException e2)
+		{
+			System.err.println(e2.getMessage());
+		}
+	}
 
 	public static void AddVisits(String fileName, Visit visit){
 		int id = visit.getId();
@@ -307,8 +346,49 @@ public class SQLiteDatabase {
 			System.err.println(e2.getMessage());
 		}
 	}
+	
+	public static void ReadVisits(String fileName, Visit visit){
+	
+		String url = "jdbc:sqlite:" + fileName;
+				
+		try (Connection conn = DriverManager.getConnection(url))
+		{
+			if (conn != null)
+			{
+				DatabaseMetaData meta = conn.getMetaData();
+				System.out.println("Driver Name: " + meta.getDriverName());
+				
+				System.out.println("SQLite database created");
+			}
+			
+			Statement statement = conn.createStatement();
+			
+			Scanner scan = new Scanner(new File("src/main/resources/db/SQLite/schema.sqlite"));
+	
+	        ResultSet result = statement.executeQuery("select * from visits");
+	
+	        while(result.next())
+	        {
+	            //Shadow Read
+	            System.out.println("pet_id = " + result.getString("pet_id"));
+	        }
+	
+	        scan.close();
+			
+		}
+		catch(SQLException e1)
+		{
+			System.err.println(e1.getMessage());
+		}
+		catch(IOException e2)
+		{
+			System.err.println(e2.getMessage());
+		}
+	}
+	
+	
 		public static void main(String[] args)
 		{
 			createNewDatabase("sqlite.db");
 		}
-	}
+}
