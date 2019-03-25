@@ -20,22 +20,7 @@ public class VetConsistencyChecker {
 	public VetConsistencyChecker() {
 		vetrepo=null;
 	}
-	/*
-	public void addData() {
-		 String fileName= "sqlite.db"; //url to the sqlite db
-		 String url = "jdbc:sqlite:" + fileName;
-		 Statement statement;
-		 String query="INSERT INTO vets (id, first_name, last_name) VALUES ( 1, 'Bob','Builder')";
-		 try {
-			 conn = DriverManager.getConnection(url); //connecting to the second db
-				statement = conn.createStatement();
-				statement.executeUpdate(query);
-				System.out.println(query);
-		 }catch(Exception e) {
-			 e.printStackTrace();
-		 }
-	}
-	*/
+	
 	
 	public VetConsistencyChecker(VetRepository vetrepo) {
 		this.vetrepo=vetrepo;
@@ -45,31 +30,6 @@ public class VetConsistencyChecker {
 		return this.vetrepo.findAll();
 	}
 	
-	/*
-	//gets all the values from the old database and stores it onto the arraylist
-	public ArrayList<Vet> getDataFromOldDb() {
-		String fileName="";
-		String url = "jdbc:sqlite:" + fileName;
-		Statement statement;
-		ResultSet resultSet;
-		String query = "SELECT * FROM vets";  //query through the vets database
-		Vet vets;
-		ArrayList<Vet> vet = new ArrayList<>();
-		try {
-			conn = DriverManager.getConnection(url);
-			statement = conn.createStatement();
-			resultSet = statement.executeQuery(query);
-			while (resultSet.next()) {
-				vets = new Vet(resultSet.getInt("id"), resultSet.getString("first_name"),
-						resultSet.getString("last_name"));
-				vet.add(vets);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return vet;
-	}
-	*/
 	
 	//method which replace the value for each each inconsistent value
 	 public void inconsistentData(String LastName, String firstName, int Id) {
@@ -87,8 +47,7 @@ public class VetConsistencyChecker {
 		}
 	}
 	
-	//takes the arraylist pass from the connectDatabase
-	//method which takes the values from the other db and comparesit with the new one
+	//method which takes the values from the other db and compares it with the new one
 	public void compare(Collection<Vet> vets) {
 		String fileName= "sqlite.db";  //url to the sqlite db
 		String url = "jdbc:sqlite:" + fileName;
