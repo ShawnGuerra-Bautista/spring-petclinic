@@ -8,6 +8,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
+
+import org.springframework.samples.petclinic.owner.Owner;
+
 import java.sql.ResultSet;
 
 public class SQLiteDatabase {
@@ -61,9 +64,17 @@ public class SQLiteDatabase {
 		}
 	}
 	
-	public static void AddToDatabase(String fileName){
-String url = "jdbc:sqlite:" + fileName;
+	public static void AddToDatabase(String fileName, Owner owner){
 		
+		int id= owner.getId();
+        String first_name= owner.getFirstName();
+        String last_name= owner.getLastName();
+        String address= owner.getAddress();
+        String city= owner.getCity();
+        String telephone= owner.getTelephone();
+		
+		String url = "jdbc:sqlite:" + fileName;
+				
 		try (Connection conn = DriverManager.getConnection(url))
 		{
 			if (conn != null)
@@ -82,7 +93,8 @@ String url = "jdbc:sqlite:" + fileName;
 
             //Shadow Write
 
-            statement.executeUpdate("insert into owners values(1, 'George', 'Test', '110 W. Liberty St.', 'Madison', '6085551023')");
+            statement.executeUpdate("INSERT INTO 'owners values'(id, firstName, lastName, address, city, phone)"
+            		+ "VALUE ('"+id+"','"+first_name+"','"+last_name+"','"+address+"','"+city+"''"+telephone+"')");
             ResultSet result = statement.executeQuery("select * from owners");
 
             while(result.next())
@@ -108,7 +120,7 @@ String url = "jdbc:sqlite:" + fileName;
 	public static void main(String[] args)
 	{
 		createNewDatabase("sqlite.db");
-        AddToDatabase("sqlite.db");
+        //AddToDatabase("sqlite.db");
 
 	}
 }
