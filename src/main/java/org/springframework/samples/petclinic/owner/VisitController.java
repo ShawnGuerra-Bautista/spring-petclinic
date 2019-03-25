@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.samples.petclinic.db.SQLiteDatabase;
 
 import javax.validation.Valid;
 import java.util.Map;
@@ -65,6 +66,7 @@ class VisitController {
         model.put("pet", pet);
         Visit visit = new Visit();
         pet.addVisit(visit);
+        SQLiteDatabase.AddVisits("sqlite.db", visit);
         return visit;
     }
 
