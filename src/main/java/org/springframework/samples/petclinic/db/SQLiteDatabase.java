@@ -64,13 +64,13 @@ public class SQLiteDatabase {
 		}
 	}
 	
-	public static void AddToDatabase(String fileName){
-		int id= 1;
-        String first_name= "George";
-        String last_name= "Franklin";
-        String address= "110 W. Liberty St.";
-        String city= "Madison";
-        String telephone= "6085551023";
+	public static void AddToDatabase(String fileName, Owner owner){
+		int id = owner.getId();
+        String first_name = owner.getFirstName();
+        String last_name = owner.getLastName();
+        String address = owner.getAddress();
+        String city = owner.getCity();
+        String telephone = owner.getTelephone();
 		
 		String url = "jdbc:sqlite:" + fileName;
 				
@@ -118,7 +118,7 @@ public class SQLiteDatabase {
 	public static void main(String[] args)
 	{
 		createNewDatabase("sqlite.db");
-        AddToDatabase("sqlite.db");
+        //AddToDatabase("sqlite.db");
 
 	}
 }
