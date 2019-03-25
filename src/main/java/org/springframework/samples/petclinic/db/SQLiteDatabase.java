@@ -15,6 +15,7 @@ import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.owner.PetType;
 import org.springframework.samples.petclinic.vet.Specialty;
 import org.springframework.samples.petclinic.vet.Vet;
+import org.springframework.samples.petclinic.visit.Visit;
 
 import java.sql.ResultSet;
 
@@ -143,6 +144,38 @@ public class SQLiteDatabase {
             //Shadow Write
 
             statement.executeUpdate("INSERT INTO pets VALUES ('"+id+"','"+name+"','"+birthDate+"','"+type+"','"+owner+"')");
+
+            scan.close();
+			
+		}
+		catch(SQLException e1)
+		{
+			System.err.println(e1.getMessage());
+		}
+		catch(IOException e2)
+		{
+			System.err.println(e2.getMessage());
+		}
+	}
+	
+	public static void ReadPets(String fileName, Pet pet){
+
+		String url = "jdbc:sqlite:" + fileName;
+				
+		try (Connection conn = DriverManager.getConnection(url))
+		{
+			if (conn != null)
+			{
+				DatabaseMetaData meta = conn.getMetaData();
+				System.out.println("Driver Name: " + meta.getDriverName());
+				
+				System.out.println("SQLite database created");
+			}
+			
+			Statement statement = conn.createStatement();
+			
+			Scanner scan = new Scanner(new File("src/main/resources/db/SQLite/schema.sqlite"));
+
             ResultSet result = statement.executeQuery("select * from pets");
 
             while(result.next())

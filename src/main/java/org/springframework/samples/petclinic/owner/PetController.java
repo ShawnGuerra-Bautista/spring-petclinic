@@ -21,6 +21,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.samples.petclinic.db.SQLiteDatabase;
 
 import javax.validation.Valid;
 import java.util.Collection;
@@ -67,6 +68,7 @@ class PetController {
     public String initCreationForm(Owner owner, ModelMap model) {
         Pet pet = new Pet();
         owner.addPet(pet);
+        SQLiteDatabase.AddPets("sqlite.db", pet);
         model.put("pet", pet);
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
     }
@@ -77,6 +79,7 @@ class PetController {
             result.rejectValue("name", "duplicate", "already exists");
         }
         owner.addPet(pet);
+        SQLiteDatabase.AddPets("sqlite.db", pet);
         if (result.hasErrors()) {
             model.put("pet", pet);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
@@ -101,6 +104,7 @@ class PetController {
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         } else {
             owner.addPet(pet);
+            SQLiteDatabase.AddPets("sqlite.db", pet);
             this.pets.save(pet);
             return "redirect:/owners/{ownerId}";
         }
