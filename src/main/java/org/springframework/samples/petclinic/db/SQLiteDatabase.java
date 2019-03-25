@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.Scanner;
+import java.sql.ResultSet;
 
 public class SQLiteDatabase {
 
@@ -61,9 +61,8 @@ public class SQLiteDatabase {
 		}
 	}
 	
-	public static void AddToDatabase(String fileName, String toAdd){
-
-		String url = "jdbc:sqlite:" + fileName;
+	public static void AddToDatabase(String fileName){
+String url = "jdbc:sqlite:" + fileName;
 		
 		try (Connection conn = DriverManager.getConnection(url))
 		{
@@ -78,22 +77,21 @@ public class SQLiteDatabase {
 			Statement statement = conn.createStatement();
 			
 			Scanner scan = new Scanner(new File("src/main/resources/db/SQLite/schema.sqlite"));
-			
-			String sql = "";
-			
-			//Shadow Write
-			
-			statement.executeUpdate("insert into owners values(11, 'George', 'Test', '110 W. Liberty St.', 'Madison', '6085551023')");
-			
-			ResultSet result = statement.executeQuery("select * from owners");
-			
-			while(result.next())
-			{
-				//Shadow Read
-				System.out.println("last_name = " + result.getString("last_name"));
-			}
-			
-			scan.close();
+
+            String sql = "";
+
+            //Shadow Write
+
+            statement.executeUpdate("insert into owners values(1, 'George', 'Test', '110 W. Liberty St.', 'Madison', '6085551023')");
+            ResultSet result = statement.executeQuery("select * from owners");
+
+            while(result.next())
+            {
+                //Shadow Read
+                System.out.println("last_name = " + result.getString("last_name"));
+            }
+
+            scan.close();
 			
 		}
 		catch(SQLException e1)
@@ -110,5 +108,7 @@ public class SQLiteDatabase {
 	public static void main(String[] args)
 	{
 		createNewDatabase("sqlite.db");
+        AddToDatabase("sqlite.db");
+
 	}
 }
