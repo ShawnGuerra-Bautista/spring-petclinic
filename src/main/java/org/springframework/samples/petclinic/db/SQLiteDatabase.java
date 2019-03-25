@@ -15,6 +15,7 @@ import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.owner.PetType;
 import org.springframework.samples.petclinic.vet.Specialty;
 import org.springframework.samples.petclinic.vet.Vet;
+import org.springframework.samples.petclinic.visit.Visit;
 
 import java.sql.ResultSet;
 
