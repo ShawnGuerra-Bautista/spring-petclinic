@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.springframework.samples.petclinic.db.SQLiteDatabase;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,6 +41,8 @@ class OwnerController {
 
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
     private final OwnerRepository owners;
+    boolean OldDb = true;
+    boolean NewDb = true;
 
 
     public OwnerController(OwnerRepository clinicService) {
@@ -63,7 +66,12 @@ class OwnerController {
         if (result.hasErrors()) {
             return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
         } else {
+            if (OldDb){
             this.owners.save(owner);
+            }
+            if (NewDb){
+            SQLiteDatabase.AddOwners("sqlite.db", owner);
+            }
             return "redirect:/owners/" + owner.getId();
         }
     }
@@ -112,7 +120,12 @@ class OwnerController {
             return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
         } else {
             owner.setId(ownerId);
+            if(OldDb){
             this.owners.save(owner);
+            }
+            if(NewDb){
+            SQLiteDatabase.AddOwners("sqlite.db", owner);
+            }
             return "redirect:/owners/{ownerId}";
         }
     }
