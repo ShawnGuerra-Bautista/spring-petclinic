@@ -97,13 +97,6 @@ public class SQLiteDatabase {
             //Shadow Write
 
             statement.executeUpdate("INSERT INTO owners VALUES ('"+id+"','"+first_name+"','"+last_name+"','"+address+"','"+city+"','"+telephone+"')");
-            ResultSet result = statement.executeQuery("select * from owners");
-
-            while(result.next())
-            {
-                //Shadow Read
-                System.out.println("last_name = " + result.getString("last_name"));
-            }
 
             scan.close();
 			
@@ -223,13 +216,6 @@ public static void AddVets(String fileName, Vet vet){
             //Shadow Write
 
             statement.executeUpdate("INSERT INTO vets VALUES ('"+id+"','"+first_name+"','"+last_name+"')");
-            ResultSet result = statement.executeQuery("select * from owners");
-
-            while(result.next())
-            {
-                //Shadow Read
-                System.out.println("last_name = " + result.getString("last_name"));
-            }
 
             scan.close();
 			
@@ -269,14 +255,6 @@ public static void AddVisits(String fileName, Visit visit){
         //Shadow Write
 
         statement.executeUpdate("INSERT INTO visits VALUES ('"+id+"','"+pet_id+"','"+visit_date+"','"+description+"')");
-        ResultSet result = statement.executeQuery("select * from visits");
-
-        while(result.next())
-        {
-            //Shadow Read
-            System.out.println("name = " + result.getString("pet_id"));
-        }
-
         scan.close();
 		
 	}
