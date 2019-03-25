@@ -70,7 +70,7 @@ public class SQLiteDatabase {
 		}
 	}
 	
-	public static void AddOwner(String fileName, Owner owner){
+	public static void AddOwners(String fileName, Owner owner){
 		int id = owner.getId();
         String first_name = owner.getFirstName();
         String last_name = owner.getLastName();
@@ -97,6 +97,45 @@ public class SQLiteDatabase {
             //Shadow Write
 
             statement.executeUpdate("INSERT INTO owners VALUES ('"+id+"','"+first_name+"','"+last_name+"','"+address+"','"+city+"','"+telephone+"')");
+
+            scan.close();
+			
+		}
+		catch(SQLException e1)
+		{
+			System.err.println(e1.getMessage());
+		}
+		catch(IOException e2)
+		{
+			System.err.println(e2.getMessage());
+		}
+	}
+	
+	public static void ReadOwners(String fileName, Owner owner){
+
+		String url = "jdbc:sqlite:" + fileName;
+				
+		try (Connection conn = DriverManager.getConnection(url))
+		{
+			if (conn != null)
+			{
+				DatabaseMetaData meta = conn.getMetaData();
+				System.out.println("Driver Name: " + meta.getDriverName());
+				
+				System.out.println("SQLite database created");
+			}
+			
+			Statement statement = conn.createStatement();
+			
+			Scanner scan = new Scanner(new File("src/main/resources/db/SQLite/schema.sqlite"));
+
+            ResultSet result = statement.executeQuery("select * from owners");
+
+            while(result.next())
+            {
+                //Shadow Read
+                System.out.println("last_name = " + result.getString("last_name"));
+            }
 
             scan.close();
 			
@@ -190,7 +229,7 @@ public class SQLiteDatabase {
 		}
 	}
 
-public static void AddVets(String fileName, Vet vet){
+	public static void AddVets(String fileName, Vet vet){
 		int id = vet.getId();
         String first_name = vet.getFirstName();
         String last_name = vet.getLastName();
@@ -229,46 +268,47 @@ public static void AddVets(String fileName, Vet vet){
 			System.err.println(e2.getMessage());
 		}
 	}
-public static void AddVisits(String fileName, Visit visit){
-	int id = visit.getId();
-	Integer pet_id = visit.getPetId();
-    LocalDate visit_date = visit.getDate();
-    String description = visit.getDescription();
-    
 
-	String url = "jdbc:sqlite:" + fileName;
-			
-	try (Connection conn = DriverManager.getConnection(url))
-	{
-		if (conn != null)
+	public static void AddVisits(String fileName, Visit visit){
+		int id = visit.getId();
+		Integer pet_id = visit.getPetId();
+	    LocalDate visit_date = visit.getDate();
+	    String description = visit.getDescription();
+	    
+	
+		String url = "jdbc:sqlite:" + fileName;
+				
+		try (Connection conn = DriverManager.getConnection(url))
 		{
-			DatabaseMetaData meta = conn.getMetaData();
-			System.out.println("Driver Name: " + meta.getDriverName());
+			if (conn != null)
+			{
+				DatabaseMetaData meta = conn.getMetaData();
+				System.out.println("Driver Name: " + meta.getDriverName());
+				
+				System.out.println("SQLite database created");
+			}
 			
-			System.out.println("SQLite database created");
+			Statement statement = conn.createStatement();
+			
+			Scanner scan = new Scanner(new File("src/main/resources/db/SQLite/schema.sqlite"));
+	
+	        //Shadow Write
+	
+	        statement.executeUpdate("INSERT INTO visits VALUES ('"+id+"','"+pet_id+"','"+visit_date+"','"+description+"')");
+	        scan.close();
+			
 		}
-		
-		Statement statement = conn.createStatement();
-		
-		Scanner scan = new Scanner(new File("src/main/resources/db/SQLite/schema.sqlite"));
-
-        //Shadow Write
-
-        statement.executeUpdate("INSERT INTO visits VALUES ('"+id+"','"+pet_id+"','"+visit_date+"','"+description+"')");
-        scan.close();
-		
+		catch(SQLException e1)
+		{
+			System.err.println(e1.getMessage());
+		}
+		catch(IOException e2)
+		{
+			System.err.println(e2.getMessage());
+		}
 	}
-	catch(SQLException e1)
-	{
-		System.err.println(e1.getMessage());
+		public static void main(String[] args)
+		{
+			createNewDatabase("sqlite.db");
+		}
 	}
-	catch(IOException e2)
-	{
-		System.err.println(e2.getMessage());
-	}
-}
-	public static void main(String[] args)
-	{
-		createNewDatabase("sqlite.db");
-	}
-}
