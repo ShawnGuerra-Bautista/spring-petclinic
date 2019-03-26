@@ -7,6 +7,7 @@ import org.springframework.samples.petclinic.db.helper.SqliteValuesBuilder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -71,7 +72,18 @@ public class VetSqliteRepository extends SqliteRepository<Vet> {
 
     @Override
     public Collection<Vet> parseResultSet(ResultSet resultSet) {
-        return null;
+        List<Vet> newVets  = new ArrayList<>();
+        try{
+            while (resultSet.next()) {
+                Vet newVet = new Vet(resultSet.getInt("id"),
+                    resultSet.getString("first_name"),
+                    resultSet.getString("last_name"));
+                newVets.add(newVet);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        return newVets;
     }
 
 }
