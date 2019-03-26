@@ -7,9 +7,7 @@ import org.springframework.samples.petclinic.db.helper.SqliteValuesBuilder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Repository
 public class VetSqliteRepository extends SqliteRepository<Vet> {
@@ -78,6 +76,24 @@ public class VetSqliteRepository extends SqliteRepository<Vet> {
                 Vet newVet = new Vet(resultSet.getInt("id"),
                     resultSet.getString("first_name"),
                     resultSet.getString("last_name"));
+
+                String query = "SELECT id, name" +
+                    "FROM specialties as s" +
+                    "INNER JOIN vet_specialties as vs" +
+                    "    ON s.id = vs.specialty_id" +
+                    "INNER JOIN vets as v" +
+                    "    ON vs.vet_id = v.id" +
+                    "WHERE v.id = '" + resultSet.getInt("id")+ "'";
+                ResultSet specialtyRS = executeQuery(query);
+
+                Set<Specialty> specialties = new HashSet<>();
+                while (specialtyRS.next()) {
+                    Specialty newSpecialty = new Specialty(specialtyRS.getInt("id"),
+                        specialtyRS.getString("name"));
+                    specialties.add(newSpecialty);
+                }
+
+                newVet.setSpecialtiesInternal(specialties);
                 newVets.add(newVet);
             }
         }catch(Exception e) {

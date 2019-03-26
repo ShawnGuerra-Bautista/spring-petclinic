@@ -26,7 +26,6 @@ public class VetConsistencyChecker implements ConsistencyChecker<Vet> {
 
         for(Vet expectedVet: oldVets){
             Vet actualVet = newVets.iterator().next();
-            System.out.println(actualVet + " " + expectedVet);
             if(!expectedVet.equals(actualVet)) {
                 inconsistency+=1;
                 violation(expectedVet, actualVet);
@@ -48,7 +47,7 @@ public class VetConsistencyChecker implements ConsistencyChecker<Vet> {
         String query = "UPDATE vets SET first_name= " + "'" + actualVet.getFirstName() + "'" +
             " AND last_name = " + "'" + actualVet.getLastName() + "'" +
             " WHERE id = " + actualVet.getId();
-        newVetRepository.executeUpdate(query, "Update");
+        newVetRepository.executeUpdate(query, "Fixing violation");
     }
 
     @Override
