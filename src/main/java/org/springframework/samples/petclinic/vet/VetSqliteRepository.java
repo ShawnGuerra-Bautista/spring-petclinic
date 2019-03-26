@@ -6,6 +6,8 @@ import org.springframework.samples.petclinic.db.helper.SqliteRepositoryHelper;
 import org.springframework.samples.petclinic.db.helper.SqliteValuesBuilder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -65,6 +67,11 @@ public class VetSqliteRepository extends SqliteRepository<Vet> {
             String mapWithSpecialty = "INSERT OR REPLACE INTO " + MAPPING_TABLE_NAME + " VALUES " + vals;
             executeUpdate(mapWithSpecialty, "Vet Mapping with Specialty");
         }
+    }
+
+    @Override
+    public Collection<Vet> parseResultSet(ResultSet resultSet) {
+        return null;
     }
 
 }

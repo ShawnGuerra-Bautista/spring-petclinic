@@ -6,6 +6,9 @@ import org.springframework.samples.petclinic.db.helper.SqliteRepositoryHelper;
 import org.springframework.samples.petclinic.db.helper.SqliteValuesBuilder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.util.Collection;
+
 @Repository
 public class NamedEntitySqliteRepository extends SqliteRepository<NamedEntity> {
 
@@ -36,5 +39,10 @@ public class NamedEntitySqliteRepository extends SqliteRepository<NamedEntity> {
             .withInt(entity.getId())
             .withVarchar(entity.getName())
             .build();
+    }
+
+    @Override
+    public Collection<NamedEntity> parseResultSet(ResultSet resultSet) {
+        return null;
     }
 }

@@ -6,6 +6,9 @@ import org.springframework.samples.petclinic.db.helper.SqliteRepositoryHelper;
 import org.springframework.samples.petclinic.db.helper.SqliteValuesBuilder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.util.Collection;
+
 @Repository
 public class VisitSqliteRepository extends SqliteRepository<Visit> {
 
@@ -36,5 +39,10 @@ public class VisitSqliteRepository extends SqliteRepository<Visit> {
             .withDate(visit.getDate())
             .withVarchar(visit.getDescription())
             .build();
+    }
+
+    @Override
+    public Collection<Visit> parseResultSet(ResultSet resultSet) {
+        return null;
     }
 }

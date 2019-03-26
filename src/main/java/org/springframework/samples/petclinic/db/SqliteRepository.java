@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -29,6 +30,12 @@ public abstract class SqliteRepository<T extends BaseEntity> {
      * @return all the values
      */
     public abstract String toValues(T entity);
+
+    /**
+     * Takes a result set and creates a collection of the superset BaseEntity
+     * @return A collection of type BaseEntity
+     */
+    public abstract Collection<T> parseResultSet(ResultSet resultSet);
 
     /**
      * Same as above, except to refer to multiple entities at once
