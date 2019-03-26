@@ -27,6 +27,7 @@ public class DatabaseForklift {
     private final PetSqliteRepository petSqliteRepository;
     private final VetSqliteRepository vetSqliteRepository;
     private final VisitSqliteRepository visitSqliteRepository;
+    // used to refer to PetType and Speciality as both don't add to NamedEntity
     private final NamedEntitySqliteRepository namedEntitySqliteRepository;
 
 
@@ -52,7 +53,6 @@ public class DatabaseForklift {
         forkliftVisits();
     }
 
-    // TODO end up with only one forklift that calls other fork lifts
     private void forkliftOwners() {
         List<Owner> existingOwners = new ArrayList<>(ownerRepository.findAll());
         ownerSqliteRepository.saveAll(existingOwners);

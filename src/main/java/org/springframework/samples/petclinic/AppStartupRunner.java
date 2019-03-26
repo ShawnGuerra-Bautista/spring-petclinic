@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.CompletableFuture;
 
+/**
+ * The run function in this class runs once the application starts to run
+ */
 @Component
 public class AppStartupRunner implements CommandLineRunner {
 

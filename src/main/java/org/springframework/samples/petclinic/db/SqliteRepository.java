@@ -11,10 +11,28 @@ import java.util.List;
 @Repository
 public abstract class SqliteRepository<T extends BaseEntity> {
 
+    /**
+     * Enforces the name of the db table the Repo refers to
+     * @return The name of the db table
+     */
     public abstract String getTableName();
+
+    /**
+     * Allows getting all columns of the db table the Repo refers to
+     * @return All column names of the table
+     */
     public abstract String getAllColumns();
+
+    /**
+     * Takes an entity and breaks it down into SQLite VALUES section
+     * @return all the values
+     */
     public abstract String toValues(T entity);
 
+    /**
+     * Same as above, except to refer to multiple entities at once
+     * @return comma separated values
+     */
     public String allToValues(List<T> entities) {
         StringBuilder values = new StringBuilder();
 
