@@ -7,7 +7,9 @@ import org.springframework.samples.petclinic.owner.*;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.samples.petclinic.vet.VetSqliteRepository;
+import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.visit.VisitRepository;
+import org.springframework.samples.petclinic.visit.VisitSqliteRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,12 +26,13 @@ public class DatabaseForklift {
     private final OwnerSqliteRepository ownerSqliteRepository;
     private final PetSqliteRepository petSqliteRepository;
     private final VetSqliteRepository vetSqliteRepository;
+    private final VisitSqliteRepository visitSqliteRepository;
     private final NamedEntitySqliteRepository namedEntitySqliteRepository;
 
 
     @Autowired
     public DatabaseForklift(OwnerRepository ownerRepository, PetRepository petRepository, VetRepository vetRepository, VisitRepository visitRepository,
-                            OwnerSqliteRepository ownerSqliteRepository, PetSqliteRepository petSqliteRepository, VetSqliteRepository vetSqliteRepository, NamedEntitySqliteRepository namedEntitySqliteRepository) {
+                            OwnerSqliteRepository ownerSqliteRepository, PetSqliteRepository petSqliteRepository, VetSqliteRepository vetSqliteRepository, VisitSqliteRepository visitSqliteRepository, NamedEntitySqliteRepository namedEntitySqliteRepository) {
         this.ownerRepository = ownerRepository;
         this.petRepository = petRepository;
         this.vetRepository = vetRepository;
@@ -38,6 +41,7 @@ public class DatabaseForklift {
         this.ownerSqliteRepository = ownerSqliteRepository;
         this.petSqliteRepository = petSqliteRepository;
         this.vetSqliteRepository = vetSqliteRepository;
+        this.visitSqliteRepository = visitSqliteRepository;
         this.namedEntitySqliteRepository = namedEntitySqliteRepository;
     }
 
@@ -45,6 +49,7 @@ public class DatabaseForklift {
         forkliftOwners();
         forkliftPets();
         forkliftVets();
+        forkliftVisits();
     }
 
     // TODO end up with only one forklift that calls other fork lifts
@@ -71,5 +76,10 @@ public class DatabaseForklift {
         List<NamedEntity> existingSpecialties = (List<NamedEntity>) (List<?>) vetRepository.findSpecialties();
         namedEntitySqliteRepository.setTableName(vetSqliteRepository.SPECIALTIES_TABLE_NAME);
         namedEntitySqliteRepository.saveAll(existingSpecialties);
+    }
+
+    private void forkliftVisits() {
+        List<Visit> existingVisits = new ArrayList<>(visitRepository.findAll());
+        visitSqliteRepository.saveAll(existingVisits);
     }
 }
