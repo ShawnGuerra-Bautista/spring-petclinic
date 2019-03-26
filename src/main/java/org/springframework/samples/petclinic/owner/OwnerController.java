@@ -45,20 +45,12 @@ class OwnerController {
 
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
     private final OwnerRepository owners;
-    private final DatabaseForklift forklift;
     boolean OldDb = true;
     boolean NewDb = true;
 
 
     public OwnerController(OwnerRepository clinicService, DatabaseForklift forklift) {
         this.owners = clinicService;
-        this.forklift = forklift;
-
-        // TODO since will end up with one forklift, should be moved later
-        ScheduledExecutorService ses = Executors.newScheduledThreadPool(1);
-        Runnable doForkLift = forklift::forklift;
-        ses.schedule(doForkLift, 5, TimeUnit.SECONDS);
-
     }
 
     @InitBinder

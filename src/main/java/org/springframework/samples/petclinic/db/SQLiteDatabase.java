@@ -16,10 +16,11 @@ import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.owner.PetType;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.visit.Visit;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.sql.ResultSet;
 
+@Service
 public class SQLiteDatabase {
 
     public static final String preUrl = "jdbc:sqlite:";
@@ -44,7 +45,7 @@ public class SQLiteDatabase {
     }
 
 
-	public static void createNewDatabase(String fileName)
+	public void createNewDatabase(String fileName)
 	{
 		String url = "jdbc:sqlite:" + fileName;
 		
@@ -408,10 +409,4 @@ public class SQLiteDatabase {
 			System.err.println(e2.getMessage());
 		}
 	}
-	
-	
-		public static void main(String[] args)
-		{
-			createNewDatabase("sqlite.db");
-		}
 }
