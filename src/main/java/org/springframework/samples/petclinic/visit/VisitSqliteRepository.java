@@ -45,4 +45,14 @@ public class VisitSqliteRepository extends SqliteRepository<Visit> {
     public Collection<Visit> parseResultSet(ResultSet resultSet) {
         return null;
     }
+
+    @Override
+    public Collection<Visit> findAll() {
+        return null;
+    }
+
+    @Override
+    public Visit findById(int id) {
+        return null;
+    }
 }

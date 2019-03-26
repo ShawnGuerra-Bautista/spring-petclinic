@@ -38,6 +38,19 @@ public abstract class SqliteRepository<T extends BaseEntity> {
     public abstract Collection<T> parseResultSet(ResultSet resultSet);
 
     /**
+     * Returns a collection of items from the database
+     * @return A collection of items from the database
+     */
+    public abstract Collection<T> findAll();
+
+    /**
+     * Returns an item from the database
+     * @param id id of the item
+     * @return An item from the database
+     */
+    public abstract T findById(int id);
+
+    /**
      * Same as above, except to refer to multiple entities at once
      * @return comma separated values
      */

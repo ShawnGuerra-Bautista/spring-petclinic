@@ -45,4 +45,14 @@ public class NamedEntitySqliteRepository extends SqliteRepository<NamedEntity> {
     public Collection<NamedEntity> parseResultSet(ResultSet resultSet) {
         return null;
     }
+
+    @Override
+    public Collection<NamedEntity> findAll() {
+        return null;
+    }
+
+    @Override
+    public NamedEntity findById(int id) {
+        return null;
+    }
 }

@@ -48,4 +48,14 @@ public class PetSqliteRepository extends SqliteRepository<Pet> {
     public Collection<Pet> parseResultSet(ResultSet resultSet) {
         return null;
     }
+
+    @Override
+    public Collection<Pet> findAll() {
+        return null;
+    }
+
+    @Override
+    public Pet findById(int id) {
+        return null;
+    }
 }

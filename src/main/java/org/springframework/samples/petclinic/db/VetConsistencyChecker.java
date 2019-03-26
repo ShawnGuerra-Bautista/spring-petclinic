@@ -68,17 +68,35 @@ public class VetConsistencyChecker implements ConsistencyChecker<Vet> {
 
     @Override
     public int checkConsistency() {
-        return 0;
+        int inconsistency = 0;
+        Collection<Vet> oldVets = getOldEntities();
+        Collection<Vet> newVets = getNewEntities();
+
+        for(Vet expectedVet: oldVets){
+            Vet actualVet = newVets.iterator().next();
+            System.out.println(actualVet + " " + expectedVet);
+            if(!expectedVet.equals(actualVet)) {
+                inconsistency+=1;
+                violation(expectedVet, actualVet);
+                fixViolation(actualVet);
+            }
+        }
+        return inconsistency;
     }
 
     @Override
-    public void violation() {
-
+    public void violation(Vet expectedVet, Vet actualVet) {
+        System.out.println("Violation: " +
+            "\n Expected: " + expectedVet +
+            "\n Actual: " + actualVet);
     }
 
     @Override
-    public void fixViolation() {
-
+    public void fixViolation(Vet actualVet) {
+        String query = "UPDATE vets SET first_name= " + "'" + actualVet.getFirstName() + "'" +
+            " AND last_name = " + "'" + actualVet.getLastName() + "'" +
+            " WHERE id = " + actualVet.getId();
+        newVetRepository.executeUpdate(query, "Update");
     }
 
     @Override
@@ -88,7 +106,7 @@ public class VetConsistencyChecker implements ConsistencyChecker<Vet> {
 
     @Override
     public Collection<Vet> getNewEntities(){
-	    return null;
+	    return newVetRepository.findAll();
     }
 }
 

@@ -86,11 +86,14 @@ public class VetSqliteRepository extends SqliteRepository<Vet> {
         return newVets;
     }
 
+    @Override
     public Collection<Vet> findAll(){
         String query = "SELECT * FROM vets";
         return parseResultSet(executeQuery(query));
     }
 
+
+    @Override
     public Vet findById(int id){
         String query = "SELECT * FROM vets WHERE id=" + "'" + id + "'";
         return parseResultSet(executeQuery(query)).iterator().next();

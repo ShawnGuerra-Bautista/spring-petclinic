@@ -50,4 +50,14 @@ public class OwnerSqliteRepository extends SqliteRepository<Owner> {
     public Collection<Owner> parseResultSet(ResultSet resultSet) {
         return null;
     }
+
+    @Override
+    public Collection<Owner> findAll() {
+        return null;
+    }
+
+    @Override
+    public Owner findById(int id) {
+        return null;
+    }
 }
