@@ -4,6 +4,7 @@ import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
@@ -61,6 +62,27 @@ public abstract class SqliteRepository<T extends BaseEntity> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Pass and SQLite query to return a resultSet
+     * @param query The query to execute
+     * @return A resultset of the data
+     */
+    public ResultSet executeQuery(String query){
+        Connection con = SQLiteDatabase.getConnection();
+        Statement statement;
+        ResultSet resultSet = null;
+        try {
+            statement = con.createStatement();
+            System.out.println(" Query... \n" + query);
+            resultSet = statement.executeQuery(query);
+            System.out.println(query + " Successful");
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultSet;
     }
 
     /**

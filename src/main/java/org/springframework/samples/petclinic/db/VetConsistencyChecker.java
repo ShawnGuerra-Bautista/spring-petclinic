@@ -1,12 +1,7 @@
 package org.springframework.samples.petclinic.db;
 
-
-import java.sql.*;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.samples.petclinic.vet.VetSqliteRepository;
@@ -23,6 +18,7 @@ public class VetConsistencyChecker implements ConsistencyChecker<Vet> {
 		this.oldVetRepository = oldVetRepository;
 	}
 
+/*
 	//method which replace the value for each each inconsistent value
 	 public void inconsistentData(String LastName, String firstName, int Id) {
 		//update the value of the new db data to old db data
@@ -68,7 +64,7 @@ public class VetConsistencyChecker implements ConsistencyChecker<Vet> {
 
 		}
 	}
-
+*/
 
     @Override
     public int checkConsistency() {
