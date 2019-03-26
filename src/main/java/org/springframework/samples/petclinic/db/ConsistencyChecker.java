@@ -4,9 +4,9 @@ import org.springframework.samples.petclinic.model.BaseEntity;
 
 import java.util.Collection;
 
-public interface ConsistencyChecker{
+public interface ConsistencyChecker <B extends BaseEntity>{
     int checkConsistency();
     void violation();
     void fixViolation();
-    Collection<BaseEntity> getListOfEntity();
+    Collection<B> getListOfOldEntity();
 }

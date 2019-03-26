@@ -6,31 +6,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.vet.VetRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class VetConsistencyChecker {
-	
-	private final VetRepository vetrepo;
-	
-	Connection conn =null;
-	
-	public VetConsistencyChecker() {
-		vetrepo=null;
+public class VetConsistencyChecker implements ConsistencyChecker<Vet> {
+
+	private final VetRepository oldVetRepository;
+
+	public VetConsistencyChecker(VetRepository oldVetRepository) {
+		this.oldVetRepository = oldVetRepository;
 	}
-	
-	
-	public VetConsistencyChecker(VetRepository vetrepo) {
-		this.vetrepo=vetrepo;
-	}
-	
-	public Collection<Vet> getVetList(){
-		return this.vetrepo.findAll();
-	}
-	
-	
+
 	//method which replace the value for each each inconsistent value
 	 public void inconsistentData(String LastName, String firstName, int Id) {
 		//update the value of the new db data to old db data
@@ -46,7 +35,7 @@ public class VetConsistencyChecker {
 			e.printStackTrace();
 		}
 	}
-	
+
 	//method which takes the values from the other db and compares it with the new one
 	public void compare(Collection<Vet> vets) {
 		String fileName= "sqlite.db";  //url to the sqlite db
@@ -73,10 +62,29 @@ public class VetConsistencyChecker {
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 	}
-	
 
+
+    @Override
+    public int checkConsistency() {
+        return 0;
+    }
+
+    @Override
+    public void violation() {
+
+    }
+
+    @Override
+    public void fixViolation() {
+
+    }
+
+    @Override
+    public Collection<Vet> getListOfOldEntity() {
+        return this.oldVetRepository.findAll();
+    }
 }
 
