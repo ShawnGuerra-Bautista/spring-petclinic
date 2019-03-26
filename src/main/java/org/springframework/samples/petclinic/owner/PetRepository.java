@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic.owner;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +57,7 @@ public interface PetRepository extends Repository<Pet, Integer> {
     void save(Pet pet);
 
     @Transactional(readOnly = true)
-    Collection<Pet> findAll();
+    Collection<Pet> findAll() throws DataAccessException;;
 
 }
 

@@ -45,6 +45,6 @@ public interface VisitRepository extends Repository<Visit, Integer> {
     List<Visit> findByPetId(Integer petId);
 
     @Transactional(readOnly = true)
-    Collection<Visit> findAll();
+    Collection<Visit> findAll() throws DataAccessException;
 
 }
