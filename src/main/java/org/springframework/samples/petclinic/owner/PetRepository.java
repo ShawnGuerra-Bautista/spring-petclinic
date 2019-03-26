@@ -57,6 +57,7 @@ public interface PetRepository extends Repository<Pet, Integer> {
     void save(Pet pet);
 
     @Transactional(readOnly = true)
-    Collection<Pet> findAll() throws DataAccessException;
+    Collection<Pet> findAll() throws DataAccessException;;
+
 }
 

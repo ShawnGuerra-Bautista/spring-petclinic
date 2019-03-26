@@ -14,17 +14,38 @@ import java.util.Scanner;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.samples.petclinic.owner.Pet;
 import org.springframework.samples.petclinic.owner.PetType;
-import org.springframework.samples.petclinic.vet.Specialty;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.visit.Visit;
-
-import antlr.collections.List;
+import org.springframework.stereotype.Service;
 
 import java.sql.ResultSet;
 
+@Service
 public class SQLiteDatabase {
 
-	public static void createNewDatabase(String fileName)
+    public static final String preUrl = "jdbc:sqlite:";
+    public static final String defaultFileName = "sqlite.db";
+    public static final String defaultUrl = preUrl + defaultFileName;
+
+    public static Connection getConnection(String fileName) {
+
+        Connection connection = null;
+
+        try {
+            connection = DriverManager.getConnection(preUrl + fileName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return connection;
+    }
+
+    public static Connection getConnection() {
+        return getConnection(defaultFileName);
+    }
+
+
+	public void createNewDatabase(String fileName)
 	{
 		String url = "jdbc:sqlite:" + fileName;
 		
@@ -161,19 +182,19 @@ public class SQLiteDatabase {
         Owner owner = pet.getOwner();
 
 		String url = "jdbc:sqlite:" + fileName;
-				
+
 		try (Connection conn = DriverManager.getConnection(url))
 		{
 			if (conn != null)
 			{
 				DatabaseMetaData meta = conn.getMetaData();
 				System.out.println("Driver Name: " + meta.getDriverName());
-				
+
 				System.out.println("SQLite database created");
 			}
-			
+
 			Statement statement = conn.createStatement();
-			
+
 			Scanner scan = new Scanner(new File("src/main/resources/db/SQLite/schema.sqlite"));
 
             //Shadow Write
@@ -181,7 +202,7 @@ public class SQLiteDatabase {
             statement.executeUpdate("INSERT INTO pets VALUES ('"+id+"','"+name+"','"+birthDate+"','"+type+"','"+owner+"')");
 
             scan.close();
-			
+
 		}
 		catch(SQLException e1)
 		{
@@ -388,10 +409,4 @@ public class SQLiteDatabase {
 			System.err.println(e2.getMessage());
 		}
 	}
-	
-	
-		public static void main(String[] args)
-		{
-			createNewDatabase("sqlite.db");
-		}
 }

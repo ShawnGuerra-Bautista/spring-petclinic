@@ -46,4 +46,5 @@ public interface VisitRepository extends Repository<Visit, Integer> {
 
     @Transactional(readOnly = true)
     Collection<Visit> findAll() throws DataAccessException;
+
 }
