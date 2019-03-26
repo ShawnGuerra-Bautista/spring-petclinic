@@ -9,14 +9,17 @@ import java.util.List;
 import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.vet.Vet;
 import org.springframework.samples.petclinic.vet.VetRepository;
+import org.springframework.samples.petclinic.vet.VetSqliteRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class VetConsistencyChecker implements ConsistencyChecker<Vet> {
 
 	private final VetRepository oldVetRepository;
+	private final VetSqliteRepository newVetRepository;
 
-	public VetConsistencyChecker(VetRepository oldVetRepository) {
+	public VetConsistencyChecker(VetRepository oldVetRepository, VetSqliteRepository newVetRepository) {
+	    this.newVetRepository = newVetRepository;
 		this.oldVetRepository = oldVetRepository;
 	}
 
@@ -83,8 +86,13 @@ public class VetConsistencyChecker implements ConsistencyChecker<Vet> {
     }
 
     @Override
-    public Collection<Vet> getListOfOldEntity() {
+    public Collection<Vet> getOldEntities() {
         return this.oldVetRepository.findAll();
+    }
+
+    @Override
+    public Collection<Vet> getNewEntities(){
+	    return null;
     }
 }
 

@@ -8,5 +8,6 @@ public interface ConsistencyChecker <B extends BaseEntity>{
     int checkConsistency();
     void violation();
     void fixViolation();
-    Collection<B> getListOfOldEntity();
+    Collection<B> getOldEntities();
+    Collection<B> getNewEntities();
 }
