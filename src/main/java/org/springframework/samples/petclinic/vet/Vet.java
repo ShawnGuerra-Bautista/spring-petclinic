@@ -15,14 +15,23 @@
  */
 package org.springframework.samples.petclinic.vet;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 
-import org.springframework.samples.petclinic.model.NamedEntity;
+import org.springframework.beans.support.MutableSortDefinition;
+import org.springframework.beans.support.PropertyComparator;
 import org.springframework.samples.petclinic.model.Person;
-import org.springframework.samples.petclinic.utility.NameComparator;
 
 /**
  * Simple JavaBean domain object representing a veterinarian.
@@ -40,26 +49,6 @@ public class Vet extends Person {
     @JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"), inverseJoinColumns = @JoinColumn(name = "specialty_id"))
     private Set<Specialty> specialties;
 
-    private transient Comparator<NamedEntity> specialtiesComparator;
-
-    public Vet(){
-        this(null, null, null, null, new NameComparator());
-    }
-    
-    public Vet(Integer id, String firstName, String lastName) {
-    	super(id, firstName, lastName);
-    }
-
-    public Vet(Set<Specialty> specialties){
-        this(null, null, null, specialties, new NameComparator());
-    }
-
-    public Vet(Integer id, String firstName, String lastName, Set<Specialty> specialties, Comparator<NamedEntity> comparator){
-        super(id, firstName, lastName);
-        this.specialties = specialties;
-        this.specialtiesComparator = comparator;
-    }
-
     protected Set<Specialty> getSpecialtiesInternal() {
         if (this.specialties == null) {
             this.specialties = new HashSet<>();
@@ -74,7 +63,8 @@ public class Vet extends Person {
     @XmlElement
     public List<Specialty> getSpecialties() {
         List<Specialty> sortedSpecs = new ArrayList<>(getSpecialtiesInternal());
-        sortedSpecs.sort(this.specialtiesComparator);
+        PropertyComparator.sort(sortedSpecs,
+                new MutableSortDefinition("name", true, true));
         return Collections.unmodifiableList(sortedSpecs);
     }
 
