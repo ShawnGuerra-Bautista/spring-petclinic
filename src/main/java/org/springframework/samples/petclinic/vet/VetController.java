@@ -35,7 +35,6 @@ class VetController {
     public VetController(VetRepository clinicService) {
         this.vets = clinicService;
     }
-    
 
     @GetMapping("/vets.html")
     public String showVetList(Map<String, Object> model) {

@@ -52,12 +52,6 @@ public class Visit extends BaseEntity {
     public Visit() {
         this.date = LocalDate.now();
     }
-    public Visit(Integer id, LocalDate date, String description, Integer petId){
-        super(id);
-        this.date = date;
-        this.description = description;
-        this.petId = petId;
-    }
 
     public LocalDate getDate() {
         return this.date;

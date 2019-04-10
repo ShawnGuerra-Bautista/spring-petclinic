@@ -18,7 +18,6 @@ package org.springframework.samples.petclinic.owner;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -33,10 +32,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.beans.support.MutableSortDefinition;
+import org.springframework.beans.support.PropertyComparator;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.samples.petclinic.model.BaseEntity;
 import org.springframework.samples.petclinic.model.NamedEntity;
-import org.springframework.samples.petclinic.utility.VisitComparator;
 import org.springframework.samples.petclinic.visit.Visit;
 
 /**
@@ -50,7 +49,6 @@ import org.springframework.samples.petclinic.visit.Visit;
 @Table(name = "pets")
 public class Pet extends NamedEntity {
 
-
     @Column(name = "birth_date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
@@ -63,44 +61,8 @@ public class Pet extends NamedEntity {
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "petId", fetch = FetchType.EAGER)
     private Set<Visit> visits = new LinkedHashSet<>();
-
-    private transient Comparator<Visit> visitsComparator;
-
-    public Pet() {
-        this(null, null, null, null, null, new VisitComparator());
-    }
-
-    public Pet(Integer id, String name) {
-        this(id, name, null, null, null, new VisitComparator());
-    }
-    
-
-    public Pet(Integer id, String name, LocalDate birthDate, PetType type, Owner owner) {
-        this(id, name, birthDate, type, owner, new VisitComparator());
-    }
-
-    public Pet(Integer id, String name, LocalDate birthDate, PetType type, Owner owner, Comparator<Visit> comparator) {
-        super(id, name);
-        this.birthDate = birthDate;
-        this.type = type;
-        this.owner = owner;
-        this.visitsComparator = comparator;
-    }
-
-    public Pet(Comparator<Visit> visitsComparator) {
-        this.visitsComparator = new VisitComparator();
-    }
-
-    public Comparator<Visit> getVisitsComparator() {
-        return visitsComparator;
-    }
-
-    public void setVisitsComparator(Comparator<Visit> visitsComparator) {
-        this.visitsComparator = visitsComparator;
-    }
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
@@ -139,7 +101,8 @@ public class Pet extends NamedEntity {
 
     public List<Visit> getVisits() {
         List<Visit> sortedVisits = new ArrayList<>(getVisitsInternal());
-        sortedVisits.sort(this.visitsComparator);
+        PropertyComparator.sort(sortedVisits,
+                new MutableSortDefinition("date", false, false));
         return Collections.unmodifiableList(sortedVisits);
     }
 

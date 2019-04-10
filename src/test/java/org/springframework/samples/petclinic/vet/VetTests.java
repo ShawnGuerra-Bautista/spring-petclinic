@@ -19,12 +19,7 @@ import org.junit.Test;
 
 import org.springframework.util.SerializationUtils;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 /**
  * @author Dave Syer
@@ -33,34 +28,13 @@ import static org.junit.Assert.*;
 public class VetTests {
 
     @Test
-    public void testCharacterizeOrderOfGetSpecialties(){
-        Set<Specialty> specialties = new HashSet<>();
-        specialties.add(new Specialty(null, "Nurse"));
-        specialties.add(new Specialty(null, "Vice Doctor"));
-        specialties.add(new Specialty(null, "Vice Nurse"));
-        specialties.add(new Specialty(null, "Doctor"));
-        specialties.add(new Specialty(null, "Intern"));
-
-        Vet vet = new Vet(specialties);
-
-        List<Specialty> sortedSpecialties = vet.getSpecialties();
-
-        assertEquals("Doctor", sortedSpecialties.get(0).getName());
-        assertEquals("Intern", sortedSpecialties.get(1).getName());
-        assertEquals("Nurse", sortedSpecialties.get(2).getName());
-        assertEquals("Vice Doctor", sortedSpecialties.get(3).getName());
-        assertEquals("Vice Nurse", sortedSpecialties.get(4).getName());
-    }
-
-
-    @Test
     public void testSerialization() {
         Vet vet = new Vet();
         vet.setFirstName("Zaphod");
         vet.setLastName("Beeblebrox");
         vet.setId(123);
         Vet other = (Vet) SerializationUtils
-            .deserialize(SerializationUtils.serialize(vet));
+                .deserialize(SerializationUtils.serialize(vet));
         assertThat(other.getFirstName()).isEqualTo(vet.getFirstName());
         assertThat(other.getLastName()).isEqualTo(vet.getLastName());
         assertThat(other.getId()).isEqualTo(vet.getId());
