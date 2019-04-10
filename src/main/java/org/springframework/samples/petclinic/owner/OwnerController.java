@@ -76,9 +76,8 @@ class OwnerController {
 
     @GetMapping("/owners.html")
     public String showOwnerList(Map<String, Object> model) {
-        Owners owners = new Owners();
-        owners.getOwnerList().addAll(this.owners.findAll());
-        model.put("selections", owners);
+        Collection<Owner> results = this.owners.findAll();
+        model.put("selections", results);
         return "owners/ownersList";
     }
 
