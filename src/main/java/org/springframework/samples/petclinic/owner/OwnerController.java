@@ -74,6 +74,14 @@ class OwnerController {
         return "owners/findOwners";
     }
 
+    @GetMapping("/owners.html")
+    public String showOwnerList(Map<String, Object> model) {
+        Owners owners = new Owners();
+        owners.getOwnerList().addAll(this.owners.findAll());
+        model.put("selections", owners);
+        return "owners/ownersList";
+    }
+
     @GetMapping("/owners")
     public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
 
