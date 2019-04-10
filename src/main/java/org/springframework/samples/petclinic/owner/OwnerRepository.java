@@ -61,7 +61,6 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
      * @throws DataAccessException
      */
     @Transactional(readOnly = true)
-    @Cacheable("owners")
     Collection<Owner> findAll() throws DataAccessException;
 
     /**
