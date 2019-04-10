@@ -15,5 +15,5 @@ public class Owners {
         }
         return owners;
     }
-    
+
 }
