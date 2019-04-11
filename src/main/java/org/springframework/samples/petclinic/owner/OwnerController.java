@@ -77,7 +77,9 @@ class OwnerController {
     @GetMapping("/owners.html")
     public String showOwnerList(Map<String, Object> model) {
         Collection<Owner> results = this.owners.findAll();
+        boolean displayingListOfAll = true;
         model.put("selections", results);
+        model.put("isOptionListOfAll", displayingListOfAll);
         return "owners/ownersList";
     }
 
@@ -101,7 +103,9 @@ class OwnerController {
             return "redirect:/owners/" + owner.getId();
         } else {
             // multiple owners found
+            boolean displayingListOfAll = false;
             model.put("selections", results);
+            model.put("isOptionListOfAll", displayingListOfAll);
             return "owners/ownersList";
         }
     }
