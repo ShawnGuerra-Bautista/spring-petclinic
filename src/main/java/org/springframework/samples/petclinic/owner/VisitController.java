@@ -74,9 +74,7 @@ class VisitController {
     // Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is called
     @GetMapping("/owners/*/pets/{petId}/visits/new")
     public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
-        Collection<Boolean> toggles = new ArrayList<>();
-        toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
-        toggles.add(PetClinicToggles.toggleListOfOwners);
+        Collection<Boolean> toggles = toggles();
         model.put("toggles", toggles);
         return "pets/createOrUpdateVisitForm";
     }
@@ -85,15 +83,20 @@ class VisitController {
     @PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
     public String processNewVisitForm(@Valid Visit visit, BindingResult result, Map<String, Object> model) {
         if (result.hasErrors()) {
-            Collection<Boolean> toggles = new ArrayList<>();
-            toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
-            toggles.add(PetClinicToggles.toggleListOfOwners);
+            Collection<Boolean> toggles = toggles();
             model.put("toggles", toggles);
             return "pets/createOrUpdateVisitForm";
         } else {
             this.visits.save(visit);
             return "redirect:/owners/{ownerId}";
         }
+    }
+
+    private Collection<Boolean> toggles(){
+        Collection<Boolean> toggles = new ArrayList<>();
+        toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
+        toggles.add(PetClinicToggles.toggleListOfOwners);
+        return toggles;
     }
 
 }

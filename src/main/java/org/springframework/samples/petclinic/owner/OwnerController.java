@@ -57,9 +57,7 @@ class OwnerController {
     public String initCreationForm(Map<String, Object> model) {
         Owner owner = new Owner();
         model.put("owner", owner);
-        Collection<Boolean> toggles = new ArrayList<>();
-        toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
-        toggles.add(PetClinicToggles.toggleListOfOwners);
+        Collection<Boolean> toggles = toggles();
         model.put("toggles", toggles);
         return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
     }
@@ -67,9 +65,7 @@ class OwnerController {
     @PostMapping("/owners/new")
     public String processCreationForm(@Valid Owner owner, BindingResult result, Map<String, Object> model) {
         if (result.hasErrors()) {
-            Collection<Boolean> toggles = new ArrayList<>();
-            toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
-            toggles.add(PetClinicToggles.toggleListOfOwners);
+            Collection<Boolean> toggles = toggles();
             model.put("toggles", toggles);
             return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
         } else {
@@ -81,9 +77,7 @@ class OwnerController {
     @GetMapping("/owners/find")
     public String initFindForm(Map<String, Object> model) {
         model.put("owner", new Owner());
-        Collection<Boolean> toggles = new ArrayList<>();
-        toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
-        toggles.add(PetClinicToggles.toggleListOfOwners);
+        Collection<Boolean> toggles = toggles();
         model.put("toggles", toggles);
         return "owners/findOwners";
     }
@@ -94,9 +88,7 @@ class OwnerController {
         boolean displayingListOfAll = true;
         model.put("selections", results);
         model.put("isOptionListOfAll", displayingListOfAll);
-        Collection<Boolean> toggles = new ArrayList<>();
-        toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
-        toggles.add(PetClinicToggles.toggleListOfOwners);
+        Collection<Boolean> toggles = toggles();
         model.put("toggles", toggles);
         return "owners/ownersList";
     }
@@ -114,9 +106,7 @@ class OwnerController {
         if (results.isEmpty()) {
             // no owners found
             result.rejectValue("lastName", "notFound", "not found");
-            Collection<Boolean> toggles = new ArrayList<>();
-            toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
-            toggles.add(PetClinicToggles.toggleListOfOwners);
+            Collection<Boolean> toggles = toggles();
             model.put("toggles", toggles);
             return "owners/findOwners";
         } else if (results.size() == 1) {
@@ -128,9 +118,7 @@ class OwnerController {
             boolean displayingListOfAll = false;
             model.put("isOptionListOfAll", displayingListOfAll);
             model.put("selections", results);
-            Collection<Boolean> toggles = new ArrayList<>();
-            toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
-            toggles.add(PetClinicToggles.toggleListOfOwners);
+            Collection<Boolean> toggles = toggles();
             model.put("toggles", toggles);
             return "owners/ownersList";
         }
@@ -140,9 +128,7 @@ class OwnerController {
     public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Map<String, Object> model) {
         Owner owner = this.owners.findById(ownerId);
         model.put("owner", owner);
-        Collection<Boolean> toggles = new ArrayList<>();
-        toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
-        toggles.add(PetClinicToggles.toggleListOfOwners);
+        Collection<Boolean> toggles = toggles();
         model.put("toggles", toggles);
         return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
     }
@@ -150,9 +136,7 @@ class OwnerController {
     @PostMapping("/owners/{ownerId}/edit")
     public String processUpdateOwnerForm(@Valid Owner owner, BindingResult result, @PathVariable("ownerId") int ownerId,  Map<String, Object> model) {
         if (result.hasErrors()) {
-            Collection<Boolean> toggles = new ArrayList<>();
-            toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
-            toggles.add(PetClinicToggles.toggleListOfOwners);
+            Collection<Boolean> toggles = toggles();
             model.put("toggles", toggles);
             return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;
         } else {
@@ -172,11 +156,16 @@ class OwnerController {
     public ModelAndView showOwner(@PathVariable("ownerId") int ownerId, Map<String, Object> model) {
         ModelAndView mav = new ModelAndView("owners/ownerDetails");
         mav.addObject(this.owners.findById(ownerId));
+        Collection<Boolean> toggles = toggles();
+        model.put("toggles", toggles);
+        return mav;
+    }
+
+    private Collection<Boolean> toggles(){
         Collection<Boolean> toggles = new ArrayList<>();
         toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
         toggles.add(PetClinicToggles.toggleListOfOwners);
-        model.put("toggles", toggles);
-        return mav;
+        return toggles;
     }
 
 }

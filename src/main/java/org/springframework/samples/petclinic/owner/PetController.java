@@ -70,9 +70,7 @@ class PetController {
         Pet pet = new Pet();
         owner.addPet(pet);
         model.put("pet", pet);
-        Collection<Boolean> toggles = new ArrayList<>();
-        toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
-        toggles.add(PetClinicToggles.toggleListOfOwners);
+        Collection<Boolean> toggles = toggles();
         model.put("toggles", toggles);
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
     }
@@ -85,9 +83,7 @@ class PetController {
         owner.addPet(pet);
         if (result.hasErrors()) {
             model.put("pet", pet);
-            Collection<Boolean> toggles = new ArrayList<>();
-            toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
-            toggles.add(PetClinicToggles.toggleListOfOwners);
+            Collection<Boolean> toggles = toggles();
             model.put("toggles", toggles);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         } else {
@@ -100,9 +96,7 @@ class PetController {
     public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
         Pet pet = this.pets.findById(petId);
         model.put("pet", pet);
-        Collection<Boolean> toggles = new ArrayList<>();
-        toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
-        toggles.add(PetClinicToggles.toggleListOfOwners);
+        Collection<Boolean> toggles = toggles();
         model.put("toggles", toggles);
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
     }
@@ -112,9 +106,7 @@ class PetController {
         if (result.hasErrors()) {
             pet.setOwner(owner);
             model.put("pet", pet);
-            Collection<Boolean> toggles = new ArrayList<>();
-            toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
-            toggles.add(PetClinicToggles.toggleListOfOwners);
+            Collection<Boolean> toggles = toggles();
             model.put("toggles", toggles);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         } else {
@@ -122,6 +114,13 @@ class PetController {
             this.pets.save(pet);
             return "redirect:/owners/{ownerId}";
         }
+    }
+
+    private Collection<Boolean> toggles(){
+        Collection<Boolean> toggles = new ArrayList<>();
+        toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
+        toggles.add(PetClinicToggles.toggleListOfOwners);
+        return toggles;
     }
 
 }

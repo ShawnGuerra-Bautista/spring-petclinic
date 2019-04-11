@@ -13,10 +13,15 @@ class WelcomeController {
 
     @GetMapping("/")
     public String welcome(Map<String, Object> model) {
+        Collection<Boolean> toggles = toggles();
+        model.put("toggles", toggles);
+        return "welcome";
+    }
+
+    private Collection<Boolean> toggles(){
         Collection<Boolean> toggles = new ArrayList<>();
         toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
         toggles.add(PetClinicToggles.toggleListOfOwners);
-        model.put("toggles", toggles);
-        return "welcome";
+        return toggles;
     }
 }
