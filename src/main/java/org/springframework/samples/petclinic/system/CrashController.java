@@ -34,18 +34,11 @@ class CrashController {
 
     @GetMapping("/oups")
     public String triggerException(Map<String, Object> model) {
-        Collection<Boolean> toggles = toggles();
+        Collection<Boolean> toggles = PetClinicToggles.toggles();
         model.put("toggles", toggles);
         model.put("message", new RuntimeException("Expected: controller used to showcase what "
             + "happens when an exception is thrown"));
         return "error";
-    }
-
-    private Collection<Boolean> toggles(){
-        Collection<Boolean> toggles = new ArrayList<>();
-        toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
-        toggles.add(PetClinicToggles.toggleListOfOwners);
-        return toggles;
     }
 
 }

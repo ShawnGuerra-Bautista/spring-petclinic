@@ -46,7 +46,7 @@ class VetController {
         Vets vets = new Vets();
         vets.getVetList().addAll(this.vets.findAll());
         model.put("vets", vets);
-        Collection<Boolean> toggles = toggles();
+        Collection<Boolean> toggles = PetClinicToggles.toggles();
         model.put("toggles", toggles);
         return "vets/vetList";
     }
@@ -58,13 +58,6 @@ class VetController {
         Vets vets = new Vets();
         vets.getVetList().addAll(this.vets.findAll());
         return vets;
-    }
-
-    private Collection<Boolean> toggles(){
-        Collection<Boolean> toggles = new ArrayList<>();
-        toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
-        toggles.add(PetClinicToggles.toggleListOfOwners);
-        return toggles;
     }
 
 }

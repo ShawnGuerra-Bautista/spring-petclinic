@@ -13,15 +13,9 @@ class WelcomeController {
 
     @GetMapping("/")
     public String welcome(Map<String, Object> model) {
-        Collection<Boolean> toggles = toggles();
+        Collection<Boolean> toggles = PetClinicToggles.toggles();
         model.put("toggles", toggles);
         return "welcome";
     }
 
-    private Collection<Boolean> toggles(){
-        Collection<Boolean> toggles = new ArrayList<>();
-        toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
-        toggles.add(PetClinicToggles.toggleListOfOwners);
-        return toggles;
-    }
 }
