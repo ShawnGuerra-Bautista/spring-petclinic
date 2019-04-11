@@ -1,5 +1,5 @@
 <!doctype html>
-<html th:fragment="layout (template, menu, toggles)">
+<html th:fragment="layout (template, menu, toggles)" xmlns:th="http://www.w3.org/1999/xhtml">
 
   <head>
 
@@ -49,12 +49,12 @@
                       <span>Home</span>
                   </li>
   
-                  <li th:replace="::menuItem ('/owners/find','owners','find owners','search','Find owners')">
+                  <li th:if="toggles[1] == true" th:replace="::menuItem ('/owners/find','owners','find owners','search','Find owners')">
                       <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                       <span>Find owners</span>
                   </li>
 
-                  <li th:replace="::menuItem ('/owners.html','allOwners','list of owners','th-list','List of Owners')">
+                  <li th:if="toggles[0] == true" th:replace="::menuItem ('/owners.html','allOwners','list of owners','th-list','List of Owners')">
                       <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
                       <span>List of Owners</span>
                   </li>

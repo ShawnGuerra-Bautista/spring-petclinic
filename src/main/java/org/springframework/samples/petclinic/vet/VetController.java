@@ -15,10 +15,13 @@
  */
 package org.springframework.samples.petclinic.vet;
 
+import org.springframework.samples.petclinic.system.PetClinicToggles;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Map;
 
 /**
@@ -43,6 +46,10 @@ class VetController {
         Vets vets = new Vets();
         vets.getVetList().addAll(this.vets.findAll());
         model.put("vets", vets);
+        Collection<Boolean> toggles = new ArrayList<>();
+        toggles.add(PetClinicToggles.toggleFindOwnerByLastName);
+        toggles.add(PetClinicToggles.toggleListOfOwners);
+        model.put("toggles", toggles);
         return "vets/vetList";
     }
 
