@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="${isOptionListOfAll} ? ~{fragments/layout :: layout (~{::body},'allOwners',${toggles})} : ~{fragments/layout :: layout (~{::body},'owners',${toggles})}">
 
   <body>
 
@@ -28,6 +28,7 @@
           </tr>
         </tbody>
     </table>
-
+    <br />
+    <a class="btn btn-default" th:href="@{/owners/new}">Add Owner</a>
   </body>
 </html>
