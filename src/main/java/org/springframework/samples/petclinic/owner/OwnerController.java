@@ -43,7 +43,7 @@ class OwnerController {
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
     private final OwnerRepository owners;
 
-    public static Logger log = LogManager.getLogger("console");
+    private static Logger logger = LogManager.getLogger("simple");
 
 
     public OwnerController(OwnerRepository clinicService) {
@@ -78,12 +78,12 @@ class OwnerController {
     public String initFindForm(Map<String, Object> model) {
         model.put("owner", new Owner());
 
-        System.out.println("Logger level is " + log.getLevel());
-        log.trace("TRACE");
-        log.info("INFO");
-        log.debug("DEBUG");
-        log.error("ERROR");
-        log.fatal("FATAL");
+        System.out.println("Logger level is " + logger.getLevel());
+        logger.trace("TRACE");
+        logger.info("INFO");
+        logger.debug("DEBUG");
+        logger.error("ERROR");
+        logger.fatal("FATAL");
 
         return "owners/findOwners";
     }
