@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.samples.petclinic.system.PetClinicToggles;
 
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -96,7 +97,7 @@ class OwnerController {
     @GetMapping("/owners")
     public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
 
-    	if (searchLastNameToggle) {
+    	if (PetClinicToggles.toggleFindOwnerByLastName) {
         // allow parameterless GET request for /owners to return all records
         if (owner.getLastName() == null) {
             owner.setLastName(""); // empty string signifies broadest possible search
@@ -125,7 +126,7 @@ class OwnerController {
         }
     	}
         
-    	if (searchCityToggle) {
+    	if (PetClinicToggles.toggleSearchByLocation) {
 	        if (owner.getCity() == null) {
 	        	owner.setCity("");
 	        }
