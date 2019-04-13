@@ -5,9 +5,9 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public interface PetClinicToggles {
-    int MIN = 0;
-    int MAX = 1;
-    public static final Boolean toggleFindOwnerByLastName = (int)((Math.random() * (MAX - MIN + 1)) + MIN) == 0;
-    public static final Boolean toggleListOfOwners = (int)((Math.random() * (MAX - MIN + 1)) + MIN) == 0;
-    public static final Collection<Boolean> toggles = new ArrayList<Boolean>(Arrays.asList(toggleFindOwnerByLastName, toggleListOfOwners));
+    int MIN = 1;
+    int MAX = 100;
+    public static Boolean toggleFindOwnerByLastName = (int)((Math.random() * (MAX - MIN + 1)) + MIN) <= 20;
+    public static Boolean toggleListOfOwners = (int)((Math.random() * (MAX - MIN + 1)) + MIN) > 20;
+    public static Collection<Boolean> toggles = new ArrayList<Boolean>(Arrays.asList(toggleFindOwnerByLastName, toggleListOfOwners));
 }
