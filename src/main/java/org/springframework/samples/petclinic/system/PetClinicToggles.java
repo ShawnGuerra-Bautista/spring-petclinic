@@ -9,5 +9,6 @@ public interface PetClinicToggles {
     int MAX = 1;
     public static final Boolean toggleFindOwnerByLastName = (int)((Math.random() * (MAX - MIN + 1)) + MIN) == 0;
     public static final Boolean toggleListOfOwners = (int)((Math.random() * (MAX - MIN + 1)) + MIN) == 0;
-    public static final Collection<Boolean> toggles = new ArrayList<Boolean>(Arrays.asList(toggleFindOwnerByLastName, toggleListOfOwners));
+    public static final Boolean toggleSearchByLocation = (int)((Math.random() * (MAX - MIN + 1)) + MIN) == 0;
+    public static final Collection<Boolean> toggles = new ArrayList<Boolean>(Arrays.asList(toggleFindOwnerByLastName, toggleListOfOwners, toggleSearchByLocation));
 }
