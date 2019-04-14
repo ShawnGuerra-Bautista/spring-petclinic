@@ -2,7 +2,7 @@
 <Configuration status="WARN" monitorInterval="30">
     <Properties>
         <Property name="logListOfOwner.fileName">ListOfOwnerLog</Property>
-        <Property name="file-header">Time-Nanos, Time-Millis, Level, Thread ID, Thread Name, Thread Priority, Message, Logger-FQCN, Logger-Name, Marker, Thrown-Proxy, Source, Context-Map, Context-Stack</Property>
+        <Property name="logListOfOwner.header">timestamp,toggleEnabled</Property>
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
@@ -12,8 +12,11 @@
         </Console>
         <RollingFile name="csvLogListOfOwner"
                      fileName="logs/${logListOfOwner.fileName}.csv"
-                     filePattern="${logListOfOwner.fileName}-%d{MM-dd-yyyy}-%i.csv" >
-            <CsvLogEventLayout delimiter="," header="${file-header}\n"/>
+                     filePattern="${logListOfOwner.fileName}-%d{MM-dd-yyyy}-%i.csv">
+            <PatternLayout>
+                <Pattern>%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}},%m%n</Pattern>
+                <Header>${logListOfOwner.header}%n</Header>
+            </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />
                 <SizeBasedTriggeringPolicy size="10 MB" />
@@ -29,7 +32,7 @@
         </Logger>
 
         <!--    Logger to store data for list of owners into a csv file    -->
-        <Logger name="listOfOwner" level="info" additivity="true">
+        <Logger name="listOfOwner" level="info" additivity="false">
             <AppenderRef ref="csvLogListOfOwner"/>
         </Logger>
 

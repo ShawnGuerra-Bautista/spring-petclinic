@@ -44,17 +44,17 @@ class OwnerController {
     private final OwnerRepository owners;
 
     private static Logger listOfOwnerCsvLogger = LogManager.getLogger("listOfOwner");
-    private static Logger traceLogger = LogManager.getLogger("trace");
+    private static Logger consoleLogger = LogManager.getLogger("trace");
 
     public OwnerController(OwnerRepository clinicService) {
         this.owners = clinicService;
 
         if (PetClinicToggles.toggleFindOwnerByLastName) {
-            traceLogger.info("Find Owner by Last Name Enabled");
+            consoleLogger.info("Find Owner by Last Name Enabled");
         }
 
         if (PetClinicToggles.toggleListOfOwners) {
-            traceLogger.info("List of Owners Enabled");
+            consoleLogger.info("List of Owners Enabled");
         }
     }
 
@@ -104,9 +104,9 @@ class OwnerController {
 
         // logging use of this page when accessed with new feature
         if (PetClinicToggles.toggleListOfOwners) {
-            listOfOwnerCsvLogger.info("enabled");
+            listOfOwnerCsvLogger.info("true");
         } else {
-            listOfOwnerCsvLogger.info("disabled");
+            listOfOwnerCsvLogger.info("false");
         }
 
         return "owners/ownersList";
@@ -121,9 +121,9 @@ class OwnerController {
 
             // logging use of listOfOwners page when accessed old way
             if (PetClinicToggles.toggleListOfOwners) {
-                listOfOwnerCsvLogger.info("enabled");
+                listOfOwnerCsvLogger.info("true");
             } else {
-                listOfOwnerCsvLogger.info("disabled");
+                listOfOwnerCsvLogger.info("false");
             }
         }
 
