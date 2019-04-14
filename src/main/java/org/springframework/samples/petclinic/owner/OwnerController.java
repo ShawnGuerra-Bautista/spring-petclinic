@@ -47,11 +47,16 @@ class OwnerController {
 
     private static Logger logger = LogManager.getLogger("simple");
 
-
     public OwnerController(OwnerRepository clinicService) {
         this.owners = clinicService;
 
+        if (PetClinicToggles.toggleFindOwnerByLastName) {
+            logger.info("Find Owner by Last Name Enabled");
+        }
 
+        if (PetClinicToggles.toggleListOfOwners) {
+            logger.info("List of Owners Enabled");
+        }
     }
 
     @InitBinder
