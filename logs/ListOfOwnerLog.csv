@@ -10,3 +10,4 @@ Time-Nanos, Time-Millis, Level, Thread ID, Thread Name, Thread Priority, Message
 0,1555217258384,INFO,28,http-nio-9000-exec-1,5,INFO,org.apache.logging.log4j.spi.AbstractLogger,listOfOwner,,,org.springframework.samples.petclinic.owner.OwnerController.initFindForm(OwnerController.java:105),{},[]
 0,1555217258385,ERROR,28,http-nio-9000-exec-1,5,ERROR,org.apache.logging.log4j.spi.AbstractLogger,listOfOwner,,,org.springframework.samples.petclinic.owner.OwnerController.initFindForm(OwnerController.java:108),{},[]
 0,1555217258385,FATAL,28,http-nio-9000-exec-1,5,FATAL,org.apache.logging.log4j.spi.AbstractLogger,listOfOwner,,,org.springframework.samples.petclinic.owner.OwnerController.initFindForm(OwnerController.java:109),{},[]
+0,1555218058013,INFO,13,restartedMain,5,Find Owner by Last Name Enabled,org.apache.logging.log4j.spi.AbstractLogger,listOfOwner,,,org.springframework.samples.petclinic.owner.OwnerController.<init>(OwnerController.java:62),{},[]
