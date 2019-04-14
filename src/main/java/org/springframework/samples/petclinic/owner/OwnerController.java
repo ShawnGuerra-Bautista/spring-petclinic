@@ -15,7 +15,11 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+
 import org.springframework.samples.petclinic.system.PetClinicToggles;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -43,9 +47,13 @@ class OwnerController {
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
     private final OwnerRepository owners;
 
+    private static Logger logger = LogManager.getLogger("simple");
+
 
     public OwnerController(OwnerRepository clinicService) {
         this.owners = clinicService;
+
+
     }
 
     @InitBinder
@@ -77,8 +85,17 @@ class OwnerController {
     @GetMapping("/owners/find")
     public String initFindForm(Map<String, Object> model) {
         model.put("owner", new Owner());
+
         Collection<Boolean> toggles = PetClinicToggles.toggles;
         model.put("toggles", toggles);
+
+        System.out.println("Logger level is " + logger.getLevel());
+        logger.trace("TRACE");
+        logger.info("INFO");
+        logger.debug("DEBUG");
+        logger.error("ERROR");
+        logger.fatal("FATAL");
+        
         return "owners/findOwners";
     }
 
