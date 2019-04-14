@@ -61,6 +61,10 @@ class OwnerController {
         if (PetClinicToggles.toggleFindOwnerByLastName) {
             logger.info("Find Owner by Last Name Enabled");
         }
+        
+        if (PetClinicToggles.toggleFindOwnerByLastName) {
+            logger.info("Find Owner by First Name Enabled");
+        }
 
         if (PetClinicToggles.toggleListOfOwners) {
             logger.info("List of Owners Enabled");
