@@ -49,7 +49,7 @@
                       <span>Home</span>
                   </li>
 
-                  <th:block th:if="${toggles[0] == true}">
+                  <th:block th:if="${toggles[0] == true || toggles[2] == true}">
                       <li th:replace="::menuItem ('/owners/find','owners','find owners','search','Find owners')">
                           <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                           <span>Find owners</span>

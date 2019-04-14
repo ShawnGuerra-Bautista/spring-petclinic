@@ -5,7 +5,8 @@
 
   <h2>Find Owners</h2>
 
-  <form th:object="${owner}" th:action="@{/owners}" method="get"
+  <form th:block th:if="${toggles[0] == true}"
+   th:object="${owner}" th:action="@{/owners}" method="get"
     class="form-horizontal" id="search-owner-form">
     <div class="form-group">
       <div class="control-group" id="lastNameGroup">
@@ -28,7 +29,8 @@
 
   </form>
 
-<form th:object="${owner}" th:action="@{/owners}" method="get"
+<form th:block th:if="${toggles[2] == true}" 
+	th:object="${owner}" th:action="@{/owners}" method="get"
     class="form-horizontal" id="search-owner-form">
     <div class="form-group">
        <div class="control-group" id="firstNameGroup">
