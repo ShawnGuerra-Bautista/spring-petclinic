@@ -23,14 +23,14 @@
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <button type="submit" class="btn btn-default">Find
-          Owner</button>
+          Owner by Last Name</button>
       </div>
     </div>
 
   </form>
 
 <form th:block th:if="${toggles[2] == true}" 
-	th:object="${owner}" th:action="@{/owners}" method="get"
+	th:object="${owner}" th:action="@{/owners_first_name}" method="get"
     class="form-horizontal" id="search-owner-form">
     <div class="form-group">
        <div class="control-group" id="firstNameGroup">
@@ -46,7 +46,7 @@
     </div>
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
-       <button type="submit" class="btn btn-default">Find First Name</button>
+       <button type="submit" class="btn btn-default">Find Owner by First Name</button>
       </div>
     </div>
 
