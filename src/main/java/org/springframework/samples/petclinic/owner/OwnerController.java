@@ -19,7 +19,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.samples.petclinic.system.PetClinicToggles;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +28,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
@@ -45,17 +43,18 @@ class OwnerController {
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
     private final OwnerRepository owners;
 
-    private static Logger logger = LogManager.getLogger("listOfOwner");
+    private static Logger listOfOwnerCsvLogger = LogManager.getLogger("listOfOwner");
+    private static Logger traceLogger = LogManager.getLogger("trace");
 
     public OwnerController(OwnerRepository clinicService) {
         this.owners = clinicService;
 
         if (PetClinicToggles.toggleFindOwnerByLastName) {
-            logger.info("Find Owner by Last Name Enabled");
+            traceLogger.info("Find Owner by Last Name Enabled");
         }
 
         if (PetClinicToggles.toggleListOfOwners) {
-            logger.info("List of Owners Enabled");
+            traceLogger.info("List of Owners Enabled");
         }
     }
 
@@ -91,13 +90,6 @@ class OwnerController {
         Collection<Boolean> toggles = PetClinicToggles.toggles;
         model.put("toggles", toggles);
 
-        System.out.println("Logger level is " + logger.getLevel());
-        logger.trace("TRACE");
-        logger.info("INFO");
-        //logger.debug("DEBUG");
-        //logger.error("ERROR");
-        //logger.fatal("FATAL");
-
         return "owners/findOwners";
     }
 
@@ -109,6 +101,14 @@ class OwnerController {
         model.put("isOptionListOfAll", displayingListOfAll);
         Collection<Boolean> toggles = PetClinicToggles.toggles;
         model.put("toggles", toggles);
+
+        // logging use of this page when accessed with new feature
+        if (PetClinicToggles.toggleListOfOwners) {
+            listOfOwnerCsvLogger.info("enabled");
+        } else {
+            listOfOwnerCsvLogger.info("disabled");
+        }
+
         return "owners/ownersList";
     }
 
@@ -116,8 +116,15 @@ class OwnerController {
     public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
 
         // allow parameterless GET request for /owners to return all records
-        if (owner.getLastName() == null) {
+        if (owner.getLastName() == null || owner.getLastName().isEmpty()) {
             owner.setLastName(""); // empty string signifies broadest possible search
+
+            // logging use of listOfOwners page when accessed old way
+            if (PetClinicToggles.toggleListOfOwners) {
+                listOfOwnerCsvLogger.info("enabled");
+            } else {
+                listOfOwnerCsvLogger.info("disabled");
+            }
         }
 
         // find owners by last name
