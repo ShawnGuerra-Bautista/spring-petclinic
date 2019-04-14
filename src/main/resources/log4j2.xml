@@ -25,7 +25,7 @@
         <Root level="error" additivity="false">
             <AppenderRef ref="Console"/>
         </Root>
-        <Logger name="listOfOwner" level="info" additivity="true">
+        <Logger name="listOfOwner" level="info" additivity="false">
             <AppenderRef ref="csvLogListOfOwner"/>
         </Logger>
         <Logger name="traceToggle" level="trace" additivity="true">
