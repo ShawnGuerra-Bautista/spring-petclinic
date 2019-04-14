@@ -7,7 +7,7 @@ import java.util.Collection;
 public interface PetClinicToggles {
     int MIN = 0;
     int MAX = 1;
-    public static Boolean toggleFindOwnerByLastName = (int)((Math.random() * (MAX - MIN + 1)) + MIN) == 0;
+    public static Boolean toggleFindOwnerByLastName = true;
     public static Boolean toggleListOfOwners = (int)((Math.random() * (MAX - MIN + 1)) + MIN) == 0;
-    public static Collection<Boolean> toggles = new ArrayList<Boolean>(Arrays.asList(toggleFindOwnerByLastName, toggleListOfOwners));
+    public static Collection<Boolean> toggles = new ArrayList<>(Arrays.asList(toggleFindOwnerByLastName, toggleListOfOwners));
 }
