@@ -160,6 +160,8 @@ class OwnerController {
             model.put("toggles", toggles);
             return "owners/ownersList";
         }
+        
+        
     }
 
     @GetMapping("/owners/{ownerId}/edit")
