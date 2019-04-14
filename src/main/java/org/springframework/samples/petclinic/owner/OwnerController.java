@@ -16,10 +16,16 @@
 package org.springframework.samples.petclinic.owner;
 
 
+
 import org.springframework.samples.petclinic.system.PetClinicToggles;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.samples.petclinic.system.PetClinicToggles;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -47,13 +53,18 @@ class OwnerController {
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
     private final OwnerRepository owners;
 
-    private static Logger logger = LogManager.getLogger("simple");
-
+    private static Logger logger = LogManager.getLogger("listOfOwner");
 
     public OwnerController(OwnerRepository clinicService) {
         this.owners = clinicService;
 
+        if (PetClinicToggles.toggleFindOwnerByLastName) {
+            logger.info("Find Owner by Last Name Enabled");
+        }
 
+        if (PetClinicToggles.toggleListOfOwners) {
+            logger.info("List of Owners Enabled");
+        }
     }
 
     @InitBinder
@@ -85,17 +96,27 @@ class OwnerController {
     @GetMapping("/owners/find")
     public String initFindForm(Map<String, Object> model) {
         model.put("owner", new Owner());
+<<<<<<< HEAD
 
+=======
+>>>>>>> 593cdd4978261f6fd46d34bf6b2688961974e8f9
         Collection<Boolean> toggles = PetClinicToggles.toggles;
         model.put("toggles", toggles);
 
         System.out.println("Logger level is " + logger.getLevel());
         logger.trace("TRACE");
         logger.info("INFO");
+<<<<<<< HEAD
         logger.debug("DEBUG");
         logger.error("ERROR");
         logger.fatal("FATAL");
         
+=======
+        //logger.debug("DEBUG");
+        //logger.error("ERROR");
+        //logger.fatal("FATAL");
+
+>>>>>>> 593cdd4978261f6fd46d34bf6b2688961974e8f9
         return "owners/findOwners";
     }
 

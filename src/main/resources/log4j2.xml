@@ -1,22 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN" monitorInterval="30">
+    <Properties>
+        <Property name="logListOfOwner.fileName">ListOfOwnerLog</Property>
+        <Property name="file-header">Time-Nanos, Time-Millis, Level, Thread ID, Thread Name, Thread Priority, Message, Logger-FQCN, Logger-Name, Marker, Thrown-Proxy, Source, Context-Map, Context-Stack</Property>
+    </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout>
                 <Pattern>%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} %highlight{${LOG_LEVEL_PATTERN:-%5p}}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=green, DEBUG=green bold, TRACE=blue} %style{${sys:PID}}{magenta} [%15.15t] %style{%-40.40C{1.}}{cyan} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</Pattern>
             </PatternLayout>
         </Console>
-
-        <!--    Insert appenders  here    -->
+        <RollingFile name="csvLogListOfOwner"
+                     fileName="logs/${logListOfOwner.fileName}.csv"
+                     filePattern="${logListOfOwner.fileName}-%d{MM-dd-yyyy}-%i.csv" >
+            <CsvLogEventLayout delimiter="," header="${file-header}\n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="200" />
+        </RollingFile>
     </Appenders>
     <Loggers>
-        <Root level="warn">
+        <Root level="error" additivity="false">
             <AppenderRef ref="Console"/>
         </Root>
-
-        <Logger name="simple" level="error" additivity="true">
+        <Logger name="listOfOwner" level="info" additivity="false">
+            <AppenderRef ref="csvLogListOfOwner"/>
         </Logger>
-
-        <!--    Insert loggers here    -->
+        <Logger name="traceToggle" level="trace" additivity="true">
+        </Logger>
     </Loggers>
 </Configuration>
