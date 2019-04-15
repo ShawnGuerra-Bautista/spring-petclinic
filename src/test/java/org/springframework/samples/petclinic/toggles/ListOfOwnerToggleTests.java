@@ -149,9 +149,7 @@ public class ListOfOwnerToggleTests {
         toggles = new ArrayList<>(PetClinicToggles.getToggleValues());
         assertFalse(toggles.get(1));
     }
-
-
-    // TODO make this use fake ip addresses
+    
     @Test
     public void collectFakeData() {
         Logger realCsvLogger = LogManager.getLogger("listOfOwner");
