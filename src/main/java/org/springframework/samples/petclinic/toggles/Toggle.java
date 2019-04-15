@@ -5,6 +5,9 @@ package org.springframework.samples.petclinic.toggles;
  */
 public class Toggle {
 
+    public static float ALWAYS_ON_WHEN_ENABLED = 1;
+    public static float ALWAYS_OFF = 0;
+
     private boolean enabled;
 
     /**
@@ -12,13 +15,14 @@ public class Toggle {
      */
     private float rolloutRatio;
 
-    public Toggle() {
-        this(0);
-    }
-
     public Toggle(float ratio) {
         setRolloutRatio(ratio);
         setToggleUsingRolloutRatio();
+    }
+
+    public Toggle(boolean enabled, float ratio) {
+        this.enabled = enabled;
+        setRolloutRatio(ratio);
     }
 
     public boolean isOn() {
@@ -39,12 +43,12 @@ public class Toggle {
 
     public void setRolloutRatio(float ratio) {
         if (ratio <= 0) {
-            rolloutRatio = 0;
+            rolloutRatio = ALWAYS_OFF;
             return;
         }
 
         if (ratio > 1) {
-            rolloutRatio = 1;
+            rolloutRatio = ALWAYS_ON_WHEN_ENABLED;
             return;
         }
 

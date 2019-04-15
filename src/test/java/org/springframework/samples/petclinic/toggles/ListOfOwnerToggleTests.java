@@ -36,12 +36,14 @@ public class ListOfOwnerToggleTests {
 
     @Before
     public void setup() {
+        // remove any randomness by default
+        PetClinicToggles.toggleListOfOwners.setRolloutRatio(Toggle.ALWAYS_ON_WHEN_ENABLED);
         when(mockOwner.getLastName()).thenReturn("");
     }
 
     @Test
     public void darklaunchListOfOwner() {
-        PetClinicToggles.toggleListOfOwners = false;
+        PetClinicToggles.toggleListOfOwners.turnOff();
 
         OwnerController ownerController = new OwnerController(mockOwnerRepository, mockConsoleLogger, mockOwnerListCsvLogger);
 
@@ -56,7 +58,7 @@ public class ListOfOwnerToggleTests {
 
 
         //now switch on toggle and show that its on
-        PetClinicToggles.toggleListOfOwners = true;
+        PetClinicToggles.toggleListOfOwners.turnOn();
 
         ownerController.showOwnerList(mockModel);
         ownerController.processFindForm(mockOwner, mockResult, mockModel);
@@ -68,7 +70,7 @@ public class ListOfOwnerToggleTests {
 
     @Test
     public void rollBackToggle() {
-        PetClinicToggles.toggleListOfOwners = true;
+        PetClinicToggles.toggleListOfOwners.turnOn();
 
         OwnerController ownerController = new OwnerController(mockOwnerRepository, mockConsoleLogger, mockOwnerListCsvLogger);
 
@@ -76,8 +78,8 @@ public class ListOfOwnerToggleTests {
         ownerController.showOwnerList(mockModel);
         verify(mockOwnerListCsvLogger).info("1");
 
-        //assume there was bug found, lets rollbakc
-        PetClinicToggles.toggleListOfOwners = false;
+        //assume there was bug found, lets rollback
+        PetClinicToggles.toggleListOfOwners.turnOff();
 
         // Shouldn't assume new feature is on
         ownerController.showOwnerList(mockModel);
