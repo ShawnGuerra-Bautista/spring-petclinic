@@ -12,4 +12,5 @@ public interface PetClinicToggles {
     public static final Boolean toggleSearchByLocation = (int)((Math.random() * (MAX - MIN + 1)) + MIN) == 0;
     public static final Boolean toggleSearchByTelephone = (int)((Math.random() * (MAX - MIN + 1)) + MIN) == 0;
     public static final Collection<Boolean> toggles = new ArrayList<Boolean>(Arrays.asList(toggleFindOwnerByLastName, toggleListOfOwners, toggleSearchByLocation));
+    
 }
