@@ -13,10 +13,14 @@ import org.springframework.samples.petclinic.owner.OwnerRepository;
 import org.springframework.samples.petclinic.system.PetClinicToggles;
 import org.springframework.validation.BindingResult;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static org.mockito.Mockito.*;
+import static org.junit.Assert.*;
+
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -36,10 +40,14 @@ public class ListOfOwnerToggleTests {
     @Mock
     Owner mockOwner;
 
+    private List<Boolean> toggles;
+
     @Before
     public void setup() {
         // remove any randomness by default
         PetClinicToggles.toggleListOfOwners.setRolloutRatio(Toggle.ALWAYS_ON_WHEN_ENABLED);
+
+        // case where user enter nothing into lastName search box
         when(mockOwner.getLastName()).thenReturn("");
     }
 
@@ -54,6 +62,11 @@ public class ListOfOwnerToggleTests {
         // verify going to ownerList using url correctly logs
         ownerController.processFindForm(mockOwner, mockResult, mockModel);
 
+        // get toggles in same way as front-end to verify if option shows
+        toggles = new ArrayList<>(PetClinicToggles.getToggleValues());
+        // should not show
+        assertFalse(toggles.get(1));
+
         //both should have triggered a log that assume user has toggle off
         verify(mockOwnerListCsvLogger, times(2)).info("0");
         verify(mockOwnerListCsvLogger, never()).info("1");
@@ -64,6 +77,10 @@ public class ListOfOwnerToggleTests {
 
         ownerController.showOwnerList(mockModel);
         ownerController.processFindForm(mockOwner, mockResult, mockModel);
+
+        // now user should see feature
+        toggles = new ArrayList<>(PetClinicToggles.getToggleValues());
+        assertTrue(toggles.get(1));
 
         // Should be unchanged, and 2 logs suggesting toggle on should occur
         verify(mockOwnerListCsvLogger, times(2)).info("1");
@@ -80,6 +97,11 @@ public class ListOfOwnerToggleTests {
         ownerController.showOwnerList(mockModel);
         verify(mockOwnerListCsvLogger).info("1");
 
+        // should show in UI
+        toggles = new ArrayList<>(PetClinicToggles.getToggleValues());
+        assertTrue(toggles.get(1));
+
+
         //assume there was bug found, lets rollback
         PetClinicToggles.toggleListOfOwners.turnOff();
 
@@ -88,6 +110,10 @@ public class ListOfOwnerToggleTests {
         verify(mockOwnerListCsvLogger).info("0");
         // shouldn't have happened anymore
         verify(mockOwnerListCsvLogger, times(1)).info("1");
+
+        // should be hidden
+        toggles = new ArrayList<>(PetClinicToggles.getToggleValues());
+        assertFalse(toggles.get(1));
     }
 
     @Test
