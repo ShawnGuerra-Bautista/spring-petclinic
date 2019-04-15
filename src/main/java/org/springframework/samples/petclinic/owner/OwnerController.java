@@ -17,6 +17,7 @@ package org.springframework.samples.petclinic.owner;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.system.PetClinicToggles;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -38,7 +39,7 @@ import java.util.Map;
  * @author Michael Isvy
  */
 @Controller
-class OwnerController {
+public class OwnerController {
 
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
     private final OwnerRepository owners;
@@ -46,6 +47,7 @@ class OwnerController {
     private static Logger listOfOwnerCsvLogger = LogManager.getLogger("listOfOwner");
     private static Logger consoleLogger = LogManager.getLogger("trace");
 
+    @Autowired
     public OwnerController(OwnerRepository clinicService) {
         this.owners = clinicService;
 
@@ -56,6 +58,12 @@ class OwnerController {
         if (PetClinicToggles.toggleListOfOwners) {
             consoleLogger.info("List of Owners Enabled");
         }
+    }
+
+    public OwnerController(OwnerRepository clinicService, Logger consoleLogger, Logger listOfOwnerCsvLogger) {
+        this.owners = clinicService;
+        OwnerController.consoleLogger = consoleLogger;
+        OwnerController.listOfOwnerCsvLogger = listOfOwnerCsvLogger;
     }
 
     @InitBinder
@@ -104,9 +112,9 @@ class OwnerController {
 
         // logging use of this page when accessed with new feature
         if (PetClinicToggles.toggleListOfOwners) {
-            listOfOwnerCsvLogger.info("true");
+            listOfOwnerCsvLogger.info("1");
         } else {
-            listOfOwnerCsvLogger.info("false");
+            listOfOwnerCsvLogger.info("0");
         }
 
         return "owners/ownersList";
@@ -121,9 +129,9 @@ class OwnerController {
 
             // logging use of listOfOwners page when accessed old way
             if (PetClinicToggles.toggleListOfOwners) {
-                listOfOwnerCsvLogger.info("true");
+                listOfOwnerCsvLogger.info("1");
             } else {
-                listOfOwnerCsvLogger.info("false");
+                listOfOwnerCsvLogger.info("0");
             }
         }
 
@@ -186,5 +194,7 @@ class OwnerController {
         model.put("toggles", toggles);
         return mav;
     }
+
+
 
 }
