@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
@@ -85,6 +86,29 @@ public class ListOfOwnerToggleTests {
         // Should be unchanged, and 2 logs suggesting toggle on should occur
         verify(mockOwnerListCsvLogger, times(2)).info("1");
         verify(mockOwnerListCsvLogger, times(2)).info("0");
+    }
+
+    @Test
+    public void testRandomRollout(){
+        for(int i = 0; i < 50; i++){
+            PetClinicToggles.toggleListOfOwners.setRolloutRatio(0.25f);
+            PetClinicToggles.toggleListOfOwners.setToggleUsingRolloutRatio();
+
+            OwnerController ownerController = new OwnerController(mockOwnerRepository, mockConsoleLogger, mockOwnerListCsvLogger);
+            ownerController.showOwnerList(mockModel);
+            ownerController.processFindForm(mockOwner, mockResult, mockModel);
+        }
+        assertThat(PetClinicToggles.toggleListOfOwners.getRolloutRatio(), is(0.25f));
+
+        for(int i = 0; i < 100; i++){
+            PetClinicToggles.toggleListOfOwners.setRolloutRatio(0.50f);
+            PetClinicToggles.toggleListOfOwners.setToggleUsingRolloutRatio();
+
+            OwnerController ownerController = new OwnerController(mockOwnerRepository, mockConsoleLogger, mockOwnerListCsvLogger);
+            ownerController.showOwnerList(mockModel);
+            ownerController.processFindForm(mockOwner, mockResult, mockModel);
+        }
+        assertThat(PetClinicToggles.toggleListOfOwners.getRolloutRatio(), is(0.50f));
     }
 
     @Test
