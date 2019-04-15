@@ -101,8 +101,8 @@ public class ListOfOwnerToggleTests {
             PetClinicToggles.toggleListOfOwners.setToggleUsingRolloutRatio();
 
             OwnerController ownerController = new OwnerController(mockOwnerRepository, mockConsoleLogger, mockOwnerListCsvLogger);
-            ownerController.showOwnerList(mockModel);
-            ownerController.processFindForm(mockOwner, mockResult, mockModel);
+            ownerController.showOwnerList(mockModel, mockRequest);
+            ownerController.processFindForm(mockOwner, mockResult, mockModel, mockRequest);
         }
         assertThat(PetClinicToggles.toggleListOfOwners.getRolloutRatio(), is(0.25f));
 
@@ -111,8 +111,8 @@ public class ListOfOwnerToggleTests {
             PetClinicToggles.toggleListOfOwners.setToggleUsingRolloutRatio();
 
             OwnerController ownerController = new OwnerController(mockOwnerRepository, mockConsoleLogger, mockOwnerListCsvLogger);
-            ownerController.showOwnerList(mockModel);
-            ownerController.processFindForm(mockOwner, mockResult, mockModel);
+            ownerController.showOwnerList(mockModel, mockRequest);
+            ownerController.processFindForm(mockOwner, mockResult, mockModel, mockRequest);
         }
         assertThat(PetClinicToggles.toggleListOfOwners.getRolloutRatio(), is(0.50f));
     }
