@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Map;
@@ -102,7 +103,7 @@ public class OwnerController {
     }
 
     @GetMapping("/owners.html")
-    public String showOwnerList(Map<String, Object> model) {
+    public String showOwnerList(Map<String, Object> model, HttpServletRequest request) {
         Collection<Owner> results = this.owners.findAll();
         boolean displayingListOfAll = true;
         model.put("selections", results);
@@ -112,16 +113,16 @@ public class OwnerController {
 
         // logging use of this page when accessed with new feature
         if (PetClinicToggles.toggleListOfOwners.isOn()) {
-            listOfOwnerCsvLogger.info("1");
+            listOfOwnerCsvLogger.info( request.getRemoteAddr() + ",1");
         } else {
-            listOfOwnerCsvLogger.info("0");
+            listOfOwnerCsvLogger.info(request.getRemoteAddr() + ",0");
         }
 
         return "owners/ownersList";
     }
 
     @GetMapping("/owners")
-    public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
+    public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model, HttpServletRequest request) {
 
         // allow parameterless GET request for /owners to return all records
         if (owner.getLastName() == null || owner.getLastName().isEmpty()) {
@@ -129,9 +130,9 @@ public class OwnerController {
 
             // logging use of listOfOwners page when accessed old way
             if (PetClinicToggles.toggleListOfOwners.isOn()) {
-                listOfOwnerCsvLogger.info("1");
+                listOfOwnerCsvLogger.info(request.getRemoteAddr() + ",1");
             } else {
-                listOfOwnerCsvLogger.info("0");
+                listOfOwnerCsvLogger.info(request.getRemoteAddr() + ",0");
             }
         }
 
