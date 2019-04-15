@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.springframework.samples.petclinic.system.PetClinicToggles;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -77,27 +78,50 @@ class OwnerController {
     @GetMapping("/owners")
     public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
 
-        // allow parameterless GET request for /owners to return all records
-        if (owner.getLastName() == null) {
-            owner.setLastName(""); // empty string signifies broadest possible search
-        }
+        if (PetClinicToggles.toggleFindOwnerByLastName) {
+            // allow parameterless GET request for /owners to return all records
+            if (owner.getLastName() == null) {
+                owner.setLastName(""); // empty string signifies broadest possible search
+            }
 
-        // find owners by last name
-        Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
-        if (results.isEmpty()) {
-            // no owners found
-            result.rejectValue("lastName", "notFound", "not found");
-            return "owners/findOwners";
-        } else if (results.size() == 1) {
-            // 1 owner found
-            owner = results.iterator().next();
-            return "redirect:/owners/" + owner.getId();
-        } else {
-            // multiple owners found
-            model.put("selections", results);
-            return "owners/ownersList";
+            // find owners by last name
+            Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
+            if (results.isEmpty()) {
+                // no owners found
+                result.rejectValue("lastName", "notFound", "not found");
+                return "owners/findOwners";
+            } else if (results.size() == 1) {
+                // 1 owner found
+                owner = results.iterator().next();
+                return "redirect:/owners/" + owner.getId();
+            } else {
+                // multiple owners found
+                model.put("selections", results);
+                return "owners/ownersList";
+            }
         }
+        if (PetClinicToggles.toggleSearchByTelephone) {
+            if (owner.getTelephone() == null) {
+                owner.setTelephone("");
+            }
+            Collection<Owner> results = this.owners.findByTelephone(owner.getTelephone());
+            if (results.isEmpty()) {
+                // no owners found
+                result.rejectValue("telephone", "notFound", "not found");
+                return "owners/findOwners";
+            } else if (results.size() == 1) {
+                // 1 owner found
+                owner = results.iterator().next();
+                return "redirect:/owners/" + owner.getId();
+            } else {
+                // multiple owners found
+                model.put("selections", results);
+                return "owners/ownersList";
+            }
+        }
+        return null;
     }
+
 
     @GetMapping("/owners/{ownerId}/edit")
     public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Model model) {
