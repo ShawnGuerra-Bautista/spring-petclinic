@@ -66,4 +66,24 @@ public class ListOfOwnerToggleTests {
         verify(mockOwnerListCsvLogger, times(2)).info("0");
     }
 
+    @Test
+    public void rollBackToggle() {
+        PetClinicToggles.toggleListOfOwners = true;
+
+        OwnerController ownerController = new OwnerController(mockOwnerRepository, mockConsoleLogger, mockOwnerListCsvLogger);
+
+        // user uses feature which is logged
+        ownerController.showOwnerList(mockModel);
+        verify(mockOwnerListCsvLogger).info("1");
+
+        //assume there was bug found, lets rollbakc
+        PetClinicToggles.toggleListOfOwners = false;
+
+        // Shouldn't assume new feature is on
+        ownerController.showOwnerList(mockModel);
+        verify(mockOwnerListCsvLogger).info("0");
+        // shouldn't have happened anymore
+        verify(mockOwnerListCsvLogger, times(1)).info("1");
+    }
+
 }
