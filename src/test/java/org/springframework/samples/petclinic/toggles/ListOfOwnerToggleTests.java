@@ -13,6 +13,8 @@ import org.springframework.samples.petclinic.owner.OwnerRepository;
 import org.springframework.samples.petclinic.system.PetClinicToggles;
 import org.springframework.validation.BindingResult;
 
+import static net.andreinc.mockneat.unit.networking.IPv6s.ipv6s;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,8 @@ public class ListOfOwnerToggleTests {
     BindingResult mockResult;
     @Mock
     HttpServletRequest mockRequest;
+    @Mock
+    HttpServletRequest mockRequestForData;
 
     @Mock
     Owner mockOwner;
@@ -167,6 +171,9 @@ public class ListOfOwnerToggleTests {
             // randomly set the toggle
             PetClinicToggles.toggleListOfOwners.setToggleUsingRolloutRatio();
 
+            ip = ipv6s().get();
+            when(mockRequestForData.getRemoteAddr()).thenReturn(ip);
+
             int visits;
 
             // when toggle on, more visits likely
@@ -176,13 +183,13 @@ public class ListOfOwnerToggleTests {
                 visits = getWeightedRandomNumber(10, 2, 0, 15);
                 for (int j = 0; j < visits; j++) {
                     numToggleOn++;
-                    ownerController.showOwnerList(mockModel, mockRequest);
+                    ownerController.showOwnerList(mockModel, mockRequestForData);
                 }
             } else {
                 visits = getWeightedRandomNumber(0, 2, 0, 5);
                 for (int j = 0; j < visits; j++) {
                     numToggleOff++;
-                    ownerController.processFindForm(mockOwner, mockResult, mockModel, mockRequest);
+                    ownerController.processFindForm(mockOwner, mockResult, mockModel, mockRequestForData);
                 }
             }
         }
