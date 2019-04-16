@@ -7,16 +7,13 @@ import java.util.Arrays;
 import java.util.Collection;
 
 public class PetClinicToggles {
-    // TODO remove min and max
-    public static int MIN = 0;
-    public static int MAX = 1;
 
+    // Our toggles
     public static Toggle toggleFindOwnerByLastName = new Toggle(Toggle.ALWAYS_ON_WHEN_ENABLED);
     public static Toggle toggleListOfOwners = new Toggle(0.5f);
     public static Toggle toggleFindOwnerByFirstName = new Toggle(0.5f);
     public static Toggle toggleFindOwnerByLocation = new Toggle(0.65f);
     public static Toggle toggleFindOwnerByTelephone = new Toggle(0.5f);
-
 
 
     public static Collection<Boolean> getToggleValues() {
@@ -26,6 +23,5 @@ public class PetClinicToggles {
             toggleFindOwnerByFirstName.isOn(),
             toggleFindOwnerByLocation.isOn(),
             toggleFindOwnerByTelephone.isOn()));
-
     }
 }
