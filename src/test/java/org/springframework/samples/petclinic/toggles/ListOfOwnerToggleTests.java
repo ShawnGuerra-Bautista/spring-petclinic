@@ -35,6 +35,8 @@ public class ListOfOwnerToggleTests {
     @Mock
     Logger mockOwnerListCsvLogger;
     @Mock
+    Logger mockFindOwnerByFirstNameCsvLogger;
+    @Mock
     Logger mockConsoleLogger;
     @Mock
     Map<String, Object> mockModel;
@@ -48,6 +50,7 @@ public class ListOfOwnerToggleTests {
     @Mock
     Owner mockOwner;
 
+    private OwnerController ownerController;
     private List<Boolean> toggles;
     private String ip = "0:0:0:0:0:0:0:1";
 
@@ -60,13 +63,15 @@ public class ListOfOwnerToggleTests {
         when(mockOwner.getLastName()).thenReturn("");
 
         when(mockRequest.getRemoteAddr()).thenReturn(ip);
+
+        ownerController = new OwnerController(
+            mockOwnerRepository, mockConsoleLogger, mockOwnerListCsvLogger, mockFindOwnerByFirstNameCsvLogger);
     }
 
     @Test
     public void darklaunchListOfOwner() {
         PetClinicToggles.toggleListOfOwners.turnOff();
 
-        OwnerController ownerController = new OwnerController(mockOwnerRepository, mockConsoleLogger, mockOwnerListCsvLogger, null);
 
         // verify going to ownerList using url correctly logs
         ownerController.showOwnerList(mockModel, mockRequest);
@@ -104,7 +109,6 @@ public class ListOfOwnerToggleTests {
             PetClinicToggles.toggleListOfOwners.setRolloutRatio(0.25f);
             PetClinicToggles.toggleListOfOwners.setToggleUsingRolloutRatio();
 
-            OwnerController ownerController = new OwnerController(mockOwnerRepository, mockConsoleLogger, mockOwnerListCsvLogger, null);
             ownerController.showOwnerList(mockModel, mockRequest);
             ownerController.processFindForm(mockOwner, mockResult, mockModel, mockRequest);
         }
@@ -114,7 +118,6 @@ public class ListOfOwnerToggleTests {
             PetClinicToggles.toggleListOfOwners.setRolloutRatio(0.50f);
             PetClinicToggles.toggleListOfOwners.setToggleUsingRolloutRatio();
 
-            OwnerController ownerController = new OwnerController(mockOwnerRepository, mockConsoleLogger, mockOwnerListCsvLogger, null);
             ownerController.showOwnerList(mockModel, mockRequest);
             ownerController.processFindForm(mockOwner, mockResult, mockModel, mockRequest);
         }
@@ -125,7 +128,6 @@ public class ListOfOwnerToggleTests {
     public void rollBackToggle() {
         PetClinicToggles.toggleListOfOwners.turnOn();
 
-        OwnerController ownerController = new OwnerController(mockOwnerRepository, mockConsoleLogger, mockOwnerListCsvLogger, null);
 
         // user uses feature which is logged
         ownerController.showOwnerList(mockModel, mockRequest);
@@ -153,7 +155,8 @@ public class ListOfOwnerToggleTests {
     @Test
     public void collectFakeData() {
         Logger realCsvLogger = LogManager.getLogger("listOfOwner");
-        OwnerController ownerController = new OwnerController(mockOwnerRepository, mockConsoleLogger, realCsvLogger, null);
+        ownerController = new OwnerController(
+            mockOwnerRepository, mockConsoleLogger, realCsvLogger, mockFindOwnerByFirstNameCsvLogger);
 
         // set up so that around half users get new feature
         PetClinicToggles.toggleListOfOwners = new Toggle(0.5f);
