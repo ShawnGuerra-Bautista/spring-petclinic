@@ -25,6 +25,7 @@
           Owner</button>
       </div>
     </div>
+	</form>
 	
 	<form th:object="${owner}" th:action="@{/owners}" method="get"
     class="form-horizontal" id="search-owner-form">
@@ -47,7 +48,7 @@
       </div>
     </div>
 
-  </form>
+    </form>
 
   <br />
   <a class="btn btn-default" th:href="@{/owners/new}">Add Owner</a>
