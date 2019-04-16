@@ -180,7 +180,7 @@ public class OwnerController {
         	searchOwnerByLocationCsvLogger.info("city" + ",0");
         }
         
-        searchOwnerByLocationLogger.info(", findOwnerByLocation");
+        searchOwnerByLocationCsvLogger.info(", findOwnerByLocation");
         
         // find owners by last name
         Collection<Owner> results = this.owners.findByCity(owner.getCity());
