@@ -170,7 +170,7 @@ public class OwnerController {
     }
     
     @GetMapping("/owners_first_name")
-    public String findOwnersByFirstName(Owner owner, BindingResult result, Map<String, Object> model) {
+    public String findOwnersByFirstName(Owner owner, BindingResult result, Map<String, Object> model, HttpServletRequest request) {
 
         // allow parameterless GET request for /owners to return all records
         if (owner.getFirstName() == null || owner.getLastName().isEmpty()) {
