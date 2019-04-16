@@ -164,6 +164,37 @@ public class OwnerController {
             return "owners/ownersList";
         }
     }
+    
+    public String findOwnerByLocation(Owner owner, BindingResult result, Map<String, Object> model) {
+
+
+        // allow parameterless GET request for /owners to return all records
+        if (owner.getCity() == null) {
+            owner.setLastName(""); // empty string signifies broadest possible search
+        }
+        
+        // find owners by last name
+        Collection<Owner> results = this.owners.findByCity(owner.getCity());
+        if (results.isEmpty()) {
+            // no owners found
+            result.rejectValue("lastName", "notFound", "not found");
+            Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
+            model.put("toggles", toggles);
+            return "owners/findOwners";
+        } else if (results.size() == 1) {
+            // 1 owner found
+            owner = results.iterator().next();
+            return "redirect:/owners/" + owner.getId();
+        } else {
+            // multiple owners found
+            boolean displayingListOfAll = false;
+            model.put("isOptionListOfAll", displayingListOfAll);
+            model.put("selections", results);
+            Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
+            model.put("toggles", toggles);
+            return "owners/ownersList";
+        }
+    }
 
     @GetMapping("/owners/{ownerId}/edit")
     public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Map<String, Object> model) {
