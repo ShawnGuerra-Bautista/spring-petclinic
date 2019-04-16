@@ -67,11 +67,11 @@ public class OwnerController {
         }
     }
 
-    public OwnerController(OwnerRepository clinicService, Logger consoleLogger, Logger listOfOwnerCsvLogger, Logger searchOwnerByLocationLogger) {
+    public OwnerController(OwnerRepository clinicService, Logger consoleLogger, Logger listOfOwnerCsvLogger, Logger searchOwnerByLocationCsvLogger) {
         this.owners = clinicService;
         OwnerController.consoleLogger = consoleLogger;
         OwnerController.listOfOwnerCsvLogger = listOfOwnerCsvLogger;
-        OwnerController.searchOwnerByLocationLogger = searchOwnerByLocationLogger;
+        OwnerController.searchOwnerByLocationLogger = searchOwnerByLocationCsvLogger;
     }
 
     @InitBinder
@@ -174,6 +174,8 @@ public class OwnerController {
         if (owner.getCity() == null) {
             owner.setLastName(""); // empty string signifies broadest possible search
         }
+        
+        searchOwnerByLocationLogger.info(", findOwnerByLocation");
         
         // find owners by last name
         Collection<Owner> results = this.owners.findByCity(owner.getCity());
