@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.samples.petclinic.system.PetClinicToggles;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -48,7 +47,7 @@ public class OwnerController {
 
     private static Logger listOfOwnerCsvLogger = LogManager.getLogger("listOfOwner");
     private static Logger consoleLogger = LogManager.getLogger("trace");
-    private static Logger searchOwnerByLocationLogger = LogManager.getLogger("searchOwnerByLocation");
+    private static Logger searchOwnerByLocationCsvLogger = LogManager.getLogger("searchOwnerByLocation");
 
     @Autowired
     public OwnerController(OwnerRepository clinicService) {
@@ -71,7 +70,7 @@ public class OwnerController {
         this.owners = clinicService;
         OwnerController.consoleLogger = consoleLogger;
         OwnerController.listOfOwnerCsvLogger = listOfOwnerCsvLogger;
-        OwnerController.searchOwnerByLocationLogger = searchOwnerByLocationCsvLogger;
+        OwnerController.searchOwnerByLocationCsvLogger = searchOwnerByLocationCsvLogger;
     }
 
     @InitBinder
@@ -169,10 +168,16 @@ public class OwnerController {
     
     public String findOwnerByLocation(Owner owner, BindingResult result, Map<String, Object> model) {
 
-
         // allow parameterless GET request for /owners to return all records
         if (owner.getCity() == null) {
             owner.setLastName(""); // empty string signifies broadest possible search
+        }
+        
+        if (PetClinicToggles.toggleFindOwnerByLocation.isOn()){
+        	searchOwnerByLocationCsvLogger.info("city" + ",1");
+        }
+        else{
+        	searchOwnerByLocationCsvLogger.info("city" + ",0");
         }
         
         searchOwnerByLocationLogger.info(", findOwnerByLocation");
