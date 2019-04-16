@@ -49,7 +49,7 @@
                       <span>Home</span>
                   </li>
 
-                  <th:block th:if="${toggles[0] == true || toggles[2] == true}">
+                  <th:block th:if="${toggles[0] == true || toggles[2] == true || toggles[3] == true}}">
                       <li th:replace="::menuItem ('/owners/find','owners','find owners','search','Find owners')">
                           <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                           <span>Find owners</span>
@@ -62,13 +62,6 @@
                           <span>List of Owners</span>
                       </li>
                 </th:block>
-                  <th:block th:if="${toggles[2] == true}">
-                      <li th:replace="::menuItem ('/owners/find','owners','find owners','search','Find owners')">
-                          <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-                          <span>Find By Telephone</span>
-                      </li>
-                  </th:block>
-
                   <li th:replace="::menuItem ('/vets.html','vets','veterinarians','th-list','Veterinarians')">
                       <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
                       <span>Veterinarians</span>

@@ -46,6 +46,7 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
     @Transactional(readOnly = true)
     Collection<Owner> findByLastName(@Param("lastName") String lastName);
     Collection<Owner> findByTelephone(@Param("telephone") String telephone);
+    Collection<Owner> findByCity(@Param("city") String city);
 
 
     /**

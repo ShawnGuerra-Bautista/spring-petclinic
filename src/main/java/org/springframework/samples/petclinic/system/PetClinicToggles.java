@@ -18,11 +18,10 @@ public class PetClinicToggles {
 
     // TODO remove
     public static Collection<Boolean> toggles = new ArrayList<>(Arrays.asList(toggleFindOwnerByLastName.isOn(), toggleFindOwnerByTelephone.isOn(), toggleListOfOwners.isOn()));
+    public static Toggle toggleFindOwnerByLocation = new Toggle(0.65f);
+    public static Toggle toggleFindOwnerByFirstName = new Toggle(0.5f);
 
- 
 
-    // TODO remove
-   
 
 
     public static Collection<Boolean> getToggleValues() {
@@ -32,6 +31,8 @@ public class PetClinicToggles {
             toggleListOfOwners.isOn()));
             toggleListOfOwners.isOn(),
             toggleFindOwnerByFirstName.isOn()));
+            toggleFindOwnerByFirstName.isOn(),
+            toggleFindOwnerByLocation.isOn()));
 
     }
 }
