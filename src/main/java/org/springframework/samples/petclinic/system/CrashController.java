@@ -18,6 +18,10 @@ package org.springframework.samples.petclinic.system;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+
 /**
  * Controller used to showcase what happens when an exception is thrown
  *
@@ -29,9 +33,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 class CrashController {
 
     @GetMapping("/oups")
-    public String triggerException() {
-        throw new RuntimeException("Expected: controller used to showcase what "
-                + "happens when an exception is thrown");
+    public String triggerException(Map<String, Object> model) {
+        Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
+        model.put("toggles", toggles);
+        model.put("message", new RuntimeException("Expected: controller used to showcase what "
+            + "happens when an exception is thrown"));
+        return "error";
     }
 
 }

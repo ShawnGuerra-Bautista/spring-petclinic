@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.owner;
 
+import org.springframework.samples.petclinic.system.PetClinicToggles;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Collection;
 
 /**
@@ -68,6 +70,8 @@ class PetController {
         Pet pet = new Pet();
         owner.addPet(pet);
         model.put("pet", pet);
+        Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
+        model.put("toggles", toggles);
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
     }
 
@@ -79,6 +83,8 @@ class PetController {
         owner.addPet(pet);
         if (result.hasErrors()) {
             model.put("pet", pet);
+            Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
+            model.put("toggles", toggles);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         } else {
             this.pets.save(pet);
@@ -90,6 +96,8 @@ class PetController {
     public String initUpdateForm(@PathVariable("petId") int petId, ModelMap model) {
         Pet pet = this.pets.findById(petId);
         model.put("pet", pet);
+        Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
+        model.put("toggles", toggles);
         return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
     }
 
@@ -98,6 +106,8 @@ class PetController {
         if (result.hasErrors()) {
             pet.setOwner(owner);
             model.put("pet", pet);
+            Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
+            model.put("toggles", toggles);
             return VIEWS_PETS_CREATE_OR_UPDATE_FORM;
         } else {
             owner.addPet(pet);
