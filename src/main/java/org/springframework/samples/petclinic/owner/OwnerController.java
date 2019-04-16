@@ -142,11 +142,6 @@ public class OwnerController {
                 listOfOwnerCsvLogger.info(request.getRemoteAddr() + ",0");
             }
             
-            if (PetClinicToggles.toggleFindOwnerByFirstName.isOn()) {
-            	findOwnerByFirstNameCsvLogger.info("lastName" + ",1");
-            } else {
-            	findOwnerByFirstNameCsvLogger.info("lastName" + ",0");
-            }
         }
 
         if (PetClinicToggles.toggleFindOwnerByFirstName.isOn()) {
@@ -193,12 +188,6 @@ public class OwnerController {
                 listOfOwnerCsvLogger.info(request.getRemoteAddr() + ",0");
             }
             
-            
-            if (PetClinicToggles.toggleFindOwnerByFirstName.isOn()) {
-            	findOwnerByFirstNameCsvLogger.info("firstName" + ",1");
-            } else {
-            	findOwnerByFirstNameCsvLogger.info("firstName" + ",0");
-            }
         }
         
         if (PetClinicToggles.toggleFindOwnerByFirstName.isOn()) {
@@ -212,7 +201,7 @@ public class OwnerController {
         if (results.isEmpty()) {
             // no owners found
             result.rejectValue("firstName", "notFound", "not found");
-            Collection<Boolean> toggles = PetClinicToggles.toggles;
+            Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
             model.put("toggles", toggles);
             return "owners/findOwners";
         } else if (results.size() == 1) {
@@ -224,7 +213,7 @@ public class OwnerController {
             boolean displayingListOfAll = false;
             model.put("isOptionListOfAll", displayingListOfAll);
             model.put("selections", results);
-            Collection<Boolean> toggles = PetClinicToggles.toggles;
+            Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
             model.put("toggles", toggles);
             return "owners/ownersList";
         }
