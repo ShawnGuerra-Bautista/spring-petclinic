@@ -59,6 +59,10 @@ public class OwnerController {
         if (PetClinicToggles.toggleListOfOwners.isOn()) {
             consoleLogger.info("List of Owners Enabled");
         }
+        
+        if (PetClinicToggles.toggleFindOwnerByFirstName.isOn()) {
+            consoleLogger.info("Find Owner by First Name Enabled");
+        }
     }
 
     public OwnerController(OwnerRepository clinicService, Logger consoleLogger, Logger listOfOwnerCsvLogger) {
