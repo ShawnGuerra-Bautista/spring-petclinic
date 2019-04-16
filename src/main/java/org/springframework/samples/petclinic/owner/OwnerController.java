@@ -56,6 +56,10 @@ public class OwnerController {
         if (PetClinicToggles.toggleFindOwnerByLastName.isOn()) {
             consoleLogger.info("Find Owner by Last Name Enabled");
         }
+        
+        if (PetClinicToggles.toggleFindOwnerByLocation.isOn()) {
+            consoleLogger.info("Find Owner by Location Enabled");
+        }
 
         if (PetClinicToggles.toggleListOfOwners.isOn()) {
             consoleLogger.info("List of Owners Enabled");
@@ -137,7 +141,7 @@ public class OwnerController {
                 listOfOwnerCsvLogger.info(request.getRemoteAddr() + ",0");
             }
         }
-
+        
         // find owners by last name
         Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
         if (results.isEmpty()) {
