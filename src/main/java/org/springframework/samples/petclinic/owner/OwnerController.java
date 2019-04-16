@@ -47,6 +47,7 @@ public class OwnerController {
 
     private static Logger listOfOwnerCsvLogger = LogManager.getLogger("listOfOwner");
     private static Logger consoleLogger = LogManager.getLogger("trace");
+    private static Logger findOwnerByTelephone = LogManager.getLogger("findOwnerByTelephone");
 
     @Autowired
     public OwnerController(OwnerRepository clinicService) {
@@ -138,55 +139,60 @@ public class OwnerController {
                 listOfOwnerCsvLogger.info(request.getRemoteAddr() + ",0");
             }
         }
-        if (PetClinicToggles.toggleSearchByLocation) {
-
-            // find owners by last name
-            Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
-            if (results.isEmpty()) {
-                // no owners found
-                result.rejectValue("lastName", "notFound", "not found");
-                Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
-                model.put("toggles", toggles);
-                return "owners/findOwners";
-            } else if (results.size() == 1) {
-                // 1 owner found
-                owner = results.iterator().next();
-                return "redirect:/owners/" + owner.getId();
-            } else {
-                // multiple owners found
-                boolean displayingListOfAll = false;
-                model.put("isOptionListOfAll", displayingListOfAll);
-                model.put("selections", results);
-                Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
-                model.put("toggles", toggles);
-                return "owners/ownersList";
-            }
-            }
-
-        if (PetClinicToggles.toggleSearchByTelephone) {
 
 
-            if (owner.getTelephone() == null) {
-                owner.setTelephone("");
-            }
-            Collection<Owner> results = this.owners.findByTelephone(owner.getTelephone());
-            if (results.isEmpty()) {
-                // no owners found
-                result.rejectValue("telephone", "notFound", "not found");
-                return "owners/findOwners";
-            } else if (results.size() == 1) {
-                // 1 owner found
-                owner = results.iterator().next();
-                return "redirect:/owners/" + owner.getId();
-            } else {
-                // multiple owners found
-                model.put("selections", results);
-                return "owners/ownersList";
-            }
+        // find owners by last name
+        Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
+        if (results.isEmpty()) {
+            // no owners found
+            result.rejectValue("lastName", "notFound", "not found");
+            Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
+            model.put("toggles", toggles);
+            return "owners/findOwners";
+        } else if (results.size() == 1) {
+            // 1 owner found
+            owner = results.iterator().next();
+            return "redirect:/owners/" + owner.getId();
+        } else {
+            // multiple owners found
+            boolean displayingListOfAll = false;
+            model.put("isOptionListOfAll", displayingListOfAll);
+            model.put("selections", results);
+            Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
+            model.put("toggles", toggles);
+            return "owners/ownersList";
         }
-        return null;
+    }
+
+    public String findOwnerByTelephone(Owner owner, BindingResult result, Map<String, Object> model) {
+
+
+        if (owner.getTelephone() == null) {
+            owner.setTelephone("");
         }
 
+        // find owners by last name
+        Collection<Owner> results = this.owners.findByTelephone(owner.getTelephone());
+        if (results.isEmpty()) {
+            // no owners found
+            result.rejectValue("telephone", "notFound", "not found");
+            Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
+            model.put("toggles", toggles);
+            return "owners/findOwners";
+        } else if (results.size() == 1) {
+            // 1 owner found
+            owner = results.iterator().next();
+            return "redirect:/owners/" + owner.getId();
+        } else {
+            // multiple owners found
+            boolean displayingListOfAll = false;
+            model.put("isOptionListOfAll", displayingListOfAll);
+            model.put("selections", results);
+            Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
+            model.put("toggles", toggles);
+            return "owners/ownersList";
+        }
+    }
 
 
     @GetMapping("/owners/{ownerId}/edit")
