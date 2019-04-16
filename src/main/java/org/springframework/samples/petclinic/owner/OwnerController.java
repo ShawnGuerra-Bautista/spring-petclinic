@@ -59,6 +59,9 @@ public class OwnerController {
         if (PetClinicToggles.toggleListOfOwners.isOn()) {
             consoleLogger.info("List of Owners Enabled");
         }
+        if (PetClinicToggles.toggleFindOwnerByTelephone.isOn()) {
+            consoleLogger.info("Find Owner by telephone Enabled");
+        }
     }
 
     public OwnerController(OwnerRepository clinicService, Logger consoleLogger, Logger listOfOwnerCsvLogger) {
@@ -135,29 +138,56 @@ public class OwnerController {
                 listOfOwnerCsvLogger.info(request.getRemoteAddr() + ",0");
             }
         }
+        if (PetClinicToggles.toggleSearchByLocation) {
 
-        // find owners by last name
-        Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
-        if (results.isEmpty()) {
-            // no owners found
-            result.rejectValue("lastName", "notFound", "not found");
-            Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
-            model.put("toggles", toggles);
-            return "owners/findOwners";
-        } else if (results.size() == 1) {
-            // 1 owner found
-            owner = results.iterator().next();
-            return "redirect:/owners/" + owner.getId();
-        } else {
-            // multiple owners found
-            boolean displayingListOfAll = false;
-            model.put("isOptionListOfAll", displayingListOfAll);
-            model.put("selections", results);
-            Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
-            model.put("toggles", toggles);
-            return "owners/ownersList";
+            // find owners by last name
+            Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
+            if (results.isEmpty()) {
+                // no owners found
+                result.rejectValue("lastName", "notFound", "not found");
+                Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
+                model.put("toggles", toggles);
+                return "owners/findOwners";
+            } else if (results.size() == 1) {
+                // 1 owner found
+                owner = results.iterator().next();
+                return "redirect:/owners/" + owner.getId();
+            } else {
+                // multiple owners found
+                boolean displayingListOfAll = false;
+                model.put("isOptionListOfAll", displayingListOfAll);
+                model.put("selections", results);
+                Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
+                model.put("toggles", toggles);
+                return "owners/ownersList";
+            }
+            }
+
+        if (PetClinicToggles.toggleSearchByTelephone) {
+
+
+            if (owner.getTelephone() == null) {
+                owner.setTelephone("");
+            }
+            Collection<Owner> results = this.owners.findByTelephone(owner.getTelephone());
+            if (results.isEmpty()) {
+                // no owners found
+                result.rejectValue("telephone", "notFound", "not found");
+                return "owners/findOwners";
+            } else if (results.size() == 1) {
+                // 1 owner found
+                owner = results.iterator().next();
+                return "redirect:/owners/" + owner.getId();
+            } else {
+                // multiple owners found
+                model.put("selections", results);
+                return "owners/ownersList";
+            }
         }
-    }
+        return null;
+        }
+
+
 
     @GetMapping("/owners/{ownerId}/edit")
     public String initUpdateOwnerForm(@PathVariable("ownerId") int ownerId, Map<String, Object> model) {
