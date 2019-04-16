@@ -46,7 +46,7 @@ class VetController {
         Vets vets = new Vets();
         vets.getVetList().addAll(this.vets.findAll());
         model.put("vets", vets);
-        Collection<Boolean> toggles = PetClinicToggles.toggles;
+        Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
         model.put("toggles", toggles);
         return "vets/vetList";
     }

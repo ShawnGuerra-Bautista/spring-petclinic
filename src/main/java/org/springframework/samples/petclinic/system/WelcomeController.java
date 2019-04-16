@@ -13,7 +13,7 @@ class WelcomeController {
 
     @GetMapping("/")
     public String welcome(Map<String, Object> model) {
-        Collection<Boolean> toggles = PetClinicToggles.toggles;
+        Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
         model.put("toggles", toggles);
         return "welcome";
     }

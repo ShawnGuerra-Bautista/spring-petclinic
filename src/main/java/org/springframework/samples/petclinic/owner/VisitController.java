@@ -74,7 +74,7 @@ class VisitController {
     // Spring MVC calls method loadPetWithVisit(...) before initNewVisitForm is called
     @GetMapping("/owners/*/pets/{petId}/visits/new")
     public String initNewVisitForm(@PathVariable("petId") int petId, Map<String, Object> model) {
-        Collection<Boolean> toggles = PetClinicToggles.toggles;
+        Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
         model.put("toggles", toggles);
         return "pets/createOrUpdateVisitForm";
     }
@@ -83,7 +83,7 @@ class VisitController {
     @PostMapping("/owners/{ownerId}/pets/{petId}/visits/new")
     public String processNewVisitForm(@Valid Visit visit, BindingResult result, Map<String, Object> model) {
         if (result.hasErrors()) {
-            Collection<Boolean> toggles = PetClinicToggles.toggles;
+            Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
             model.put("toggles", toggles);
             return "pets/createOrUpdateVisitForm";
         } else {
