@@ -16,8 +16,7 @@ public class PetClinicToggles {
     public static Toggle toggleFindOwnerByFirstName = new Toggle(0.5f);
 
     // TODO remove
-    public static Collection<Boolean> toggles = new ArrayList<>(Arrays.asList(toggleFindOwnerByLastName.isOn(), toggleListOfOwners.isOn(),toggleFindOwnerByFirstName.isOn()));
-
+   
 
     public static Collection<Boolean> getToggleValues() {
         return new ArrayList<>(Arrays.asList(
