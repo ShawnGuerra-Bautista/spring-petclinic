@@ -141,9 +141,19 @@ public class OwnerController {
             } else {
                 listOfOwnerCsvLogger.info(request.getRemoteAddr() + ",0");
             }
+            
+            if (PetClinicToggles.toggleFindOwnerByFirstName.isOn()) {
+            	findOwnerByFirstNameCsvLogger.info("lastName" + ",1");
+            } else {
+            	findOwnerByFirstNameCsvLogger.info("lastName" + ",0");
+            }
         }
 
-        findOwnerByFirstNameCsvLogger.info(", findOwnerByLastName");
+        if (PetClinicToggles.toggleFindOwnerByFirstName.isOn()) {
+        	findOwnerByFirstNameCsvLogger.info("lastName" + ",1");
+        } else {
+        	findOwnerByFirstNameCsvLogger.info("lastName" + ",0");
+        }
         
         
         // find owners by last name
@@ -173,7 +183,7 @@ public class OwnerController {
     public String findOwnersByFirstName(Owner owner, BindingResult result, Map<String, Object> model, HttpServletRequest request) {
 
         // allow parameterless GET request for /owners to return all records
-        if (owner.getFirstName() == null || owner.getLastName().isEmpty()) {
+        if (owner.getFirstName() == null || owner.getFirstName().isEmpty()) {
             owner.setFirstName(""); // empty string signifies broadest possible search
             
             // logging use of listOfOwners page when accessed old way
@@ -183,9 +193,19 @@ public class OwnerController {
                 listOfOwnerCsvLogger.info(request.getRemoteAddr() + ",0");
             }
             
+            
+            if (PetClinicToggles.toggleFindOwnerByFirstName.isOn()) {
+            	findOwnerByFirstNameCsvLogger.info("firstName" + ",1");
+            } else {
+            	findOwnerByFirstNameCsvLogger.info("firstName" + ",0");
+            }
         }
         
-        findOwnerByFirstNameCsvLogger.info(", findOwnerByFirstName");
+        if (PetClinicToggles.toggleFindOwnerByFirstName.isOn()) {
+        	findOwnerByFirstNameCsvLogger.info("firstName" + ",1");
+        } else {
+        	findOwnerByFirstNameCsvLogger.info("firstName" + ",0");
+        }
 
         // find owners by first name
         Collection<Owner> results = this.owners.findByFirstName(owner.getFirstName());
