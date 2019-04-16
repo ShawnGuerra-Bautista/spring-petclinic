@@ -48,6 +48,7 @@ public class OwnerController {
 
     private static Logger listOfOwnerCsvLogger = LogManager.getLogger("listOfOwner");
     private static Logger consoleLogger = LogManager.getLogger("trace");
+    private static Logger searchOwnerByLocationLogger = LogManager.getLogger("searchOwnerByLocation");
 
     @Autowired
     public OwnerController(OwnerRepository clinicService) {
@@ -66,10 +67,11 @@ public class OwnerController {
         }
     }
 
-    public OwnerController(OwnerRepository clinicService, Logger consoleLogger, Logger listOfOwnerCsvLogger) {
+    public OwnerController(OwnerRepository clinicService, Logger consoleLogger, Logger listOfOwnerCsvLogger, Logger searchOwnerByLocationLogger) {
         this.owners = clinicService;
         OwnerController.consoleLogger = consoleLogger;
         OwnerController.listOfOwnerCsvLogger = listOfOwnerCsvLogger;
+        OwnerController.searchOwnerByLocationLogger = searchOwnerByLocationLogger;
     }
 
     @InitBinder
