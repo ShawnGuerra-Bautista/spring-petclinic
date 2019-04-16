@@ -45,8 +45,7 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
     @Query("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.lastName LIKE :lastName%")
     @Transactional(readOnly = true)
     Collection<Owner> findByLastName(@Param("lastName") String lastName);
-    
-   
+    Collection<Owner> findByCity(@Param("city") String city);
 
     /**
      * Retrieve an {@link Owner} from the data store by id.

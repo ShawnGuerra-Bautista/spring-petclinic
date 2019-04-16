@@ -3,9 +3,12 @@
     <Properties>
         <Property name="logListOfOwner.fileName">ListOfOwnerLog</Property>
         <Property name="logListOfOwner.header">timestamp,ipAddress,toggleEnabled</Property>
-    	
-    	<Property name="logFindOwnerByFirstName.fileName">FindOwnerByFirstNameLog</Property>
-   		<Property name="logFindOwnerByFirstName.header">timestamp,searchType,toggleEnabled</Property>
+
+        <Property name="logFindOwnerByLocation.fileName">FindOwnerByLocationLog</Property>
+        <Property name="logFindOwnerByLocation.header">timestamp,ipAddress,toggleEnabled</Property>
+	
+        <Property name="logFindOwnerByFirstName.fileName">FindOwnerByFirstNameLog</Property>
+        <Property name="logFindOwnerByFirstName.header">timestamp,searchType,toggleEnabled</Property>
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
@@ -19,6 +22,18 @@
             <PatternLayout>
                 <Pattern>%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}},%m%n</Pattern>
                 <Header>${logListOfOwner.header}%n</Header>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="200" />
+		<RollingFile name="csvFindOwnerByLocation"
+                     fileName="logs/${LogFindOwnerByLocation.fileName}.csv"
+                     filePattern="${LogFindOwnerByLocation.fileName}-%d{MM-dd-yyyy}-%i.csv">
+            <PatternLayout>
+                <Pattern>%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}},%m%n</Pattern>
+                <Header>${logFindOwnerByLocation.header}%n</Header>
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />
