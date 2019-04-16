@@ -28,7 +28,7 @@
     </div>
 	</form>
 	
-	<form th:object="${owner}" th:action="@{/owners}" method="get"
+	<form th:block th:if="${toggles[3] == true}" th:object="${owner}" th:action="@{/owners}" method="get"
     class="form-horizontal" id="search-owner-form">
     <div class="form-group">
       <div class="control-group" id="cityGroup">

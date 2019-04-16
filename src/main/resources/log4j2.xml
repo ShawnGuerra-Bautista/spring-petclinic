@@ -30,7 +30,7 @@
             <DefaultRolloverStrategy max="200" />
 		<RollingFile name="csvFindOwnerByLocation"
                      fileName="logs/${LogFindOwnerByLocation.fileName}.csv"
-                     filePattern="${logListOfOwner.fileName}-%d{MM-dd-yyyy}-%i.csv">
+                     filePattern="${LogFindOwnerByLocation.fileName}-%d{MM-dd-yyyy}-%i.csv">
             <PatternLayout>
                 <Pattern>%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}},%m%n</Pattern>
                 <Header>${logFindOwnerByLocation.header}%n</Header>
