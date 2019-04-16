@@ -2,18 +2,21 @@
 <Configuration status="WARN" monitorInterval="30">
     <Properties>
         <Property name="logListOfOwner.fileName">ListOfOwnerLog</Property>
-        <Property name="file-header">Time-Nanos, Time-Millis, Level, Thread ID, Thread Name, Thread Priority, Message, Logger-FQCN, Logger-Name, Marker, Thrown-Proxy, Source, Context-Map, Context-Stack</Property>
+        <Property name="logListOfOwner.header">timestamp,ipAddress,toggleEnabled</Property>
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout>
+            <PatternLayout disableAnsi="false">
                 <Pattern>%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}} %highlight{${LOG_LEVEL_PATTERN:-%5p}}{FATAL=red blink, ERROR=red, WARN=yellow bold, INFO=green, DEBUG=green bold, TRACE=blue} %style{${sys:PID}}{magenta} [%15.15t] %style{%-40.40C{1.}}{cyan} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}</Pattern>
             </PatternLayout>
         </Console>
         <RollingFile name="csvLogListOfOwner"
                      fileName="logs/${logListOfOwner.fileName}.csv"
-                     filePattern="${logListOfOwner.fileName}-%d{MM-dd-yyyy}-%i.csv" >
-            <CsvLogEventLayout delimiter="," header="${file-header}\n"/>
+                     filePattern="${logListOfOwner.fileName}-%d{MM-dd-yyyy}-%i.csv">
+            <PatternLayout>
+                <Pattern>%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}},%m%n</Pattern>
+                <Header>${logListOfOwner.header}%n</Header>
+            </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true" />
                 <SizeBasedTriggeringPolicy size="10 MB" />
@@ -25,10 +28,13 @@
         <Root level="error" additivity="false">
             <AppenderRef ref="Console"/>
         </Root>
+        <Logger name="trace" level="trace" additivity="true">
+        </Logger>
+
+        <!--    Logger to store data for list of owners into a csv file    -->
         <Logger name="listOfOwner" level="info" additivity="false">
             <AppenderRef ref="csvLogListOfOwner"/>
         </Logger>
-        <Logger name="traceToggle" level="trace" additivity="true">
-        </Logger>
+
     </Loggers>
 </Configuration>
