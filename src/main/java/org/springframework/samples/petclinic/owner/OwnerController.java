@@ -45,10 +45,12 @@ public class OwnerController {
     private static final String VIEWS_OWNER_CREATE_OR_UPDATE_FORM = "owners/createOrUpdateOwnerForm";
     private final OwnerRepository owners;
 
-    private static Logger listOfOwnerCsvLogger = LogManager.getLogger("listOfOwner");
     private static Logger consoleLogger = LogManager.getLogger("trace");
-    private static Logger searchOwnerByLocationCsvLogger = LogManager.getLogger("searchOwnerByLocation");    
+
+    private static Logger listOfOwnerCsvLogger = LogManager.getLogger("listOfOwner");
     private static Logger findOwnerByFirstNameCsvLogger = LogManager.getLogger("findOwnerByFirstName");
+    private static Logger searchOwnerByLocationCsvLogger = LogManager.getLogger("searchOwnerByLocation");
+    private static Logger findOwnerByTelephone = LogManager.getLogger("findOwnerByTelephone");
 
     @Autowired
     public OwnerController(OwnerRepository clinicService) {
@@ -65,17 +67,15 @@ public class OwnerController {
         if (PetClinicToggles.toggleListOfOwners.isOn()) {
             consoleLogger.info("List of Owners Enabled");
         }
-        
+
+        if (PetClinicToggles.toggleFindOwnerByTelephone.isOn()) {
+            consoleLogger.info("Find Owner by telephone Enabled");
+        }
+
         if (PetClinicToggles.toggleFindOwnerByFirstName.isOn()) {
             consoleLogger.info("Find Owner by First Name Enabled");
         }
     }
-
-    public OwnerController(OwnerRepository clinicService, Logger consoleLogger, Logger listOfOwnerCsvLogger, Logger searchOwnerByLocationCsvLogger) {
-        this.owners = clinicService;
-        OwnerController.consoleLogger = consoleLogger;
-        OwnerController.listOfOwnerCsvLogger = listOfOwnerCsvLogger;
-        OwnerController.searchOwnerByLocationCsvLogger = searchOwnerByLocationCsvLogger;
 
     public OwnerController(OwnerRepository clinicService, Logger consoleLogger, Logger listOfOwnerCsvLogger, Logger findOwnerByFirstNameCsvLogger) {
         this.owners = clinicService;
@@ -141,7 +141,6 @@ public class OwnerController {
     @GetMapping("/owners")
     public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model, HttpServletRequest request) {
 
-
         // allow parameterless GET request for /owners to return all records
         if (owner.getLastName() == null || owner.getLastName().isEmpty()) {
             owner.setLastName(""); // empty string signifies broadest possible search
@@ -154,13 +153,13 @@ public class OwnerController {
             }
             
         }
-      
+
         if (PetClinicToggles.toggleFindOwnerByFirstName.isOn()) {
         	findOwnerByFirstNameCsvLogger.info("lastName" + ",1");
         } else {
         	findOwnerByFirstNameCsvLogger.info("lastName" + ",0");
         }
-        
+
         // find owners by last name
         Collection<Owner> results = this.owners.findByLastName(owner.getLastName());
         if (results.isEmpty()) {
@@ -183,28 +182,45 @@ public class OwnerController {
             return "owners/ownersList";
         }
     }
-    
+
+    @GetMapping("/owners_location")
     public String findOwnerByLocation(Owner owner, BindingResult result, Map<String, Object> model) {
 
         // allow parameterless GET request for /owners to return all records
         if (owner.getCity() == null) {
             owner.setLastName(""); // empty string signifies broadest possible search
         }
-        
-        if (PetClinicToggles.toggleFindOwnerByLocation.isOn()){
-        	searchOwnerByLocationCsvLogger.info("city" + ",1");
+
+        if (PetClinicToggles.toggleFindOwnerByLocation.isOn()) {
+            searchOwnerByLocationCsvLogger.info("city" + ",1");
+        } else {
+            searchOwnerByLocationCsvLogger.info("city" + ",0");
         }
-        else{
-        	searchOwnerByLocationCsvLogger.info("city" + ",0");
-        }
-        
+
         searchOwnerByLocationCsvLogger.info(", findOwnerByLocation");
-        
+
         // find owners by last name
         Collection<Owner> results = this.owners.findByCity(owner.getCity());
         if (results.isEmpty()) {
             // no owners found
-            result.rejectValue("lastName", "notFound", "not found");
+            result.rejectValue("city", "notFound", "not found");
+            Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
+            model.put("toggles", toggles);
+            return "owners/findOwners";
+        } else if (results.size() == 1) {
+            // 1 owner found
+            owner = results.iterator().next();
+            return "redirect:/owners/" + owner.getId();
+        } else {
+            // multiple owners found
+            boolean displayingListOfAll = false;
+            model.put("isOptionListOfAll", displayingListOfAll);
+            model.put("selections", results);
+            Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
+            model.put("toggles", toggles);
+            return "owners/ownersList";
+        }
+    }
 
     @GetMapping("/owners_first_name")
     public String findOwnersByFirstName(Owner owner, BindingResult result, Map<String, Object> model, HttpServletRequest request) {
@@ -234,6 +250,36 @@ public class OwnerController {
             // no owners found
             result.rejectValue("firstName", "notFound", "not found");
 
+            Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
+            model.put("toggles", toggles);
+            return "owners/findOwners";
+        } else if (results.size() == 1) {
+            // 1 owner found
+            owner = results.iterator().next();
+            return "redirect:/owners/" + owner.getId();
+        } else {
+            // multiple owners found
+            boolean displayingListOfAll = false;
+            model.put("isOptionListOfAll", displayingListOfAll);
+            model.put("selections", results);
+            Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
+            model.put("toggles", toggles);
+            return "owners/ownersList";
+        }
+    }
+
+    @GetMapping("/owners_telephone")
+    public String findOwnerByTelephone(Owner owner, BindingResult result, Map<String, Object> model) {
+
+        if (owner.getTelephone() == null) {
+            owner.setTelephone("");
+        }
+
+        // find owners by last name
+        Collection<Owner> results = this.owners.findByTelephone(owner.getTelephone());
+        if (results.isEmpty()) {
+            // no owners found
+            result.rejectValue("telephone", "notFound", "not found");
             Collection<Boolean> toggles = PetClinicToggles.getToggleValues();
             model.put("toggles", toggles);
             return "owners/findOwners";
@@ -288,7 +334,5 @@ public class OwnerController {
         model.put("toggles", toggles);
         return mav;
     }
-
-
 
 }
