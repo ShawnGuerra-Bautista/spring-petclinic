@@ -45,6 +45,8 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
     @Query("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.lastName LIKE :lastName%")
     @Transactional(readOnly = true)
     Collection<Owner> findByLastName(@Param("lastName") String lastName);
+    
+   
 
     /**
      * Retrieve an {@link Owner} from the data store by id.
@@ -68,6 +70,14 @@ public interface OwnerRepository extends Repository<Owner, Integer> {
      * @param owner the {@link Owner} to save
      */
     void save(Owner owner);
-
-
+    
+    /**
+     * Added similar code as the code above for last name, in order to retrieve owners based on there first name
+     * @param firstName
+     * @return
+     */
+    @Query("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.firstName LIKE :firstName%")
+    @Transactional(readOnly = true)
+    Collection<Owner> findByFirstName(@Param("firstName") String firstName);
+    
 }
