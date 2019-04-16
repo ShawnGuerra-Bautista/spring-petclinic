@@ -4,8 +4,8 @@
         <Property name="logListOfOwner.fileName">ListOfOwnerLog</Property>
         <Property name="logListOfOwner.header">timestamp,ipAddress,toggleEnabled</Property>
     	
-    	<Property name=logFindOwnerByFirstName.fileName>FindOwnerByFirstNameLog</Property>
-   		<Property name="logFindOwnerByFirstName.header">timestamp,toggleEnabled</Property>
+    	<Property name="logFindOwnerByFirstName.fileName">FindOwnerByFirstNameLog</Property>
+   		<Property name="logFindOwnerByFirstName.header">timestamp,searchType,toggleEnabled</Property>
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
