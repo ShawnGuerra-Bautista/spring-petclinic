@@ -3,6 +3,9 @@
     <Properties>
         <Property name="logListOfOwner.fileName">ListOfOwnerLog</Property>
         <Property name="logListOfOwner.header">timestamp,ipAddress,toggleEnabled</Property>
+    	
+    	<Property name=logFindOwnerByFirstName.fileName>FindOwnerByFirstNameLog</Property>
+   		<Property name="logFindOwnerByFirstName.header">timestamp,toggleEnabled</Property>
     </Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
@@ -23,6 +26,19 @@
             </Policies>
             <DefaultRolloverStrategy max="200" />
         </RollingFile>
+         <RollingFile name="csvFindOwnerByFirstName"
+                     fileName="logs/${logFindOwnerByFirstName.fileName}.csv"
+                     filePattern="${logFindOwnerByFirstName.fileName}-%d{MM-dd-yyyy}-%i.csv">
+            <PatternLayout>
+                <Pattern>%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}},%m%n</Pattern>
+                <Header>${logFindOwnerByFirstName.header}%n</Header>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="200" />
+        </RollingFile>
     </Appenders>
     <Loggers>
         <Root level="error" additivity="false">
@@ -34,6 +50,10 @@
         <!--    Logger to store data for list of owners into a csv file    -->
         <Logger name="listOfOwner" level="info" additivity="false">
             <AppenderRef ref="csvLogListOfOwner"/>
+        </Logger>
+
+        <Logger name="findOwnerByFirstName" level="info" additivity="false">
+            <AppenderRef ref="csvlogFindOwnerByFirstName"/>
         </Logger>
 
     </Loggers>
